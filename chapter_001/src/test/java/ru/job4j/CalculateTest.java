@@ -19,9 +19,9 @@ public class CalculateTest {
 */
 @Test
 public void whenSetNameThenEchoPlusName() {
+		Calculate calc = new Calculate();
 		String input = "Mikhail Shonorov";
 		String expect = "Echo, echo, echo : Mikhail Shonorov";
-		Calculate calc = new Calculate();
 		String result = calc.echo(input);
 		assertThat(result, is(expect));
 	}
