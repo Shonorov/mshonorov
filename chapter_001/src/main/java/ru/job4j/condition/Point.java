@@ -1,18 +1,15 @@
 package ru.job4j.condition;
-
 /**
  * @author MShonorov
  * @version $Id$
  * @since 0.1
  */
 public class Point {
-
     /**
      * Point coordinates.
      */
     private int x;
     private int y;
-
     /**
      * Constructor.
      * @param x axis.
@@ -22,7 +19,6 @@ public class Point {
         this.x = x;
         this.y = y;
     }
-
     /**
      * Distance between two points.
      * @param that target point.
@@ -33,7 +29,6 @@ public class Point {
                 Math.pow(this.x - that.x, 2) + Math.pow(this.y - that.y, 2)
         );
     }
-
     /**
      * Main.
      * @param args
@@ -45,9 +40,7 @@ public class Point {
         System.out.println("y1 = " + a.y);
         System.out.println("x2 = " + b.x);
         System.out.println("y2 = " + b.y);
-
         double result = a.distanceTo(b);
         System.out.println("Расстояние между точками А и В : " + result);
     }
-
 }

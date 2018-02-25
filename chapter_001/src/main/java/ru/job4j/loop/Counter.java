@@ -1,12 +1,10 @@
 package ru.job4j.loop;
-
 /**
  * @author MShonorov (shonorov@gmail.com)
  * @version $Id$
  * @since 0.1
  */
 public class Counter {
-
     /**
      * Get sum of evens in range.
      * @param start of the range.

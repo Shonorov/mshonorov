@@ -1,14 +1,12 @@
 package ru.job4j.array;
 
 import java.util.Arrays;
-
 /**
  * @author MShonorov (shonorov@gmail.com)
  * @version $Id$
  * @since 0.1
  */
 public class ArrayDuplicate {
-
     /**
      * Removes duplicates from array.
      * @param array input array.

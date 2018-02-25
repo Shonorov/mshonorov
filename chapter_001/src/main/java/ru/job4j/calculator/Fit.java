@@ -1,16 +1,13 @@
 package ru.job4j.calculator;
-
 /**
  * Программа расчета идеального веса.
  */
 public class Fit {
-
     /**
      * Weight indexes.
      */
     private static final int MEN_INDEX = 100;
     private static final int WOMEN_INDEX = 110;
-
     /**
      * Идеальный вес для мужщины.
      * @param height Рост.
@@ -19,7 +16,6 @@ public class Fit {
     double manWeight(double height) {
         return (height - MEN_INDEX) * 1.15;
     }
-
     /**
      * Идеальный вес для женщины.
      * @param height Рост.

@@ -1,5 +1,4 @@
 package ru.job4j.condition;
-
 /**
  * Triangle area calculation.
  * @author MShonorov (shonorov@gmail.com)
@@ -7,7 +6,6 @@ package ru.job4j.condition;
  * @since 0.1
  */
 public class Triangle {
-
     private Point a;
     private Point b;
     private Point c;
@@ -17,7 +15,6 @@ public class Triangle {
         this.b = b;
         this.c = c;
     }
-
     /**
      * Метод вычисления полупериметра по длинам сторон.
      *
@@ -33,7 +30,6 @@ public class Triangle {
     public double period(double ab, double ac, double bc) {
         return (a.distanceTo(b) + a.distanceTo(c) + b.distanceTo(c)) / 2;
     }
-
     /**
      * Метод должен вычислить площадь треугольника.
      *
@@ -46,12 +42,10 @@ public class Triangle {
         double bc = this.b.distanceTo(this.c);
         double p = this.period(ab, ac, bc);
         if (this.exist(ab, ac, bc)) {
-            // написать формулу для расчета площади треугольника.
             rsl = Math.pow(p * (p - ab) * (p - ac) * (p - bc), 0.5);
         }
         return rsl;
     }
-
     /**
      * Метод проверяет можно ли построить треугольник с такими длинами сторон.
      *
