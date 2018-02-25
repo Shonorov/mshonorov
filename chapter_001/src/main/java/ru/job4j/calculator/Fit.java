@@ -6,12 +6,18 @@ package ru.job4j.calculator;
 public class Fit {
 
     /**
+     * Weight indexes.
+     */
+    private static final int MEN_INDEX = 100;
+    private static final int WOMEN_INDEX = 110;
+
+    /**
      * Идеальный вес для мужщины.
      * @param height Рост.
      * @return идеальный вес.
      */
     double manWeight(double height) {
-        return (height - 100) * 1.15;
+        return (height - MEN_INDEX) * 1.15;
     }
 
     /**
@@ -20,6 +26,6 @@ public class Fit {
      * @return идеальный вес.
      */
     double womanWeight(double height) {
-        return (height - 110) * 1.15;
+        return (height - WOMEN_INDEX) * 1.15;
     }
 }
