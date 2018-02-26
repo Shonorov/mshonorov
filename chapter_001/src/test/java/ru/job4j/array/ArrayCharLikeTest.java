@@ -13,14 +13,14 @@ public class ArrayCharLikeTest {
     @Test
     public void whenContainsThenTrue() {
         ArrayCharLike word = new ArrayCharLike();
-        boolean result = word.contains("Hello","ell");
+        boolean result = word.contains("Hello", "ell");
         assertThat(result, is(true));
     }
 
     @Test
     public void whenNotContainsThenFalse() {
         ArrayCharLike word = new ArrayCharLike();
-        boolean result = word.contains("Hello","hi");
+        boolean result = word.contains("Hello", "hi");
         assertThat(result, is(false));
     }
 }
