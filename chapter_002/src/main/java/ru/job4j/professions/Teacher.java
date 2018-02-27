@@ -5,7 +5,7 @@ package ru.job4j.professions;
  * @version $Id$
  * @since 0.1
  */
-public class Teacher extends Profession{
+public class Teacher extends Profession {
 
     public Teacher(String name) {
         super(name, "Учитель");
