@@ -3,14 +3,11 @@ package ru.job4j.calculator;
 import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-
 /**
  * Test for calculator class.
  * @author Shonorov.
  */
-
 public class CalculatorTest {
-
     /**
      * Test for sum method.
      */
@@ -22,7 +19,6 @@ public class CalculatorTest {
         double expected = 2D;
         assertThat(result, is(expected));
     }
-
     /**
      * Test for substract method.
      */
@@ -34,7 +30,6 @@ public class CalculatorTest {
         double expected = 1D;
         assertThat(result, is(expected));
     }
-
     /**
      * Test for division method.
      */
@@ -46,7 +41,6 @@ public class CalculatorTest {
         double expected = 2D;
         assertThat(result, is(expected));
     }
-
     /**
      * Test for multimpe method.
      */

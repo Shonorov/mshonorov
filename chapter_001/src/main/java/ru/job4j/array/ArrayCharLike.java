@@ -18,8 +18,12 @@ public class ArrayCharLike {
         char[] value = sub.toCharArray();
         for (int i = 0; i <= data.length - value.length; i++) {
             for (int j = 0; j < value.length; j++) {
-                if (data[i + j] != value[j]) break;
-                if (data[i + j] == value[value.length - 1]) result = true;
+                if (data[i + j] != value[j]) {
+                    break;
+                }
+                if (data[i + j] == value[value.length - 1]) {
+                    result = true;
+                }
             }
         }
         return result;

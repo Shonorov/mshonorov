@@ -4,7 +4,6 @@ import org.junit.Test;
 import java.util.StringJoiner;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
-
 /**
  * @author MShonorov (shonorov@gmail.com)
  * @version $Id$

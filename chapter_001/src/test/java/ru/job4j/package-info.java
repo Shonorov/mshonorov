@@ -1,5 +1,5 @@
 /**
-* Package for CalculateTest task.
+* Package for study project tests.
 *
 * @author Mikhail Shonorov
 * @version $Id$
