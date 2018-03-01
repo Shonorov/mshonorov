@@ -25,6 +25,9 @@ public class ArrayCharLike {
                     result = true;
                 }
             }
+            if (result) {
+                break;
+            }
         }
         return result;
     }
