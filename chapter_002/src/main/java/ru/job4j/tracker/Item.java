@@ -1,4 +1,7 @@
 package ru.job4j.tracker;
+
+import java.time.LocalTime;
+
 /**
  * Items management in tracker.
  * @author MShonorov (shonorov@gmail.com)
@@ -41,7 +44,22 @@ public class Item {
         this.id = id;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
     public String getName() {
         return name;
+    }
+    /**
+     * Returns string with item properties for console output.
+     * @return formated string.
+     */
+    public String print() {
+        return String.format("%s\t%s\t%s\t%s", this.id, this.name, this.desc, this.created);
     }
 }
