@@ -98,8 +98,7 @@ public class StartUI {
         System.out.println("------------Вывод всех заявок--------------");
         System.out.println(String.format("%s\t\t\t\t\t%s\t%s\t%s\r", "id", "name", "desc", "created"));
         Item[] items = tracker.findAll();
-        for (Item item : items
-             ) {
+        for (Item item : items) {
             System.out.println(item.print());
         }
         System.out.println("------------Список заявок выведен----------");
@@ -162,8 +161,7 @@ public class StartUI {
             System.out.println("-------Заявки не найдены-------------");
         } else {
             System.out.println(String.format("%s\t\t\t\t\t%s\t%s\t%s\r", "id", "name", "desc", "created"));
-            for (Item item : result
-                 ) {
+            for (Item item : result) {
                 System.out.println(item.print());
             }
             System.out.println("-------Заявки найдены-------------");
