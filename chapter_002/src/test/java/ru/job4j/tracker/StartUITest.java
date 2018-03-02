@@ -11,10 +11,10 @@ import static org.junit.Assert.assertThat;
 public class StartUITest {
     @Test
     public void whenUserAddItemThenTrackerHasNewItemWithSameName() {
-        Tracker tracker = new Tracker();     // создаём Tracker
-        Input input = new StubInput(new String[]{"0", "test name", "desc", "6"});   //создаём StubInput с последовательностью действий
-        new StartUI(input, tracker).init();     //   создаём StartUI и вызываем метод init()
-        assertThat(tracker.findAll()[0].getName(), is("test name")); // проверяем, что нулевой элемент массива в трекере содержит имя, введённое при эмуляции.
+        Tracker tracker = new Tracker();
+        Input input = new StubInput(new String[]{"0", "test name", "desc", "6"});
+        new StartUI(input, tracker).init();
+        assertThat(tracker.findAll()[0].getName(), is("test name"));
     }
 
     @Test
@@ -27,12 +27,20 @@ public class StartUITest {
     }
 
     @Test
-    public void whenDelete() {
-
+    public void whenDeleteThenEmptyItemsArray() {
+        Tracker tracker = new Tracker();
+        Item item = tracker.add(new Item());
+        Input input = new StubInput(new String[]{"3", item.getId(), "6"});
+        new StartUI(input, tracker).init();
+        assertThat(tracker.findAll().length, is(0));
     }
 
     @Test
-    public void whenFindByID() {
-
+    public void whenFindByIDThenFoundTheSameItem() {
+        Tracker tracker = new Tracker();
+        Item item = tracker.add(new Item());
+        Input input = new StubInput(new String[]{"4", item.getId(), "6"});
+        new StartUI(input, tracker).init();
+        assertThat(tracker.findAll()[0].getId(), is(item.getId()));
     }
 }
