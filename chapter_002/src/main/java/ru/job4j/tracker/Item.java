@@ -16,11 +16,11 @@ public class Item {
      * created - creation date.
      * comments - comments to items by users.
      */
-    String id;
-    String name;
-    String desc;
-    long created;
-    String[] comments;
+    private String id;
+    private String name;
+    private String desc;
+    private long created;
+    private String[] comments;
 
     public Item() {
     }

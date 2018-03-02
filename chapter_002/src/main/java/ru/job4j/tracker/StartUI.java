@@ -102,7 +102,7 @@ public class StartUI {
              ) {
             System.out.println(item.print());
         }
-        System.out.println("------------Список заявок выведен--------------");
+        System.out.println("------------Список заявок выведен----------");
     }
     /**
      * Edit selected item.
@@ -155,7 +155,7 @@ public class StartUI {
      * Find item by name.
      */
     private void findByName() {
-        System.out.println("-------Поиск заявки по имени-------------");
+        System.out.println("-------Поиск заявки по имени------");
         String name = this.input.ask("Введите имя заявки которую нужно найти:");
         Item[] result = tracker.findByName(name);
         if (result.length == 0) {
