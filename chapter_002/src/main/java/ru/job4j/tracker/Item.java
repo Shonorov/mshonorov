@@ -1,7 +1,4 @@
 package ru.job4j.tracker;
-
-import java.time.LocalTime;
-
 /**
  * Items management in tracker.
  * @author MShonorov (shonorov@gmail.com)
