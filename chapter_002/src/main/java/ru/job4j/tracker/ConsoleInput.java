@@ -13,7 +13,7 @@ public class ConsoleInput implements Input {
     private Scanner scanner = new Scanner(System.in);
     /**
      * Prompts input from user.
-     * @param question text showed to user.
+     * @param question text shown to user.
      * @return one line entered from console by user.
      */
     public String ask(String question) {
@@ -21,11 +21,17 @@ public class ConsoleInput implements Input {
         return scanner.nextLine();
     }
 
+    /**
+     * Prompts input from user and throws exception.
+     * @param question text shown to user.
+     * @param range number of line entered from console by user.
+     * @return
+     */
     public int ask(String question, int[] range) {
         int key = Integer.valueOf(this.ask(question));
         boolean exist = false;
         for (int value : range) {
-            if(value == key) {
+            if (value == key) {
                 exist = true;
                 break;
             }
