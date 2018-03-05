@@ -52,6 +52,17 @@ public class MenuTracker {
     }
 
     /**
+     * Get menu indexes.
+     * @return menu index array.
+     */
+    public int[] getMenuIndex() {
+        int[] result = new int[actions.length];
+        for (int i = 0; i < actions.length; i++) {
+            result[i] = actions[i].key();
+        }
+        return result;
+    }
+    /**
      * Fills menu items with action classes.
      * this.new AddItem(); - internal class call.
      * new MenuTracker.ShowItems(); - internal static class call.
