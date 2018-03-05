@@ -24,8 +24,8 @@ public class ConsoleInput implements Input {
     /**
      * Prompts input from user and throws exception.
      * @param question text shown to user.
-     * @param range number of line entered from console by user.
-     * @return
+     * @param range array of menu indexes.
+     * @return number of line entered from console by user.
      */
     public int ask(String question, int[] range) {
         int key = Integer.valueOf(this.ask(question));
