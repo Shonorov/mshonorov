@@ -2,10 +2,10 @@ package ru.job4j.tracker;
 /**
  * Class for editing item.
  */
-     class EditItem implements UserAction {
-    @Override
-    public int key() {
-        return 2;
+    class EditItem extends BaseAction {
+
+    public EditItem(int key, String name) {
+        super(key, name);
     }
 
     @Override
@@ -23,11 +23,6 @@ package ru.job4j.tracker;
             System.out.println("-------Заявка " + id + " изменена-------------");
         }
     }
-
-    @Override
-    public String info() {
-        return String.format("%s. %s", this.key(), "Edit item");
-    }
 }
 
 /**
@@ -41,10 +36,12 @@ public class MenuTracker {
      * input - user input
      * tracker - class with actions algorithms.
      * actions - array with action classes.
+     * counter - array with actions current position.
      */
     private Input input;
     private Tracker tracker;
     private UserAction[] actions = new UserAction[6];
+    private int position = 0;
 
     public MenuTracker(Input input, Tracker tracker) {
         this.input = input;
@@ -69,12 +66,12 @@ public class MenuTracker {
      * new EditItem(); - neighbour (same file) class call.
      */
     public void fillActions() {
-        this.actions[0] = this.new AddItem();
-        this.actions[1] = new MenuTracker.ShowItems();
-        this.actions[2] = new EditItem();
-        this.actions[3] = new DeleteItem();
-        this.actions[4] = new FindByID();
-        this.actions[5] = new FindByName();
+        this.actions[position] = this.new AddItem(position++, "Add new Item");
+        this.actions[position] = new MenuTracker.ShowItems(position++, "Show all items");
+        this.actions[position] = new EditItem(position++, "Edit item");
+        this.actions[position] = new DeleteItem(position++, "Delete item");
+        this.actions[position] = new FindByID(position++, "Find item by Id");
+        this.actions[position] = new FindByName(position++, "Find items by name");
     }
 
     /**
@@ -99,12 +96,12 @@ public class MenuTracker {
     }
 
     /**
-    * Class for adding new item.
-    */
-    private class AddItem implements UserAction {
-        @Override
-        public int key() {
-            return 0;
+     * Class for adding new item.
+     */
+    private class AddItem extends BaseAction {
+
+        public AddItem(int key, String name) {
+            super(key, name);
         }
 
         @Override
@@ -115,19 +112,14 @@ public class MenuTracker {
             tracker.add(item);
             System.out.println("------------ Новая заявка с getId : " + item.getId() + "-----------");
         }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Add new item");
-        }
     }
     /**
      * Class for showing all items.
      */
-    private static class ShowItems implements UserAction {
-        @Override
-        public int key() {
-            return 1;
+    private static class ShowItems extends BaseAction {
+
+        public ShowItems(int key, String name) {
+            super(key, name);
         }
 
         @Override
@@ -140,21 +132,16 @@ public class MenuTracker {
             }
             System.out.println("------------Список заявок выведен----------");
         }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Show all items");
-        }
     }
 
 
     /**
      * Class for deleting items.
      */
-    private class DeleteItem implements UserAction {
-        @Override
-        public int key() {
-            return 3;
+    private class DeleteItem extends BaseAction {
+
+        public DeleteItem(int key, String name) {
+            super(key, name);
         }
 
         @Override
@@ -169,20 +156,15 @@ public class MenuTracker {
                 System.out.println("-------Заявка " + id + " удалена-------------");
             }
         }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Delete item");
-        }
     }
 
     /**
      * Class for finding item by ID.
      */
-    private class FindByID implements UserAction {
-        @Override
-        public int key() {
-            return 4;
+    private class FindByID extends BaseAction {
+
+        public FindByID(int key, String name) {
+            super(key, name);
         }
 
         @Override
@@ -198,20 +180,15 @@ public class MenuTracker {
                 System.out.println("-------Заявка найдена-------------");
             }
         }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Find item by Id");
-        }
     }
 
     /**
      * Class for finding items by name.
      */
-    private class FindByName implements UserAction {
-        @Override
-        public int key() {
-            return 5;
+    private class FindByName extends BaseAction {
+
+        public FindByName(int key, String name) {
+            super(key, name);
         }
 
         @Override
@@ -228,11 +205,6 @@ public class MenuTracker {
                 }
                 System.out.println("-------Заявки найдены-------------");
             }
-        }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Find items by name");
         }
     }
 }
