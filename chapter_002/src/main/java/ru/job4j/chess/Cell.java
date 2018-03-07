@@ -5,9 +5,23 @@ package ru.job4j.chess;
  * @version $Id$
  * @since 0.1
  */
-public abstract class Cell {
-
+public class Cell {
+    /**
+     * Cell coordinates.
+     */
     private int x;
     private int y;
 
+    public Cell(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 }
