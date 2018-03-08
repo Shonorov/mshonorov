@@ -17,8 +17,8 @@ public class ConvertList {
      */
     public List<Integer> toList(int[][] array) {
         List<Integer> result = new ArrayList<>();
-        for (int[] subarray : array) {
-            for (int data : subarray) {
+        for (int[] subArray : array) {
+            for (int data : subArray) {
                 result.add(data);
             }
         }
