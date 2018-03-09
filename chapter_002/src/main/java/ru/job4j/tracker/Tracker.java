@@ -1,6 +1,7 @@
 package ru.job4j.tracker;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 /**
  * Class for items store & management.
@@ -10,20 +11,23 @@ import java.util.Arrays;
  */
 public class Tracker {
     /**
-     * Массив для хранение заявок.
+     * Массив для хранения заявок.
      */
-    private final Item[] items = new Item[100];
-    /**
-     * Next free position.
-     */
-    private int position = 0;
+//    private final Item[] items = new Item[100];
+    private final ArrayList<Item> items = new ArrayList<>();
+//    /**
+//     * Next free position.
+//     */
+//    private int position = 0;
     /**
      * Метод реализаущий добавление заявки в хранилище
      * @param item новая заявка
      */
     public Item add(Item item) {
-        item.setId(this.generateId());
-        this.items[this.position++] = item;
+//        item.setId(this.generateId());
+//        this.items[this.position++] = item;
+        item.setId(generateId());
+        items.add(item);
         return item;
     }
     /**
@@ -32,11 +36,17 @@ public class Tracker {
      * @param item replace by.
      */
     public void replace(String id, Item item) {
-        Item replace = findByID(id);
-        for (int i = 0; i < items.length; i++) {
-            if (items[i].equals(replace)) {
-                items[i] = item;
-                break;
+//        Item replace = findByID(id);
+//        for (int i = 0; i < items.length; i++) {
+//            if (items[i].equals(replace)) {
+//                items[i] = item;
+//                break;
+//            }
+//        }
+        for (Item entry : items) {
+            if (entry.getId() == id) {
+                items.set(items.indexOf(entry), item);
+                return;
             }
         }
     }
@@ -45,16 +55,22 @@ public class Tracker {
      * @param id to delete.
      */
     public void delete(String id) {
-        Item delete = findByID(id);
-        if ((delete == null) || (position == 0)) {
-            return;
-        }
-        for (int i = 0; i < items.length; i++) {
-            if (items[i].equals(delete)) {
-                items[i] = items[position - 1];
-                items[position - 1] = null;
-                position--;
-                break;
+//        Item delete = findByID(id);
+//        if ((delete == null) || (position == 0)) {
+//            return;
+//        }
+//        for (int i = 0; i < items.length; i++) {
+//            if (items[i].equals(delete)) {
+//                items[i] = items[position - 1];
+//                items[position - 1] = null;
+//                position--;
+//                break;
+//            }
+//        }
+        for (Item entry : items) {
+            if (entry.getId().equals(id)) {
+                items.remove(items.indexOf(entry));
+                return;
             }
         }
     }
@@ -62,24 +78,32 @@ public class Tracker {
      * Returns all current items.
      * @return items array.
      */
-    public Item[] findAll() {
-        return Arrays.copyOf(this.items, position);
+    public ArrayList<Item> findAll() {
+//        return Arrays.copyOf(this.items, position);
+        return items;
     }
     /**
      * Finds items by name.
      * @param key searchname.
      * @return result array.
      */
-    public Item[] findByName(String key) {
-        Item[] result = new Item[this.items.length];
-        int innerPosition = 0;
-        for (int i = 0; i < position; i++) {
-            if (items[i].getName().contains(key)) {
-                result[innerPosition] = items[i];
-                innerPosition++;
+    public ArrayList<Item> findByName(String key) {
+//        Item[] result = new Item[this.items.length];
+//        int innerPosition = 0;
+//        for (int i = 0; i < position; i++) {
+//            if (items[i].getName().contains(key)) {
+//                result[innerPosition] = items[i];
+//                innerPosition++;
+//            }
+//        }
+//        return Arrays.copyOf(result, innerPosition);
+        ArrayList<Item> result = new ArrayList<>();
+        for (Item entry : items) {
+            if (entry.getName().contains(key)) {
+                result.add(entry);
             }
         }
-        return Arrays.copyOf(result, innerPosition);
+        return result;
     }
     /**
      * Finds item by id string.
@@ -88,12 +112,18 @@ public class Tracker {
      */
     public Item findByID(String id) {
         Item result = null;
-        if (position != 0) {
-            for (int i = 0; i < position; i++) {
-                if (items[i].getId().equals(id)) {
-                    result = items[i];
-                    break;
-                }
+//        if (position != 0) {
+//            for (int i = 0; i < position; i++) {
+//                if (items[i].getId().equals(id)) {
+//                    result = items[i];
+//                    break;
+//                }
+//            }
+//        }
+//        return result;
+        for (Item entry : items) {
+            if (entry.getId().equals(id)) {
+                result = entry;
             }
         }
         return result;

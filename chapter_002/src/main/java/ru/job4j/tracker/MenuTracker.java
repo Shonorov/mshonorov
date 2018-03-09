@@ -1,4 +1,7 @@
 package ru.job4j.tracker;
+
+import java.util.ArrayList;
+
 /**
  * Class for editing item.
  */
@@ -40,8 +43,9 @@ public class MenuTracker {
      */
     private Input input;
     private Tracker tracker;
-    private UserAction[] actions = new UserAction[6];
+//    private UserAction[] actions = new UserAction[6];
     private int position = 0;
+    private ArrayList<UserAction> actions = new ArrayList<>();
 
     public MenuTracker(Input input, Tracker tracker) {
         this.input = input;
@@ -52,10 +56,10 @@ public class MenuTracker {
      * Get menu indexes.
      * @return menu index array.
      */
-    public int[] getMenuIndex() {
-        int[] result = new int[actions.length];
-        for (int i = 0; i < actions.length; i++) {
-            result[i] = actions[i].key();
+    public ArrayList<Integer> getMenuIndex() {
+        ArrayList<Integer> result = new ArrayList<>();
+        for (int i = 0; i < actions.size(); i++) {
+            result.add(i, actions.get(i).key());
         }
         return result;
     }
@@ -66,12 +70,18 @@ public class MenuTracker {
      * new EditItem(); - neighbour (same file) class call.
      */
     public void fillActions() {
-        this.actions[position] = this.new AddItem(position++, "Add new Item");
-        this.actions[position] = new MenuTracker.ShowItems(position++, "Show all items");
-        this.actions[position] = new EditItem(position++, "Edit item");
-        this.actions[position] = new DeleteItem(position++, "Delete item");
-        this.actions[position] = new FindByID(position++, "Find item by Id");
-        this.actions[position] = new FindByName(position++, "Find items by name");
+//        this.actions[position] = this.new AddItem(position++, "Add new Item");
+//        this.actions[position] = new MenuTracker.ShowItems(position++, "Show all items");
+//        this.actions[position] = new EditItem(position++, "Edit item");
+//        this.actions[position] = new DeleteItem(position++, "Delete item");
+//        this.actions[position] = new FindByID(position++, "Find item by Id");
+//        this.actions[position] = new FindByName(position++, "Find items by name");
+        this.actions.add(this.new AddItem(position++, "Add new Item"));
+        this.actions.add(new MenuTracker.ShowItems(position++, "Show all items"));
+        this.actions.add(new EditItem(position++, "Edit item"));
+        this.actions.add(new DeleteItem(position++, "Delete item"));
+        this.actions.add(new FindByID(position++, "Find item by Id"));
+        this.actions.add(new FindByName(position++, "Find items by name"));
     }
 
     /**
@@ -79,8 +89,7 @@ public class MenuTracker {
      * @param key
      */
     public void select(String key) {
-
-        this.actions[Integer.valueOf(key)].execute(this.input, this.tracker);
+        this.actions.get(Integer.valueOf(key)).execute(this.input, this.tracker);
     }
 
     /**
@@ -88,9 +97,9 @@ public class MenuTracker {
      */
     public void show() {
         System.out.println("Menu:");
-        for (int i = 0; i < actions.length; i++) {
-            if (this.actions[i] != null) {
-                System.out.println(this.actions[i].info());
+        for (int i = 0; i < actions.size(); i++) {
+            if (this.actions.get(i) != null) {
+                System.out.println(this.actions.get(i).info());
             }
         }
     }
@@ -126,7 +135,7 @@ public class MenuTracker {
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------Вывод всех заявок--------------");
             System.out.println(String.format("%s\t\t\t\t\t%s\t%s\t%s\r", "id", "name", "desc", "created"));
-            Item[] items = tracker.findAll();
+            ArrayList<Item> items = tracker.findAll();
             for (Item item : items) {
                 System.out.println(item.print());
             }
@@ -195,8 +204,8 @@ public class MenuTracker {
         public void execute(Input input, Tracker tracker) {
             System.out.println("-------Поиск заявки по имени------");
             String name = input.ask("Введите имя заявки которую нужно найти:");
-            Item[] result = tracker.findByName(name);
-            if (result.length == 0) {
+            ArrayList<Item> result = tracker.findByName(name);
+            if (result.size() == 0) {
                 System.out.println("-------Заявки не найдены-------------");
             } else {
                 System.out.println(String.format("%s\t\t\t\t\t%s\t%s\t%s\r", "id", "name", "desc", "created"));

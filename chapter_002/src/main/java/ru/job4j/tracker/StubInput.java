@@ -1,4 +1,7 @@
 package ru.job4j.tracker;
+
+import java.util.ArrayList;
+
 /**
  * Stub class for testing user input..
  * @author MShonorov (shonorov@gmail.com)
@@ -41,7 +44,7 @@ public class StubInput implements Input {
     }
 
     @Override
-    public int ask(String question, int[] range) {
+    public int ask(String question, ArrayList<Integer> range) {
         int key = Integer.valueOf(this.value[this.position++]);
         boolean exist = false;
         for (int value : range) {
