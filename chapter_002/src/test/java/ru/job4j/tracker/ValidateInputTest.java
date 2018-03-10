@@ -41,8 +41,8 @@ public class ValidateInputTest {
         assertThat(
                 this.mem.toString(),
                 is(
-//                        String.format("Please enter menu number in numeric format.\r\n\nPlease enter menu number in a given range.\r\n\n")
-                        String.format("Please enter menu number in numeric format.%n%nPlease enter menu number in a given range.%n%n")
+                        String.format("Please enter menu number in numeric format.\r\n\nPlease enter menu number in a given range.\r\n\n")
+//                        String.format("Please enter menu number in numeric format.%n%nPlease enter menu number in a given range.%n%n")
                 )
         );
     }
