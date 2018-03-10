@@ -43,7 +43,6 @@ public class MenuTracker {
      */
     private Input input;
     private Tracker tracker;
-//    private UserAction[] actions = new UserAction[6];
     private int position = 0;
     private ArrayList<UserAction> actions = new ArrayList<>();
 
@@ -58,8 +57,8 @@ public class MenuTracker {
      */
     public ArrayList<Integer> getMenuIndex() {
         ArrayList<Integer> result = new ArrayList<>();
-        for (int i = 0; i < actions.size(); i++) {
-            result.add(i, actions.get(i).key());
+        for (UserAction userAction : actions) {
+            result.add(userAction.key());
         }
         return result;
     }
@@ -70,12 +69,6 @@ public class MenuTracker {
      * new EditItem(); - neighbour (same file) class call.
      */
     public void fillActions() {
-//        this.actions[position] = this.new AddItem(position++, "Add new Item");
-//        this.actions[position] = new MenuTracker.ShowItems(position++, "Show all items");
-//        this.actions[position] = new EditItem(position++, "Edit item");
-//        this.actions[position] = new DeleteItem(position++, "Delete item");
-//        this.actions[position] = new FindByID(position++, "Find item by Id");
-//        this.actions[position] = new FindByName(position++, "Find items by name");
         this.actions.add(this.new AddItem(position++, "Add new Item"));
         this.actions.add(new MenuTracker.ShowItems(position++, "Show all items"));
         this.actions.add(new EditItem(position++, "Edit item"));
@@ -97,10 +90,8 @@ public class MenuTracker {
      */
     public void show() {
         System.out.println("Menu:");
-        for (int i = 0; i < actions.size(); i++) {
-            if (this.actions.get(i) != null) {
-                System.out.println(this.actions.get(i).info());
-            }
+        for (UserAction userAction : actions) {
+            System.out.println(userAction.info());
         }
     }
 

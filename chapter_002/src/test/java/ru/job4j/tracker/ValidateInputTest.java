@@ -42,7 +42,6 @@ public class ValidateInputTest {
                 this.mem.toString(),
                 is(
                         String.format("Please enter menu number in numeric format.%nPlease enter menu number in a given range.%n")
-//                        String.format("Please enter menu number in numeric format.%n%nPlease enter menu number in a given range.%n%n")
                 )
         );
     }
