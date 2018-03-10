@@ -28,9 +28,9 @@ public class ValidateInput implements Input {
                 value = this.input.ask(question, range);
                 invalid = false;
             } catch (MenuOutException moe) {
-                System.out.println("Please enter menu number in a given range.\r\n");
+                System.out.println("Please enter menu number in a given range.");
                         } catch (NumberFormatException nfe) {
-                System.out.println("Please enter menu number in numeric format.\r\n");
+                System.out.println("Please enter menu number in numeric format.");
             }
         } while (invalid);
         return value;
