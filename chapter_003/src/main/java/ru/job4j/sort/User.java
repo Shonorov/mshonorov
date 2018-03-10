@@ -1,6 +1,5 @@
 package ru.job4j.sort;
 
-import java.util.Objects;
 
 /**
  * User class to sort.
@@ -16,6 +15,22 @@ public class User implements Comparable<User> {
     public User(String name, int age) {
         this.name = name;
         this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
     }
 
     @Override
