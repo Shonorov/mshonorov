@@ -27,7 +27,7 @@ public class PriorityQueue {
             tasks.addLast(task);
             return;
         } else {
-            for (int i = 1; i < tasks.size() - 1; i++) {
+            for (int i = 0; i < tasks.size() - 1; i++) {
                 if (tasks.get(i).getPriority() < priority && tasks.get(i + 1).getPriority() > priority) {
                     tasks.add(i + 1, task);
                     return;
