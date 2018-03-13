@@ -20,7 +20,7 @@ public class PriorityQueueTest {
     }
 
     @Test
-    public void SecondRetrievedTaskShouldBeMiddle() {
+    public void secondRetrievedTaskShouldBeMiddle() {
         PriorityQueue queue = new PriorityQueue();
         queue.put(new Task("low", 5));
         queue.put(new Task("urgent", 1));
@@ -30,7 +30,7 @@ public class PriorityQueueTest {
     }
 
     @Test
-    public void shouldReturnFromOneToFiveSequentially () {
+    public void shouldReturnFromOneToFiveSequentially() {
         Task t1 = new Task("1", 1);
         Task t2 = new Task("2", 2);
         Task t3 = new Task("3", 3);
