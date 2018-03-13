@@ -16,7 +16,7 @@ import java.util.ArrayList;
         String id = input.ask("Введите ID заявки которую нужно изменить:");
         Item replace = tracker.findByID(id);
         if (replace == null) {
-            System.out.println("-------Заявка " + id + " не найдена-------------");
+            System.out.printf("%s " + id + "%s","-------Заявка ", " не найдена-------------");
         } else {
             String name = input.ask("Введите новое имя заявки :");
             String desc = input.ask("Введите новое описание заявки :");
@@ -110,7 +110,7 @@ public class MenuTracker {
             String desc = input.ask("Введите описание заявки:");
             Item item = new Item(name, desc);
             tracker.add(item);
-            System.out.println("------------ Новая заявка с getId : " + item.getId() + "-----------");
+            System.out.printf("%s" + item.getName() + "%s%n", "------------Новая заявка с именем : '", "' создана-----------");
         }
     }
     /**
@@ -125,7 +125,7 @@ public class MenuTracker {
         @Override
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------Вывод всех заявок--------------");
-            System.out.println(String.format("%s\t\t\t\t\t%s\t%s\t%s\r", "id", "name", "desc", "created"));
+            System.out.printf("%s\t\t\t\t\t%s\t%s\t%s\r%n", "id", "name", "desc", "created");
             ArrayList<Item> items = tracker.findAll();
             for (Item item : items) {
                 System.out.println(item.print());
@@ -150,10 +150,10 @@ public class MenuTracker {
             String id = input.ask("Введите ID заявки которую нужно удалить:");
             Item delete = tracker.findByID(id);
             if (delete == null) {
-                System.out.println("-------Заявка " + id + " не найдена-------------");
+                System.out.printf("%s " + id + " %s","-------Заявка ", " не найдена-------------");
             } else {
                 tracker.delete(id);
-                System.out.println("-------Заявка " + id + " удалена-------------");
+                System.out.printf("%s " + id + " %s", "-------Заявка ", " удалена-------------");
             }
         }
     }
@@ -173,9 +173,9 @@ public class MenuTracker {
             String id = input.ask("Введите ID заявки которую нужно найти:");
             Item result = tracker.findByID(id);
             if (result == null) {
-                System.out.println("-------Заявка " + id + " не найдена-------------");
+                System.out.printf("%s " + id + " %s","-------Заявка ", " не найдена-------------");
             } else {
-                System.out.println(String.format("%s\t\t\t\t\t%s\t%s\t%s\r", "id", "name", "desc", "created"));
+                System.out.printf("%s\t\t\t\t\t%s\t%s\t%s\r", "id", "name", "desc", "created");
                 System.out.println(tracker.findByID(id).print());
                 System.out.println("-------Заявка найдена-------------");
             }
@@ -199,7 +199,7 @@ public class MenuTracker {
             if (result.size() == 0) {
                 System.out.println("-------Заявки не найдены-------------");
             } else {
-                System.out.println(String.format("%s\t\t\t\t\t%s\t%s\t%s\r", "id", "name", "desc", "created"));
+                System.out.printf("%s\t\t\t\t\t%s\t%s\t%s\r%n", "id", "name", "desc", "created");
                 for (Item item : result) {
                     System.out.println(item.print());
                 }

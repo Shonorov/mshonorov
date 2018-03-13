@@ -1,4 +1,7 @@
 package ru.job4j.tracker;
+
+import java.util.TreeSet;
+
 /**
  * Starts tracker UI.
  * @author MShonorov (shonorov@gmail.com)
@@ -8,15 +11,17 @@ package ru.job4j.tracker;
 public class StartUI {
 
     private final Input input;
+    private final Tracker tracker;
 
-    public StartUI(Input input) {
+    public StartUI(Input input, Tracker tracker) {
         this.input = input;
+        this.tracker = tracker;
     }
     /**
      * Initiates and manages project menu.
      */
     public void init() {
-        Tracker tracker = new Tracker();
+//        Tracker tracker = new Tracker();
         MenuTracker menu = new MenuTracker(this.input, tracker);
         menu.fillActions();
         do {
@@ -30,6 +35,6 @@ public class StartUI {
      */
     public static void main(String[] args) {
         Input input = new ValidateInput(new ConsoleInput());
-        new StartUI(input).init();
+        new StartUI(input, new Tracker()).init();
     }
 }
