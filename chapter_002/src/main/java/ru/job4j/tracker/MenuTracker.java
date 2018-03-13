@@ -16,7 +16,7 @@ import java.util.ArrayList;
         String id = input.ask("Введите ID заявки которую нужно изменить:");
         Item replace = tracker.findByID(id);
         if (replace == null) {
-            System.out.printf("%s " + id + "%s","-------Заявка ", " не найдена-------------");
+            System.out.printf("%s " + id + "%s", "-------Заявка ", " не найдена-------------");
         } else {
             String name = input.ask("Введите новое имя заявки :");
             String desc = input.ask("Введите новое описание заявки :");
@@ -150,7 +150,7 @@ public class MenuTracker {
             String id = input.ask("Введите ID заявки которую нужно удалить:");
             Item delete = tracker.findByID(id);
             if (delete == null) {
-                System.out.printf("%s " + id + " %s","-------Заявка ", " не найдена-------------");
+                System.out.printf("%s " + id + " %s", "-------Заявка ", " не найдена-------------");
             } else {
                 tracker.delete(id);
                 System.out.printf("%s " + id + " %s", "-------Заявка ", " удалена-------------");
@@ -173,7 +173,7 @@ public class MenuTracker {
             String id = input.ask("Введите ID заявки которую нужно найти:");
             Item result = tracker.findByID(id);
             if (result == null) {
-                System.out.printf("%s " + id + " %s","-------Заявка ", " не найдена-------------");
+                System.out.printf("%s " + id + " %s", "-------Заявка ", " не найдена-------------");
             } else {
                 System.out.printf("%s\t\t\t\t\t%s\t%s\t%s\r", "id", "name", "desc", "created");
                 System.out.println(tracker.findByID(id).print());
