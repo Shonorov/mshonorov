@@ -36,7 +36,7 @@ public class MatrixIterator implements Iterator {
 
     @Override
     public Object next() {
-        if (arrLength == 0) {
+        if (arrLength == 0 || position == arrLength) {
             throw new NoSuchElementException();
         }
         int current = 0;
