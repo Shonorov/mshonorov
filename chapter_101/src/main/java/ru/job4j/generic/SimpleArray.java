@@ -65,6 +65,16 @@ public class SimpleArray<T> implements Iterable {
      * Custom iterator.
      * @return Iterator.
      */
+
+    public int indexOf(T model) {
+        int result = -1;
+        for (int i = 0; i < position; i++) {
+            if (objects[i].equals(model)) {
+                result = i;
+            }
+        }
+        return result;
+    }
     @Override
     public Iterator iterator() {
         return new Iterator() {
