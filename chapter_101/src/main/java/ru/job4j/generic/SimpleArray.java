@@ -26,9 +26,6 @@ public class SimpleArray<T> implements Iterable {
      * @return array value.
      */
     public T get(int index) {
-        if (objects[index] == null) {
-            throw new NoSuchElementException();
-        }
         return objects[index];
     }
     /**
