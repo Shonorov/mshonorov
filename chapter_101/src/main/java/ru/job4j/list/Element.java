@@ -11,7 +11,7 @@ public class Element<E> {
     private Element prev;
     private Element next;
 
-    public Element( Element prev, E value, Element next) {
+    public Element(Element prev, E value, Element next) {
         this.value = value;
         this.prev = prev;
         this.next = next;

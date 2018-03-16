@@ -30,7 +30,8 @@ public class DynamicLinkedList<E> implements Iterable<E> {
      */
     public void add(E value) {
         if (first == null) {
-            first = last = new Element<E>(null, value, null);
+            first = new Element<E>(null, value, null);
+            last = first;
             size++;
             modCount++;
         } else {
