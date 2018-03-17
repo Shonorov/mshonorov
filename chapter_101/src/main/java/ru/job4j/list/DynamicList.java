@@ -24,7 +24,6 @@ public class DynamicList<E> implements Iterable<E> {
     public DynamicList(E[] list) {
         this.list = list;
     }
-
     /**
      * Add element to the array.
      * @param value to add.
@@ -33,23 +32,21 @@ public class DynamicList<E> implements Iterable<E> {
         if (list.length <= position) {
             list = Arrays.copyOf(list, list.length * 2);
         }
-        this.list[position++] = value;
+        list[position++] = value;
         modCount++;
     }
-
     /**
      * Get value by index.
      * @param index index.
      * @return value.
      */
     public E get(int index) {
-        return list[index];
+        return this.list[index];
     }
 
     @Override
     public Iterator<E> iterator() {
         return new Iterator<E>() {
-            private E[] iterList = list;
             private int iterPosition = 0;
             private int iterModCount = modCount;
 
@@ -66,7 +63,7 @@ public class DynamicList<E> implements Iterable<E> {
                 if (iterPosition < position) {
                     throw new NoSuchElementException();
                 }
-                return iterList[iterPosition++];
+                return list[iterPosition++];
             }
         };
     }
