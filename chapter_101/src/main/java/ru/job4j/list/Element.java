@@ -28,4 +28,12 @@ public class Element<E> {
     public Element getNext() {
         return next;
     }
+
+    public Element getPrev() {
+        return prev;
+    }
+
+    public void setPrev(Element prev) {
+        this.prev = prev;
+    }
 }
