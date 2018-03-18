@@ -17,8 +17,8 @@ public class DynamicList<E> implements Iterable<E> {
      * Position in array.
      * Count of array modifications.
      */
-    private E[] list;
-    private int position = 0;
+    protected E[] list;
+    protected int position = 0;
     private int modCount = 0;
 
     public DynamicList(E[] list) {

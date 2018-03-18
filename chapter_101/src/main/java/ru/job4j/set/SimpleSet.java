@@ -10,18 +10,9 @@ import java.util.Arrays;
  * @since 0.1
  */
 public class SimpleSet<E> extends DynamicList<E> {
-    /**
-     * Array of objects.
-     * Position in array.
-     * Count of array modifications.
-     */
-    private E[] list;
-    private int position = 0;
-    private int modCount = 0;
 
     public SimpleSet(E[] list) {
         super(list);
-        this.list = list;
     }
     /**
      * Checks if value is present in the array.
@@ -48,8 +39,6 @@ public class SimpleSet<E> extends DynamicList<E> {
         }
         if (isNew(value)) {
             super.add(value);
-            position++;
-            modCount++;
         }
     }
 }
