@@ -16,10 +16,10 @@ public class DynamicLinkedList<E> implements Iterable<E> {
      * Last position in the list.
      * Count of array modifications.
      */
-    private int size = 0;
-    private Element<E> first;
-    private Element<E> last;
-    private int modCount = 0;
+    protected int size = 0;
+    protected Element<E> first;
+    protected Element<E> last;
+    protected int modCount = 0;
 
     public DynamicLinkedList() {
     }
