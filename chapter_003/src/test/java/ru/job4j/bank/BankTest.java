@@ -32,7 +32,7 @@ public class BankTest {
         User user = new User("Ivan", "001");
         bank.addUser(user);
         bank.deleteUser(user);
-        assertNull(bank.getUserAccounts("001"));
+        assertThat(bank.getUserAccounts("001").size(), is(0));
     }
 
     @Test
