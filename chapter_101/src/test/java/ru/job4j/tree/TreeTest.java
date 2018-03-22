@@ -51,4 +51,15 @@ public class TreeTest {
         assertThat(iter.hasNext(), is(false));
         iter.next();
     }
+
+    @Test
+    public void whenThreeLeavesThenNotBinary() {
+        Tree<Integer> tree = new Tree<>(1);
+        tree.add(1, 2);
+        tree.add(2, 3);
+        tree.add(2, 4);
+        assertThat(tree.isBinary(), is(true));
+        tree.add(2, 5);
+        assertThat(tree.isBinary(), is(false));
+    }
 }
