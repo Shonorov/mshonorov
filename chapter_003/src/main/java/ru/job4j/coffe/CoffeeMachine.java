@@ -18,7 +18,7 @@ public class CoffeeMachine {
      * @param price price.
      * @return array of coins.
      */
-    int[] changes(int value, int price) {
+    public int[] changes(int value, int price) {
         if (price > value) {
             return null;
         }
