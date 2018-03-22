@@ -20,7 +20,7 @@ public class MatrixIteratorTest {
         it = new MatrixIterator(new int[][]{{1, 2, 3}, {4, 5, 6}});
     }
 
-    @Test
+    @Test (expected = NoSuchElementException.class)
     public void hasNextNextSequentialInvocation() {
         assertThat(it.hasNext(), is(true));
         assertThat(it.next(), is(1));
@@ -35,6 +35,7 @@ public class MatrixIteratorTest {
         assertThat(it.hasNext(), is(true));
         assertThat(it.next(), is(6));
         assertThat(it.hasNext(), is(false));
+        it.next();
     }
 
     @Test
