@@ -1,9 +1,7 @@
 package ru.job4j.bank;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 /**
  * Bank accounts management class.
  * @author MShonorov (shonorov@gmail.com)
@@ -59,7 +57,7 @@ public class Bank {
      * @return accounts list.
      */
     public List<Account> getUserAccounts(String passport) {
-        List<Account> result = null;
+        List<Account> result = new ArrayList<>();
         for (HashMap.Entry<User, List<Account>> entry : accounts.entrySet()) {
             if (entry.getKey().getPassport().equals(passport)) {
                 result = entry.getValue();
@@ -79,19 +77,19 @@ public class Bank {
      */
     public boolean transferMoney(String srcPassport, String srcRequisite, String destPassport, String dstRequisite, double amount) {
         boolean result = false;
-        Account source = null;
-        Account target = null;
+        Optional<Account> source = Optional.empty();
+        Optional<Account> target = Optional.empty();
         for (HashMap.Entry<User, List<Account>> entry : accounts.entrySet()) {
             if (entry.getKey().getPassport().equals(srcPassport) || entry.getKey().getPassport().equals(destPassport)) {
                 for (Account account : entry.getValue()) {
-                    source = account.getRequisites().equals(srcRequisite) ? account : source;
-                    target = account.getRequisites().equals(dstRequisite) ? account : target;
+                    source = account.getRequisites().equals(srcRequisite) ? Optional.of(account) : source;
+                    target = account.getRequisites().equals(dstRequisite) ? Optional.of(account) : target;
                 }
             }
         }
-        if (source != null && target != null && source.getValue() >= amount) {
-            source.addValue(-amount);
-            target.addValue(amount);
+        if (source.isPresent() && target.isPresent() && source.get().getValue() >= amount) {
+            source.get().addValue(-amount);
+            target.get().addValue(amount);
             result = true;
         }
         return result;
