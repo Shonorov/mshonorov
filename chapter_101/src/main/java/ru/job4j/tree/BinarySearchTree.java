@@ -8,7 +8,7 @@ import java.util.*;
  * @version $Id$
  * @since 0.1
  */
-public class BinarySearchTree<E extends Comparable> implements Iterable<E>{
+public class BinarySearchTree<E extends Comparable> implements Iterable<E> {
 
     private BstNode<E> root;
 
