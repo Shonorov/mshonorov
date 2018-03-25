@@ -5,9 +5,9 @@ package ru.job4j.generic;
  * @version $Id$
  * @since 0.1
  */
-public class UserStore extends AbstractStore {
+public class UserStore extends AbstractStore<User> {
 
-    public UserStore(SimpleArray content) {
+    public UserStore(SimpleArray<User> content) {
         super(content);
     }
 }
