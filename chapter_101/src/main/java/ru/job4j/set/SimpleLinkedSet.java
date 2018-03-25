@@ -15,21 +15,8 @@ public class SimpleLinkedSet<E> extends DynamicLinkedList<E> {
      */
     @Override
     public void add(E value) {
-        boolean exists = false;
-        if (size == 0) {
+        if (!contains(value)) {
             super.add(value);
-        } else {
-            Element<E> current = first;
-            for (int i = 0; i < size; i++) {
-                if (current.getValue().equals(value)) {
-                    exists = true;
-                    break;
-                }
-                current = current.getNext();
-            }
-            if (!exists) {
-                super.add(value);
-            }
         }
     }
 }

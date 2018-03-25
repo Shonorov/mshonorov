@@ -23,7 +23,25 @@ public class DynamicLinkedList<E> implements Iterable<E> {
 
     public DynamicLinkedList() {
     }
-
+    /**
+     * Check if array contains element.
+     * @param element to check.
+     * @return true if contains.
+     */
+    public boolean contains(E element) {
+        boolean result = false;
+        if (first != null) {
+            Element<E> current = first;
+            while (current != null) {
+                if (current.getValue().equals(element)) {
+                    result = true;
+                    break;
+                }
+                current = current.getNext();
+            }
+        }
+        return result;
+    }
     /**
      * Add element to the Linked List.
      * @param value to add.
