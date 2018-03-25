@@ -27,6 +27,7 @@ public class EvenNumbersIterator implements Iterator {
         boolean result = false;
         for (int i = position; i < array.length; i++) {
             if (array[i] % 2 == 0) {
+                position = i;
                 result = true;
                 break;
             }
@@ -36,16 +37,9 @@ public class EvenNumbersIterator implements Iterator {
 
     @Override
     public Object next() {
-        int result = 0;
-        while (hasNext()) {
-            result = array[position++];
-            if (result % 2 == 0) {
-                break;
-            }
-        }
-        if (result == 0 || array.length == 0) {
+        if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        return result;
+        return array[position++];
     }
 }

@@ -43,6 +43,7 @@ public class PrimeIterator implements Iterator {
         boolean result = false;
         for (int i = position; i < values.length; i++) {
             if (isSimple(values[i])) {
+                position = i;
                 result = true;
                 break;
             }
@@ -52,16 +53,9 @@ public class PrimeIterator implements Iterator {
 
     @Override
     public Object next() {
-        int result = 0;
-        while (hasNext()) {
-            result = values[position++];
-            if (isSimple(result)) {
-                break;
-            }
-        }
-        if (values.length == 0 || result == 0) {
+        if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        return result;
+        return values[position++];
     }
 }
