@@ -36,17 +36,14 @@ public class EvenNumbersIterator implements Iterator {
 
     @Override
     public Object next() {
-        int result = 1;
-        for (int i = position; i < array.length; i++) {
-            if (array[i] % 2 == 0) {
-                result = array[i];
-                position++;
+        int result = 0;
+        while (hasNext()) {
+            result = array[position++];
+            if (result % 2 == 0) {
                 break;
-            } else {
-                position++;
             }
         }
-        if (result == 1 || array.length == 0) {
+        if (result == 0 || array.length == 0) {
             throw new NoSuchElementException();
         }
         return result;
