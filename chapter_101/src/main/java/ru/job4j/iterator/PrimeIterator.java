@@ -22,18 +22,28 @@ public class PrimeIterator implements Iterator {
         this.values = values;
     }
 
+    /**
+     * Check if value is simple number.
+     * @param number to check.
+     * @return true if simple.
+     */
+    private boolean isSimple(int number) {
+        boolean result = number != 1;
+        for (int j = 2; j < number; j++) {
+            if (number % j == 0) {
+                result = false;
+                break;
+            }
+        }
+        return result;
+    }
+
     @Override
     public boolean hasNext() {
         boolean result = false;
         for (int i = position; i < values.length; i++) {
-            result = true;
-            for (int j = 2; j < values[i]; j++) {
-                if (values[i] % j == 0) {
-                    result = false;
-                    break;
-                }
-            }
-            if (result) {
+            if (isSimple(values[i])) {
+                result = true;
                 break;
             }
         }
@@ -43,21 +53,9 @@ public class PrimeIterator implements Iterator {
     @Override
     public Object next() {
         int result = 0;
-        for (int i = position; i < values.length; i++) {
-            result = values[i];
-            if (result == 1) {
-                position++;
-                continue;
-            }
-            for (int j = 2; j < values[i]; j++) {
-                if (values[i] % j == 0) {
-                    result = 0;
-                    position++;
-                    break;
-                }
-            }
-            if (result != 0) {
-                position++;
+        while (hasNext()) {
+            result = values[position++];
+            if (isSimple(result)) {
                 break;
             }
         }
