@@ -1,4 +1,7 @@
 package ru.job4j.list;
+
+import java.util.Optional;
+
 /**
  * List of Element with cycle.
  * @author MShonorov (shonorov@gmail.com)
@@ -40,20 +43,23 @@ public class CycleList<E> {
      */
     public boolean hasCycle(CycleElement<E> firstElement) {
         boolean result = false;
-        CycleElement<E>[] elements = new CycleElement[size];
-        int position = 0;
-        CycleElement<E> current = firstElement;
-        while (current.next() != null) {
-            elements[position++] = current;
-            current = current.next();
-            for (int j = 0; j < position; j++) {
-                if (elements[j].equals(current)) {
+        if (firstElement != null) {
+            Optional<CycleElement<E>> slow = Optional.of(firstElement);
+            Optional<CycleElement<E>> fast = Optional.of(firstElement);
+            while (true) {
+                slow = Optional.ofNullable(slow.get().next());
+                if (fast.get().next() != null) {
+                    fast = Optional.ofNullable(slow.get().next().next());
+                } else {
+                    fast = Optional.empty();
+                }
+                if (!slow.isPresent() || !fast.isPresent()) {
+                    break;
+                }
+                if (slow.get().equals(fast.get())) {
                     result = true;
                     break;
                 }
-            }
-            if (result) {
-                break;
             }
         }
         return  result;
