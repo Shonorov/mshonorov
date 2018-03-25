@@ -24,6 +24,22 @@ public class DynamicList<E> implements Iterable<E> {
     public DynamicList(E[] list) {
         this.list = list;
     }
+
+    /**
+     * Check if array contains element.
+     * @param element to check.
+     * @return true if contains.
+     */
+    public boolean contains(E element) {
+        boolean result = false;
+        for (int i = 0; i < position; i++) {
+            if (element.equals(list[i])) {
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
     /**
      * Add element to the array.
      * @param value to add.

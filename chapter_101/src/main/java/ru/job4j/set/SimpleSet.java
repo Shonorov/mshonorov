@@ -15,21 +15,6 @@ public class SimpleSet<E> extends DynamicList<E> {
         super(list);
     }
     /**
-     * Checks if value is present in the array.
-     * @param value value to check.
-     * @return true if it is new one.
-     */
-    private boolean isNew(E value) {
-        boolean isNew = true;
-        for (int i = 0; i < position; i++) {
-            if (value.equals(list[i])) {
-                isNew = false;
-                break;
-            }
-        }
-        return isNew;
-    }
-    /**
      * Adds unique values to array.
      * @param value to add.
      */
@@ -37,7 +22,7 @@ public class SimpleSet<E> extends DynamicList<E> {
         if (list.length <= position) {
             list = Arrays.copyOf(list, list.length * 2);
         }
-        if (isNew(value)) {
+        if (!contains(value)) {
             super.add(value);
         }
     }
