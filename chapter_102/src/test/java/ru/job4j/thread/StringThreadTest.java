@@ -6,18 +6,28 @@ public class StringThreadTest {
 
     @Test
     public void whenTwoThreadsThenWorkAsync() {
+        System.out.println("Start!");
         StringThread stringThread = new StringThread(" Kiss my shiny metal ass! ");
-        new Thread() {
+        Thread countSpaces = new Thread() {
             @Override
             public void run() {
                 System.out.println("Spaces: " + stringThread.countSpaces());
             }
-        }.start();
-        new Thread() {
+        };
+        Thread countWords = new Thread() {
             @Override
             public void run() {
                 System.out.println("Words: " + stringThread.countWords());
             }
-        }.start();
+        };
+        countSpaces.start();
+        countWords.start();
+        try {
+            countSpaces.join();
+            countWords.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Finish!");
     }
 }
