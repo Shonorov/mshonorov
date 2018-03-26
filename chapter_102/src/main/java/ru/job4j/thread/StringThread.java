@@ -39,7 +39,7 @@ public class StringThread extends Thread {
         for (int i = 0; i <= eol; i++) {
             if (string.charAt(i) != ' ' && i != eol) {
                 newWord = true;
-            } else if (string.charAt(i) == ' ' && newWord){
+            } else if (string.charAt(i) == ' ' && newWord) {
                 newWord = false;
                 result++;
             } else if (string.charAt(i) != ' ' && i == eol) {
