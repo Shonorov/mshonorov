@@ -8,6 +8,7 @@ package ru.job4j.thread;
 public class CountChar implements Runnable {
 
     private String string;
+    private Thread current = Thread.currentThread();
 
     public CountChar(String string) {
         this.string = string;
@@ -17,6 +18,11 @@ public class CountChar implements Runnable {
         char[] array = string.toCharArray();
         int size = 0;
         for (int i = 0; i < array.length; i++) {
+            if (current.isInterrupted()) {
+                System.out.println("Interrupted!");
+                break;
+            }
+            System.out.println(array[i]);
             size++;
         }
         return size;
@@ -24,9 +30,6 @@ public class CountChar implements Runnable {
 
     @Override
     public void run() {
-        Thread current = Thread.currentThread();
-        while (current.isInterrupted()) {
-            System.out.println(countChar());
-        }
+        System.out.println(countChar());
     }
 }

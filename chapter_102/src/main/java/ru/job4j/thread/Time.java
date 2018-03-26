@@ -8,9 +8,11 @@ package ru.job4j.thread;
 public class Time implements Runnable {
 
     private long waitTime;
+    Thread monitor;
 
-    public Time(long waitTime) {
+    public Time(long waitTime, Thread monitor) {
         this.waitTime = waitTime;
+        this.monitor = monitor;
     }
 
     @Override
@@ -20,6 +22,7 @@ public class Time implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        monitor.interrupt();
         System.out.println("Stop!");
     }
 }
