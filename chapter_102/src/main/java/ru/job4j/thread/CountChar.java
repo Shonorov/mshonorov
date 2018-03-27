@@ -1,6 +1,6 @@
 package ru.job4j.thread;
 /**
- * Count char in th string.
+ * Count char in the string.
  * @author MShonorov (shonorov@gmail.com)
  * @version $Id$
  * @since 0.1
@@ -8,28 +8,36 @@ package ru.job4j.thread;
 public class CountChar implements Runnable {
 
     private String string;
-    private Thread current = Thread.currentThread();
+    private int size;
 
     public CountChar(String string) {
         this.string = string;
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    /**
+     * Count char in the string
+     * @return char count.
+     */
     private int countChar() {
-        char[] array = string.toCharArray();
         int size = 0;
-        for (int i = 0; i < array.length; i++) {
-            if (current.isInterrupted()) {
-                System.out.println("Interrupted!");
-                break;
+        do {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
-            System.out.println(array[i]);
             size++;
         }
+        while (!Thread.interrupted() && size < string.length());
         return size;
     }
 
     @Override
     public void run() {
-        System.out.println(countChar());
+        this.size = countChar();
     }
 }

@@ -1,6 +1,6 @@
 package ru.job4j.thread;
 /**
- * Calculates execution time.
+ * Limits execution time.
  * @author MShonorov (shonorov@gmail.com)
  * @version $Id$
  * @since 0.1
@@ -8,13 +8,16 @@ package ru.job4j.thread;
 public class Time implements Runnable {
 
     private long waitTime;
-    Thread monitor;
+    private Thread monitor;
 
     public Time(long waitTime, Thread monitor) {
         this.waitTime = waitTime;
         this.monitor = monitor;
     }
 
+    /**
+     * Sleep waitTime and interrupt Thread monitor.
+     */
     @Override
     public void run() {
         try {
@@ -23,6 +26,5 @@ public class Time implements Runnable {
             e.printStackTrace();
         }
         monitor.interrupt();
-        System.out.println("Stop!");
     }
 }
