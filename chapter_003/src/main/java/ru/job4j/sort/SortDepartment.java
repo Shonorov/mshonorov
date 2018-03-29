@@ -35,7 +35,7 @@ public class SortDepartment {
                 int result = 0;
                 if (o2.length() > o1.length() && o2.substring(0, o1.length()).equals(o1)) {
                     result = -1;
-                } else if(o1.length() > o2.length() && o1.substring(0, o2.length()).equals(o2)) {
+                } else if (o1.length() > o2.length() && o1.substring(0, o2.length()).equals(o2)) {
                     result = 1;
                 } else {
                     result = o2.compareTo(o1);
