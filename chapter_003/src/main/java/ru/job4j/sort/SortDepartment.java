@@ -29,18 +29,23 @@ public class SortDepartment {
      * @return sorted array.
      */
     public String[] sortDescending(String[] array) {
-        NavigableSet<String> full = addDepartments(array).descendingSet();
-        String[] toSort = full.toArray(new String[full.size()]);
-        for (int i = 0; i < toSort.length - 1; i++) {
-            for (int j = 0; j < toSort.length - 1; j++) {
-                if ((toSort[j].length() > toSort[j + 1].length()) && ((toSort[j].substring(0, toSort[j + 1].length())).equals(toSort[j + 1]))) {
-                    String temp = toSort[j];
-                    toSort[j] = toSort[j + 1];
-                    toSort[j + 1] = temp;
+        Comparator<String> comparator = new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                int result = 0;
+                if (o2.length() > o1.length() && o2.substring(0, o1.length()).equals(o1)) {
+                    result = -1;
+                } else if(o1.length() > o2.length() && o1.substring(0, o2.length()).equals(o2)) {
+                    result = 1;
+                } else {
+                    result = o2.compareTo(o1);
                 }
+                return result;
             }
-        }
-        return toSort;
+        };
+        ArrayList<String> toSort = new ArrayList<>(addDepartments(array));
+        toSort.sort(comparator);
+        return toSort.toArray(new String[toSort.size()]);
     }
     /**
      * Adds missing departments from input array.
