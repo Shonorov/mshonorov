@@ -9,5 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
+    <groupId>ru.job4j</groupId>
     <artifactId>chapter_003</artifactId>
+
 </project>
