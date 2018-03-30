@@ -5,18 +5,22 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
 /**
  * Custom dynamic list with fail-fast logic.
  * @author MShonorov (shonorov@gmail.com)
  * @version $Id$
  * @since 0.1
  */
+@ThreadSafe
 public class DynamicList<E> implements Iterable<E> {
     /**
      * Array of objects.
      * Position in array.
      * Count of array modifications.
      */
+    @GuardedBy("this")
     protected E[] list;
     protected int position = 0;
     private int modCount = 0;
@@ -30,7 +34,7 @@ public class DynamicList<E> implements Iterable<E> {
      * @param element to check.
      * @return true if contains.
      */
-    public boolean contains(E element) {
+    public synchronized boolean contains(E element) {
         boolean result = false;
         for (int i = 0; i < position; i++) {
             if (element.equals(list[i])) {
@@ -44,7 +48,7 @@ public class DynamicList<E> implements Iterable<E> {
      * Add element to the array.
      * @param value to add.
      */
-    public void add(E value) {
+    public synchronized void add(E value) {
         if (list.length <= position) {
             list = Arrays.copyOf(list, list.length * 2);
         }
@@ -56,12 +60,13 @@ public class DynamicList<E> implements Iterable<E> {
      * @param index index.
      * @return value.
      */
-    public E get(int index) {
+    public synchronized E get(int index) {
         return this.list[index];
     }
 
+
     @Override
-    public Iterator<E> iterator() {
+    public synchronized Iterator<E> iterator() {
         return new Iterator<E>() {
             private int iterPosition = 0;
             private int iterModCount = modCount;
@@ -72,7 +77,7 @@ public class DynamicList<E> implements Iterable<E> {
             }
 
             @Override
-            public E next() {
+            public synchronized E next() {
                 if (iterModCount < modCount) {
                     throw new ConcurrentModificationException();
                 }
