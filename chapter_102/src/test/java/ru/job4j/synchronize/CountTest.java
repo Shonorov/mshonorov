@@ -1,10 +1,13 @@
 package ru.job4j.synchronize;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.lessThan;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import org.junit.Test;
+/**
+ * @author MShonorov (shonorov@gmail.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public class CountTest {
 
     /**
