@@ -13,10 +13,6 @@ public class SimpleLock {
     private Thread owner = null;
     private volatile boolean unlocked = true;
 
-    public boolean isUnlocked() {
-        return unlocked;
-    }
-
     /**
      * Enable lock and set owner thread.
      */

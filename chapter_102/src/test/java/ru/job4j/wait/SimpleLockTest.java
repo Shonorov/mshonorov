@@ -23,7 +23,7 @@ public class SimpleLockTest {
     }
 
     @Test
-    public void whenLocked() throws InterruptedException {
+    public void whenLockedThenInterruptThread() throws InterruptedException {
         CustomLockExample example = new CustomLockExample();
         Thread thread1 = new Thread(example);
         Thread thread2 = new Thread(example);
