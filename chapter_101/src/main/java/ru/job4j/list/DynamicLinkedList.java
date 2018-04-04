@@ -20,12 +20,22 @@ public class DynamicLinkedList<E> implements Iterable<E> {
      * Last position in the list.
      * Count of array modifications.
      */
+    @GuardedBy("this")
     protected int size = 0;
     @GuardedBy("this")
     protected Element<E> first;
     @GuardedBy("this")
     protected Element<E> last;
+    @GuardedBy("this")
     protected int modCount = 0;
+
+    private synchronized int getSize() {
+        return size;
+    }
+
+    private synchronized int getModCount() {
+        return modCount;
+    }
 
     public DynamicLinkedList() {
     }
@@ -92,20 +102,22 @@ public class DynamicLinkedList<E> implements Iterable<E> {
              */
             @GuardedBy("this")
             Element<E> current = first;
+            @GuardedBy("this")
             private int iterPosition = 0;
-            private int iterModCount = modCount;
+            @GuardedBy("this")
+            private int iterModCount = getModCount();
 
             @Override
-            public boolean hasNext() {
-                return iterPosition < size;
+            public synchronized boolean hasNext() {
+                return iterPosition < getSize();
             }
 
             @Override
             public synchronized E next() {
-                if (iterModCount < modCount) {
+                if (iterModCount < getModCount()) {
                     throw new ConcurrentModificationException();
                 }
-                if (iterPosition >= size) {
+                if (iterPosition >= getSize()) {
                     throw new NoSuchElementException();
                 }
                 if (iterPosition != 0) {
