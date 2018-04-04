@@ -56,13 +56,11 @@ public class SimpleHashSet<E> implements Iterable<E> {
      * @param e element to check.
      * @return true if contains.
      */
-    boolean contains(E e) {
+    public boolean contains(E e) {
         boolean result = false;
-        for (int i = 0; i < set.length; i++) {
-            if (e.equals(set[i])) {
-                result = true;
-                break;
-            }
+        E current = set[indexFor(hash(e.hashCode()), set.length)];
+        if (current != null && current.equals(e)) {
+            result = true;
         }
         return result;
     }
@@ -71,14 +69,11 @@ public class SimpleHashSet<E> implements Iterable<E> {
      * @param e element to remove.
      * @return true if success or no such element.
      */
-    boolean remove(E e) {
-        for (int i = 0; i < set.length; i++) {
-            if (e.equals(set[i])) {
-                set[i] = null;
-                size--;
-                modCount++;
-                break;
-            }
+    public boolean remove(E e) {
+        if (contains(e)) {
+            set[indexFor(hash(e.hashCode()), set.length)] = null;
+            size--;
+            modCount++;
         }
         return true;
     }
