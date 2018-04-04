@@ -5,7 +5,7 @@ package ru.job4j.wait;
  * @version $Id$
  * @since 0.1
  */
-public class Work extends Thread {
+public class Work implements Runnable {
     private String name;
 
     public Work(String name) {

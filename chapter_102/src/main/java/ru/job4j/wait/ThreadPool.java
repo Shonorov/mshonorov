@@ -21,11 +21,11 @@ public class ThreadPool {
      */
     @GuardedBy("this")
     private LinkedList<Work> works = new LinkedList<>();
-    private int threads = Runtime.getRuntime().availableProcessors();
+    private static final int MAX_SIZE = Runtime.getRuntime().availableProcessors();
     private final Object monitor = new Object();
 
     public int getThreads() {
-        return this.threads;
+        return MAX_SIZE;
     }
 
     /**
@@ -34,7 +34,7 @@ public class ThreadPool {
      */
     public void add(Work work) {
         synchronized (this.monitor) {
-            while (works.size() == threads) {
+            while (works.size() == MAX_SIZE) {
                 try {
                     System.out.println("Overflow!");
                     monitor.wait();
@@ -42,8 +42,8 @@ public class ThreadPool {
                     e.printStackTrace();
                 }
             }
-            work.start();
             works.add(work);
+            work.run();
             monitor.notify();
         }
     }
@@ -53,14 +53,14 @@ public class ThreadPool {
      */
     public void remove() {
         synchronized (this.monitor) {
-            if (works.size() == 0) {
+            while (works.size() == 0) {
                 try {
                     monitor.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            if (works.size() == threads) {
+            if (works.size() == MAX_SIZE) {
                 monitor.notify();
             }
             Work current = works.poll();
