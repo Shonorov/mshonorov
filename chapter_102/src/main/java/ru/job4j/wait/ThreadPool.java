@@ -43,7 +43,7 @@ public class ThreadPool {
                 }
             }
             works.add(work);
-            work.run();
+            new Thread(work).start();
             monitor.notify();
         }
     }
