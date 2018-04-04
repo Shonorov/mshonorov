@@ -8,6 +8,9 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.StringJoiner;
+
+import static org.hamcrest.CoreMatchers.is;
+
 /**
  * @author MShonorov (shonorov@gmail.com)
  * @version $Id$
@@ -46,7 +49,7 @@ public class MarketTest {
         String result = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
                 .add(menu)
                 .add(String.format("%n%n")).toString();
-        Assert.assertThat(new String(this.out.toByteArray()), Is.is(result));
+        Assert.assertThat(out.toString(), is(result));
     }
 
     @Test
@@ -59,7 +62,7 @@ public class MarketTest {
         String result = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
                 .add(menu)
                 .add(String.format("%n%s\t\t\t%s%n", 8, 50.0)).toString();
-        Assert.assertThat(new String(this.out.toByteArray()), Is.is(result));
+        Assert.assertThat(out.toString(), is(result));
     }
 
     @Test
@@ -72,7 +75,7 @@ public class MarketTest {
         String result = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
                 .add(menu)
                 .add(String.format("%n%s\t\t\t%s%n", 2, 49.0)).toString();
-        Assert.assertThat(new String(this.out.toByteArray()), Is.is(result));
+        Assert.assertThat(out.toString(), is(result));
     }
 
     @Test
@@ -85,7 +88,7 @@ public class MarketTest {
         String result = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
                 .add(menu)
                 .add(String.format(String.format("%n\t\t\t%s\t%s%n", 49.0, 1))).toString();
-        Assert.assertThat(new String(this.out.toByteArray()), Is.is(result));
+        Assert.assertThat(out.toString(), is(result));
     }
 
     @Test
@@ -98,7 +101,7 @@ public class MarketTest {
         String result = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
                 .add(menu)
                 .add(String.format(String.format("%n%n"))).toString();
-        Assert.assertThat(new String(this.out.toByteArray()), Is.is(result));
+        Assert.assertThat(out.toString(), is(result));
     }
 
     @Test
@@ -112,7 +115,7 @@ public class MarketTest {
                 .add(menu)
                 .add(String.format(String.format("%n\t\t\t%s\t%s", 50.0, 3)))
                 .add(String.format(String.format("%s\t\t\t%s%n", 4, 51.0))).toString();
-        Assert.assertThat(new String(this.out.toByteArray()), Is.is(result));
+        Assert.assertThat(out.toString(), is(result));
     }
 
     @Test
@@ -127,6 +130,6 @@ public class MarketTest {
                 .add(String.format(String.format("%n\t\t\t%s\t%s", 50.0, 3)))
                 .add(String.format(String.format("%s\t\t\t%s", 5, 52.0)))
                 .add(String.format(String.format("%s\t\t\t%s%n", 4, 51.0))).toString();
-        Assert.assertThat(new String(this.out.toByteArray()), Is.is(result));
+        Assert.assertThat(out.toString(), is(result));
     }
 }

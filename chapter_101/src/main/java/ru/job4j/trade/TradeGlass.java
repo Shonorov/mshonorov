@@ -32,10 +32,10 @@ public class TradeGlass {
      */
     public boolean addItem(TradeItem item) {
         boolean result = false;
-        if (item.getAction().equals(Action.BUY)) {
+        if (Action.BUY.equals(item.getAction())) {
             result = processItem(item, buyItems);
             Collections.sort(buyItems);
-        } else if (item.getAction().equals(Action.SELL)) {
+        } else if (Action.SELL.equals(item.getAction())) {
             result = processItem(item, sellItems);
             Collections.sort(sellItems);
         }
@@ -50,9 +50,9 @@ public class TradeGlass {
      */
     private boolean processItem(TradeItem item, ArrayList<TradeItem> list) {
         boolean result = false;
-        if (item.getType().equals(Type.ADD)) {
+        if (Type.ADD.equals(item.getType())) {
             result = calculateAdd(item, list);
-        } else if (item.getType().equals(Type.DELETE)) {
+        } else if (Type.DELETE.equals(item.getType())) {
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).getPrice() == item.getPrice() && list.get(i).getVolume() == item.getVolume()) {
                     list.remove(i);
@@ -71,7 +71,7 @@ public class TradeGlass {
      */
     private boolean calculateAdd(TradeItem item, ArrayList<TradeItem> list) {
         boolean result = false;
-        ArrayList<TradeItem> checkList = item.getAction().equals(Action.SELL) ? buyItems : sellItems;
+        ArrayList<TradeItem> checkList = Action.SELL.equals(item.getAction()) ? buyItems : sellItems;
         for (int i = 0; i < checkList.size(); i++) {
             if (checkList.get(i).getPrice() >= item.getPrice()) {
                 int difference = checkList.get(i).getVolume() - item.getVolume();
