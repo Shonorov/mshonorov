@@ -31,9 +31,9 @@ public class UserStorage {
      * @param user to update.
      * @return true if success.
      */
-    public boolean update(User user) {
+    public synchronized boolean update(User user) {
         User current = findByID(user.getId());
-        current.setAmount(user.getAmount());
+        current.addAmount(user.getAmount());
         return true;
     }
 
@@ -53,7 +53,7 @@ public class UserStorage {
      * @param amount amount to transfer.
      * @return true if success.
      */
-    public boolean transfer(int fromId, int toId, int amount) {
+    public synchronized boolean transfer(int fromId, int toId, int amount) {
         boolean result = false;
         User from = findByID(fromId);
         User to = findByID(toId);
