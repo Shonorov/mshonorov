@@ -4,7 +4,6 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
 import java.util.LinkedList;
-import java.util.Optional;
 import java.util.Queue;
 
 /**
@@ -23,13 +22,8 @@ public class SimpleBlockingQueue<T> {
      */
     @GuardedBy("this")
     private Queue<T> queue = new LinkedList<>();
-    private int size;
+    private static final int MAX_SIZE = 2;
     private final Object monitor = new Object();
-    private boolean blocked = false;
-
-    public SimpleBlockingQueue(int size) {
-        this.size = size;
-    }
 
     /**
      * Offer value to queue.
@@ -37,23 +31,17 @@ public class SimpleBlockingQueue<T> {
      */
     public void offer(T value) {
         synchronized (this.monitor) {
-            if (queue.size() == size) {
-                System.out.println("Full " + value);
-                switchBlock(true);
-            }
-            while (blocked) {
+            while (queue.size() == MAX_SIZE) {
+                System.out.println("Full");
                 try {
-                    System.out.println("Blocked write");
                     monitor.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            if (queue.size() < size) {
-                queue.add(value);
-                monitor.notify();
-                System.out.println("Add " + value);
-            }
+            queue.add(value);
+            monitor.notify();
+            System.out.println("Add " + value);
         }
     }
 
@@ -62,29 +50,18 @@ public class SimpleBlockingQueue<T> {
      * @return value.
      */
     public T poll() {
-        Optional<T> result = Optional.empty();
         synchronized (this.monitor) {
-            if (queue.size() == 0) {
+            while (queue.size() == 0) {
+                System.out.println("Empty");
                 try {
-                    System.out.println("Empty");
                     monitor.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            if (queue.size() != 0) {
-                result = Optional.of(queue.poll());
-                switchBlock(false);
-                System.out.println("Poll " + result.get());
-            }
-        }
-        return result.get();
-    }
-
-    private void switchBlock(boolean value) {
-        synchronized (this.monitor) {
-            this.blocked = value;
-            this.monitor.notify();
+            System.out.println("Poll " + queue.peek());
+            monitor.notify();
+            return queue.poll();
         }
     }
 }

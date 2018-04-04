@@ -10,7 +10,7 @@ public class SimpleBlockingQueueTest {
 
     @Test
     public void whenBlockingQueueTest() throws InterruptedException {
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue(2);
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue();
         Thread producer = new Thread(new Runnable() {
             @Override
             public void run() {
