@@ -68,7 +68,7 @@ public class UserStorageTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        assertThat(storage.findByID(1).getAmount(), isOneOf(300, 200));
+        assertThat(storage.findByID(1).getAmount(), is(600));
         assertThat(storage.delete(storage.findByID(1)), is(true));
         storage.delete(storage.findByID(1));
     }
