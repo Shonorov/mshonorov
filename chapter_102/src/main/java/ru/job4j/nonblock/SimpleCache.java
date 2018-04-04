@@ -1,8 +1,5 @@
 package ru.job4j.nonblock;
 
-import net.jcip.annotations.GuardedBy;
-import net.jcip.annotations.ThreadSafe;
-
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 /**
@@ -12,40 +9,54 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 0.1
  */
 public class SimpleCache {
-
-
-
+    /**
+     * Models store.
+     */
     private ConcurrentHashMap<String, Model> models = new ConcurrentHashMap<>();
 
     public ConcurrentHashMap<String, Model> getModels() {
         return models;
     }
 
+    /**
+     * Add model to the store.
+     * @param model model to add.
+     */
     public void add(Model model) {
         models.put(model.getName(), model);
     }
 
+    /**
+     * Update curent model with new data.
+     * @param model model to update.
+     */
     public void update(Model model) {
         if (compareVersion(model)) {
-//            System.out.println(Thread.currentThread().getName() + " " + model.getVersion());
             models.replace(model.getName(), model);
         }
     }
 
+    /**
+     * Remove model from store.
+     * @param model model to remove.
+     */
     public void delete(Model model) {
         models.remove(model.getName());
     }
 
+    /**
+     * Check if version of model is greater then existing.
+     * @param model to check versions.
+     * @return true if greater or even.
+     */
     private synchronized boolean compareVersion(Model model) {
         if (!models.containsKey(model.getName())) {
             throw new NoSuchElementException();
         }
         Model current = models.get(model.getName());
         if (current.getVersion() >= model.getVersion()) {
-//            throw new OptimisticLockException();
-            throw new RuntimeException();
+            System.out.println(Thread.currentThread().getName() + " OptimisticLock");
         }
-//        System.out.println(current.getVersion());
         current.setVersion(model.getVersion());
         return true;
     }
