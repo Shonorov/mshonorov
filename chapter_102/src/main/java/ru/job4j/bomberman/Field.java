@@ -13,8 +13,29 @@ import java.util.concurrent.locks.ReentrantLock;
 @ThreadSafe
 public class Field extends ReentrantLock {
 
+    private int xPosition;
+    private int yPosition;
+
+    public Field(int xPosition, int yPosition) {
+        super();
+        this.xPosition = xPosition;
+        this.yPosition = yPosition;
+    }
+
+    public int getxPosition() {
+        return xPosition;
+    }
+
+    public int getyPosition() {
+        return yPosition;
+    }
+
     @GuardedBy("this")
     private Unit owner = null;
+
+    public Unit getUnit() {
+        return this.owner;
+    }
 
     @Override
     public synchronized void unlock() {
