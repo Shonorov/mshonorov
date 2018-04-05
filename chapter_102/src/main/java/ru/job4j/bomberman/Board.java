@@ -38,11 +38,13 @@ public class Board {
         }
         return result;
     }
-    
+    //TODO zero move
     private int randomMove(int value) {
         int result = new Random().nextBoolean() ? value + 1 : value - 1;
-        if (result < 0 || result >= boardSize) {
-            result = value;
+        if (result < 0) {
+            result += 2;
+        } else if (result >= boardSize){
+            result -= 2;
         }
         return result;
     }
