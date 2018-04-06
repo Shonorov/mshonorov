@@ -20,6 +20,10 @@ public abstract class Unit {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public int getXPosition() {
         return field.getxPosition();
     }
@@ -28,6 +32,19 @@ public abstract class Unit {
         return field.getyPosition();
     }
 
+//    public void setXPosition(int xPosition) {
+//        field.setxPosition(xPosition);
+//    }
+//
+//    public void setYPosition(int yPosition) {
+//        field.setyPosition(yPosition);
+//    }
+
+    /**
+     * Try move Unit to the field.
+     * @param field to move to.
+     * @return true if not locked.
+     */
     public boolean go(Field field) {
         boolean result = false;
         try {
@@ -38,5 +55,9 @@ public abstract class Unit {
         }
         this.field = field;
         return result;
+    }
+
+    public synchronized void takeOwn(Field field) {
+        this.field = field;
     }
 }

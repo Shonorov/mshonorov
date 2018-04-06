@@ -30,6 +30,14 @@ public class Field extends ReentrantLock {
         return yPosition;
     }
 
+    public void setxPosition(int xPosition) {
+        this.xPosition = xPosition;
+    }
+
+    public void setyPosition(int yPosition) {
+        this.yPosition = yPosition;
+    }
+
     @GuardedBy("this")
     private Unit owner = null;
 
@@ -43,8 +51,8 @@ public class Field extends ReentrantLock {
         this.owner = null;
     }
 
-    public synchronized void takeOwn(Unit unit) {
-        this.owner = unit;
-        super.lock();
-    }
+//    public synchronized void takeOwn(Unit unit) {
+//        this.owner = unit;
+//        super.lock();
+//    }
 }

@@ -14,6 +14,8 @@ public class BoardTest {
         Board board = new Board(8);
         Unit player = new Hero("Player1");
         board.initUnit(player, 0, 0);
+        board.start(player);
+
     }
 
 }
