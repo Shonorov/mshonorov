@@ -55,7 +55,7 @@ public class BinarySearchTree<E extends Comparable> implements Iterable<E> {
     public Iterator<E> iterator() {
         return new Iterator<E>() {
 
-            Queue<BstNode<E>> iterData = fillData();
+            LinkedList<BstNode<E>> iterData = new LinkedList<>(Arrays.asList(root));
 
             @Override
             public boolean hasNext() {
@@ -67,32 +67,14 @@ public class BinarySearchTree<E extends Comparable> implements Iterable<E> {
                 if (iterData.isEmpty()) {
                     throw new NoSuchElementException();
                 }
-                return iterData.poll().getValue();
-            }
-
-            /**
-             * Fills Queue with all nodes in this tree;
-             * @return all node list.
-             */
-            private LinkedList<BstNode<E>> fillData() {
-                LinkedList<BstNode<E>> data = new LinkedList<>();
-                Queue<BstNode<E>> dataQueue = new LinkedList<>();
-                dataQueue.offer(root);
-                data.add(root);
-                while (!dataQueue.isEmpty()) {
-                    BstNode<E> node = dataQueue.poll();
-                    Optional<BstNode<E>> left = Optional.ofNullable(node.getLeft());
-                    Optional<BstNode<E>> right = Optional.ofNullable(node.getRight());
-                    if (left.isPresent()) {
-                        dataQueue.offer(node.getLeft());
-                        data.add(left.get());
-                    }
-                    if (right.isPresent()) {
-                        dataQueue.offer(node.getRight());
-                        data.add(right.get());
-                    }
+                BstNode<E> current = iterData.poll();
+                if (current.getLeft() != null) {
+                    iterData.add(current.getLeft());
                 }
-                return data;
+                if (current.getRight() != null) {
+                    iterData.add(current.getRight());
+                }
+                return current.getValue();
             }
         };
     }
