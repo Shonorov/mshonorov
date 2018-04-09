@@ -82,22 +82,21 @@ public class DynamicList<E> implements Iterable<E> {
     @Override
     public synchronized Iterator<E> iterator() {
         return new Iterator<E>() {
-            @GuardedBy("this")
+
             private int iterPosition = 0;
-            @GuardedBy("this")
-            private int iterModCount = modCount;
+            private int iterModCount = getModCount();
 
             @Override
-            public synchronized boolean hasNext() {
+            public boolean hasNext() {
                 return iterPosition < getPosition();
             }
 
             @Override
-            public synchronized E next() {
+            public E next() {
                 if (iterModCount < getModCount()) {
                     throw new ConcurrentModificationException();
                 }
-                if (iterPosition < getPosition()) {
+                if (iterPosition >= getPosition()) {
                     throw new NoSuchElementException();
                 }
                 return getElement(iterPosition++);
