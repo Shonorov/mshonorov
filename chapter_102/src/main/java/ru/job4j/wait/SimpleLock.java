@@ -16,20 +16,23 @@ public class SimpleLock {
     /**
      * Enable lock and set owner thread.
      */
-    public void lock() {
+    public synchronized boolean lock() {
+        boolean result = false;
         if (unlocked && owner == null) {
             owner = Thread.currentThread();
             unlocked = false;
+            result = true;
             System.out.println(Thread.currentThread().getName() + " locked.");
         } else {
-            Thread.currentThread().interrupt();
+            System.out.println(Thread.currentThread().getName() + " lock failed.");
         }
+        return result;
     }
 
     /**
      * Disable lock and clear owner thread.
      */
-    public void unlock() {
+    public synchronized void unlock() {
         if (!unlocked && owner == Thread.currentThread()) {
             owner = null;
             unlocked = true;

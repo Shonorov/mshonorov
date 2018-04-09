@@ -13,9 +13,10 @@ public class SimpleLockTest {
         @Override
         public void run() {
             try {
-                lock.lock();
-                Thread.sleep(500);
-                lock.unlock();
+                if (lock.lock()) {
+                    Thread.sleep(500);
+                    lock.unlock();
+                }
             } catch (InterruptedException e) {
                 System.out.println(Thread.currentThread().getName() + " lock interrupted.");
             }

@@ -20,7 +20,7 @@ public class SimpleBlockingQueue<T> {
      * Multithreading monitor.
      * Blocked true if queue is full.
      */
-    @GuardedBy("this")
+    @GuardedBy("monitor")
     private Queue<T> queue = new LinkedList<>();
     private static final int MAX_SIZE = 2;
     private final Object monitor = new Object();
