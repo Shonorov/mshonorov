@@ -1,7 +1,4 @@
 package ru.job4j.bomberman;
-import net.jcip.annotations.GuardedBy;
-import net.jcip.annotations.ThreadSafe;
-
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -10,11 +7,10 @@ import java.util.concurrent.locks.ReentrantLock;
  * @version $Id$
  * @since 0.1
  */
-@ThreadSafe
-public class Field extends ReentrantLock {
+public final class Field extends ReentrantLock {
 
-    private int xPosition;
-    private int yPosition;
+    private final int xPosition;
+    private final int yPosition;
 
     public Field(int xPosition, int yPosition) {
         super();
@@ -29,30 +25,4 @@ public class Field extends ReentrantLock {
     public int getyPosition() {
         return yPosition;
     }
-
-    public void setxPosition(int xPosition) {
-        this.xPosition = xPosition;
-    }
-
-    public void setyPosition(int yPosition) {
-        this.yPosition = yPosition;
-    }
-
-    @GuardedBy("this")
-    private Unit owner = null;
-
-    public Unit getUnit() {
-        return this.owner;
-    }
-
-    @Override
-    public synchronized void unlock() {
-        super.unlock();
-        this.owner = null;
-    }
-
-//    public synchronized void takeOwn(Unit unit) {
-//        this.owner = unit;
-//        super.lock();
-//    }
 }
