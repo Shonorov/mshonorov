@@ -27,13 +27,11 @@ public class SimpleCache {
     }
 
     /**
-     * Update curent model with new data.
+     * Update current model with new data.
      * @param model model to update.
      */
     public void update(Model model) {
-        if (compareVersion(model)) {
-            models.replace(model.getName(), model);
-        }
+        models.computeIfPresent(model.getName(), (k, v) -> compareVersion(model) ? model : null);
     }
 
     /**
