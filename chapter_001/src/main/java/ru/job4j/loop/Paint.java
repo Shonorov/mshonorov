@@ -12,10 +12,10 @@ public class Paint {
     /**
      * Уникальный метод для рефакторинга.
      * BiPredicate<Integer, Integer> - дженерик.
-     * @param height
-     * @param weight
-     * @param predict
-     * @return
+     * @param height pyramid height.
+     * @param weight pyramid weight.
+     * @param predict predicate.
+     * @return string with pyramid.
      */
     private String loopBy(int height, int weight, BiPredicate<Integer, Integer> predict) {
         StringBuilder screen = new StringBuilder();
@@ -33,26 +33,10 @@ public class Paint {
     }
 
     /**
-     * Paint right side of pyramid
-     * @param height
-     * @return StringBuilder.
+     * Print right triangle.
+     * @param height triangle height.
+     * @return string with triangle.
      */
-//    public String rightTrl(int height) {
-//        StringBuilder screen = new StringBuilder();
-//        int weight = height;
-//        for (int row = 0; row != height; row++) {
-//            for (int column = 0; column != weight; column++) {
-//                if (row >= column) {
-//                    screen.append("^");
-//                } else {
-//                    screen.append(" ");
-//                }
-//            }
-//            screen.append(System.lineSeparator());
-//        }
-//        return screen.toString();
-//    }
-
     public String rightTrl(int height) {
         return this.loopBy(
                 height,
@@ -61,25 +45,10 @@ public class Paint {
         );
     }
     /**
-     * Paint left side of pyramid
-     * @param height
-     * @return StringBuilder.
+     * Print left triangle.
+     * @param height triangle height.
+     * @return string with triangle.
      */
-//    public String leftTrl(int height) {
-//        StringBuilder screen = new StringBuilder();
-//        int weight = height;
-//        for (int row = 0; row != height; row++) {
-//            for (int column = 0; column != weight; column++) {
-//                if (row >= weight - column - 1) {
-//                    screen.append("^");
-//                } else {
-//                    screen.append(" ");
-//                }
-//            }
-//            screen.append(System.lineSeparator());
-//        }
-//        return screen.toString();
-//    }
     public String leftTrl(int height) {
         return this.loopBy(
                 height,
@@ -89,24 +58,9 @@ public class Paint {
     }
     /**
      * Paint whole pyramid
-     * @param height
+     * @param height pyramid height.
      * @return StringBuilder.
      */
-//    public String pyramid(int height) {
-//        StringBuilder screen = new StringBuilder();
-//        int weight = 2 * height - 1;
-//        for (int row = 0; row != height; row++) {
-//            for (int column = 0; column != weight; column++) {
-//                if (row >= height - column - 1 && row + height - 1 >= column) {
-//                    screen.append("^");
-//                } else {
-//                    screen.append(" ");
-//                }
-//            }
-//            screen.append(System.lineSeparator());
-//        }
-//        return screen.toString();
-//    }
     public String pyramid(int height) {
         return this.loopBy(
                 height,

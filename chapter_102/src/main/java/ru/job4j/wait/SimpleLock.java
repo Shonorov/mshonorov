@@ -15,6 +15,7 @@ public class SimpleLock {
 
     /**
      * Enable lock and set owner thread.
+     * @return true if success.
      */
     public synchronized boolean lock() {
         boolean result = false;

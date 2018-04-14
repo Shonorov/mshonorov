@@ -15,14 +15,14 @@ public class Bank {
     private final Map<User, List<Account>> accounts = new HashMap<>();
     /**
      * Add user with empty account list.
-     * @param user
+     * @param user user to add.
      */
     public void addUser(User user) {
         this.accounts.putIfAbsent(user, new ArrayList<>());
     }
     /**
      * Delete user from accounts list.
-     * @param user
+     * @param user user to delete.
      */
     public void deleteUser(User user) {
         this.accounts.remove(user);

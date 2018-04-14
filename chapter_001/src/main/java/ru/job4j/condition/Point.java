@@ -31,7 +31,7 @@ public class Point {
     }
     /**
      * Main.
-     * @param args
+     * @param args main args.
      */
     public static void main(String[] args) {
         Point a = new Point(0, 1);
