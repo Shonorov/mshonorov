@@ -61,11 +61,12 @@ public class SimpleArray<T> implements Iterable {
         }
         objects[position] = null;
     }
-    /**
-     * Custom iterator.
-     * @return Iterator.
-     */
 
+    /**
+     * Get model index.
+     * @param model to find.
+     * @return model index.
+     */
     public int indexOf(T model) {
         int result = -1;
         for (int i = 0; i < position; i++) {
@@ -75,6 +76,11 @@ public class SimpleArray<T> implements Iterable {
         }
         return result;
     }
+
+    /**
+     * Custom iterator.
+     * @return Iterator.
+     */
     @Override
     public Iterator iterator() {
         return new Iterator() {

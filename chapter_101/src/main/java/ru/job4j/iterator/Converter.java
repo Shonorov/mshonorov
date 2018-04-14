@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Converts Iterator of iterators<Integer> to single Iterator<Integer>.
+ * Converts Iterator of iterators to single Iterator.
  * @author MShonorov (shonorov@gmail.com)
  * @version $Id$
  * @since 0.1

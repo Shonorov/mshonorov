@@ -1,8 +1,8 @@
 package ru.job4j.map;
 /**
  * Entry for SimpleHashMap.
- * @param <K>
- * @param <V>
+ * @param <K> generic key.
+ * @param <V> generic value.
  */
 public class MapEntry<K, V> {
     private K key;

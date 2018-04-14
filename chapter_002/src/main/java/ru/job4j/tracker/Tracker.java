@@ -2,12 +2,11 @@ package ru.job4j.tracker;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 /**
- * Class for items store & management.
- * @author MShonorov (shonorov@gmail.com)
- * @version $Id$
- * @since 0.1
+ * Class for items store and management.
+ * @author MShonorov (shonorov@gmail.com).
+ * @version $Id$.
+ * @since 0.1.
  */
 public class Tracker {
     /**
@@ -17,6 +16,7 @@ public class Tracker {
     /**
      * Метод реализаущий добавление заявки в хранилище
      * @param item новая заявка
+     * @return added item.
      */
     public Item add(Item item) {
         item.setId(generateId());

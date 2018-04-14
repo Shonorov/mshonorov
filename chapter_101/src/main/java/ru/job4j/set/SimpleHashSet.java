@@ -32,7 +32,7 @@ public class SimpleHashSet<E> implements Iterable<E> {
     }
     /**
      * Adds element to the array if it is not present there.
-     * Extends array size if load factor > 0.75.
+     * Extends array size if load factor more than 0.75.
      * @param e element to add.
      * @return true if success.
      */

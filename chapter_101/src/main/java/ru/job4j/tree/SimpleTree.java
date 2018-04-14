@@ -13,7 +13,7 @@ public interface SimpleTree<E extends Comparable<E>> extends Iterable<E> {
      * Parent может иметь список child.
      * @param parent parent.
      * @param child  child.
-     * @return
+     * @return true if success.
      */
     boolean add(E parent, E child);
 

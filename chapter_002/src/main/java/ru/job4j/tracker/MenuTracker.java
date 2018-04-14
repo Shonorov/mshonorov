@@ -79,7 +79,7 @@ public class MenuTracker {
 
     /**
      * Executes action class actions.
-     * @param key
+     * @param key to select.
      */
     public void select(String key) {
         this.actions.get(Integer.valueOf(key)).execute(this.input, this.tracker);
