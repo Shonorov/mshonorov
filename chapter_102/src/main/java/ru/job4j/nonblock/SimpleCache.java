@@ -47,15 +47,11 @@ public class SimpleCache {
      * @param model to check versions.
      * @return true if greater or even.
      */
-    private synchronized boolean compareVersion(Model model) {
-        if (!models.containsKey(model.getName())) {
-            throw new NoSuchElementException();
-        }
+    private boolean compareVersion(Model model) {
         Model current = models.get(model.getName());
         if (current.getVersion() >= model.getVersion()) {
             System.out.println(Thread.currentThread().getName() + " OptimisticLock");
         }
-        current.setVersion(model.getVersion());
         return true;
     }
 }
