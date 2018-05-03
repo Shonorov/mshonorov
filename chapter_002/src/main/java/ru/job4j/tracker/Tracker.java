@@ -1,5 +1,6 @@
 package ru.job4j.tracker;
 
+import java.sql.Connection;
 import java.time.LocalTime;
 import java.util.ArrayList;
 /**
@@ -8,11 +9,22 @@ import java.util.ArrayList;
  * @version $Id$.
  * @since 0.1.
  */
-public class Tracker {
+public class Tracker implements AutoCloseable {
     /**
      * Массив для хранения заявок.
+     * Database connection.
      */
     private final ArrayList<Item> items = new ArrayList<>();
+    Connection connection = null;
+
+    @Override
+    public void close() throws Exception {
+        //TODO
+        if(connection != null) {
+            connection.close();
+        }
+    }
+
     /**
      * Метод реализаущий добавление заявки в хранилище
      * @param item новая заявка
