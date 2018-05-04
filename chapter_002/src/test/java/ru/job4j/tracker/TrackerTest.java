@@ -16,23 +16,25 @@ public class TrackerTest {
 
     @Test
     public void whenAddNewItemThenTrackerHasSameItem() {
-        Tracker tracker = new Tracker();
+        Tracker tracker = new Tracker("config.properties");
+        tracker.cleanTable();
         Item item = new Item("test1", "testDescription", 123L);
         tracker.add(item);
-        assertThat(tracker.findAll().get(0), is(item));
+        assertThat(tracker.findAll().get(0).getId(), is(item.getId()));
     }
 
     @Test
     public void whenAddItemThenGetNotNullId() {
-        Tracker tracker = new Tracker();
-        Item item = tracker.add(new Item());
+        Tracker tracker = new Tracker("config.properties");
+        Item item = tracker.add(new Item("111", "111"));
         String expect = item.getId();
         assertThat(expect, is(IsNull.notNullValue()));
     }
 
     @Test
     public void whenReplaceNameThenReturnNewName() {
-        Tracker tracker = new Tracker();
+        Tracker tracker = new Tracker("config.properties");
+        tracker.cleanTable();
         Item previous = new Item("test1", "testDescription", 123L);
         tracker.add(previous);
         Item next = new Item("test2", "testDescription2", 1234L);
@@ -43,7 +45,8 @@ public class TrackerTest {
 
     @Test
     public void whenDeleteThenNoItem() {
-        Tracker tracker = new Tracker();
+        Tracker tracker = new Tracker("config.properties");
+        tracker.cleanTable();
         tracker.add(new Item("test1", "testDescription", 123L));
         String id = tracker.findAll().get(0).getId();
         tracker.delete(id);
@@ -53,7 +56,9 @@ public class TrackerTest {
 
     @Test
     public void whenWhenFindAllSizeOfTwo() {
-        Tracker tracker = new Tracker();
+        Tracker tracker = new Tracker("config.properties");
+        tracker.cleanTable();
+
         Item previous = new Item("test1", "testDescription", 123L);
         tracker.add(previous);
         Item next = new Item("test2", "testDescription2", 1234L);
@@ -63,19 +68,21 @@ public class TrackerTest {
 
     @Test
     public void whenFindByIdThenRightItem() {
-        Tracker tracker = new Tracker();
+        Tracker tracker = new Tracker("config.properties");
+        tracker.cleanTable();
         Item previous = new Item("test1", "testDescription", 123L);
         tracker.add(previous);
         String findId = previous.getId();
         Item next = new Item("test2", "testDescription2", 1234L);
         tracker.add(next);
         Item result = tracker.findByID(findId);
-        assertThat(result, is(previous));
+        assertThat(result.getId(), is(previous.getId()));
     }
 
     @Test
     public void whenFindByNameThenRightItem() {
-        Tracker tracker = new Tracker();
+        Tracker tracker = new Tracker("config.properties");
+        tracker.cleanTable();
         tracker.add(new Item("test1", "testDescription", 123L));
         tracker.add(new Item("test2", "testDescription2", 456L));
         tracker.add(new Item("fail", "failDescription", 789L));

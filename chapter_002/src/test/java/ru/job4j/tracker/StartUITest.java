@@ -47,7 +47,8 @@ public class StartUITest {
 
     @Test
     public void whenUserAddItemThenTrackerHasNewItemWithSameName() {
-        Tracker tracker = new Tracker();
+        Tracker tracker = new Tracker("config.properties");
+        tracker.cleanTable();
         Input input = new StubInput(new String[]{"0", "test name", "desc", "y"});
         new StartUI(input, tracker).init();
         String result = new StringJoiner(System.lineSeparator(), "", "")
@@ -58,8 +59,9 @@ public class StartUITest {
 
     @Test
     public void whenUpdateThenTrackerHasUpdatedValue() {
-        Tracker tracker = new Tracker();
-        Item item = tracker.add(new Item());
+        Tracker tracker = new Tracker("config.properties");
+        tracker.cleanTable();
+        Item item = tracker.add(new Item("111", "111"));
         Input input = new StubInput(new String[]{"2", item.getId(), "test name", "desc", "y"});
         new StartUI(input, tracker).init();
         assertThat(tracker.findByID(item.getId()).getName(), is("test name"));
@@ -67,8 +69,9 @@ public class StartUITest {
 
     @Test
     public void whenDeleteThenEmptyItemsArray() {
-        Tracker tracker = new Tracker();
-        Item item = tracker.add(new Item());
+        Tracker tracker = new Tracker("config.properties");
+        tracker.cleanTable();
+        Item item = tracker.add(new Item("111", "111"));
         Input input = new StubInput(new String[]{"3", item.getId(), "y"});
         new StartUI(input, tracker).init();
         assertThat(tracker.findAll().size(), is(0));
@@ -76,8 +79,9 @@ public class StartUITest {
 
     @Test
     public void whenFindByIDThenFoundTheSameItem() {
-        Tracker tracker = new Tracker();
-        Item item = tracker.add(new Item());
+        Tracker tracker = new Tracker("config.properties");
+        tracker.cleanTable();
+        Item item = tracker.add(new Item("111", "111"));
         Input input = new StubInput(new String[]{"4", item.getId(), "y"});
         new StartUI(input, tracker).init();
         assertThat(tracker.findAll().get(0).getId(), is(item.getId()));
@@ -85,7 +89,8 @@ public class StartUITest {
 
     @Test
     public void whenShowAllItems() {
-        Tracker tracker = new Tracker();
+        Tracker tracker = new Tracker("config.properties");
+        tracker.cleanTable();
         Item item1 = tracker.add(new Item("Name1", "Desc1", 1));
         Item item2 = tracker.add(new Item("Name2", "Desc2", 2));
         Input input = new StubInput(new String[]{"1", "y"});
@@ -102,7 +107,8 @@ public class StartUITest {
 
     @Test
     public void whenFindByName() {
-        Tracker tracker = new Tracker();
+        Tracker tracker = new Tracker("config.properties");
+        tracker.cleanTable();
         Item item1 = tracker.add(new Item("Name1", "Desc1", 1));
         Item item2 = tracker.add(new Item("Name2", "Desc2", 2));
         Item item3 = tracker.add(new Item("fail1", "Desc3", 3));

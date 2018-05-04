@@ -21,7 +21,6 @@ public class StartUI {
      * Initiates and manages project menu.
      */
     public void init() {
-//        Tracker tracker = new Tracker();
         MenuTracker menu = new MenuTracker(this.input, tracker);
         menu.fillActions();
         do {
@@ -34,7 +33,8 @@ public class StartUI {
      * @param args input arguments.
      */
     public static void main(String[] args) {
-        try (Tracker tracker = new Tracker()) {
+
+        try (Tracker tracker = new Tracker("config.properties")) {
             Input input = new ValidateInput(new ConsoleInput());
             new StartUI(input, tracker).init();
         } catch (Exception e) {

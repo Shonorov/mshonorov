@@ -1,8 +1,11 @@
 package ru.job4j.tracker;
 
-import java.sql.Connection;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.*;
 import java.time.LocalTime;
-import java.util.ArrayList;
+import java.util.*;
+
 /**
  * Class for items store and management.
  * @author MShonorov (shonorov@gmail.com).
@@ -11,16 +14,93 @@ import java.util.ArrayList;
  */
 public class Tracker implements AutoCloseable {
     /**
-     * Массив для хранения заявок.
+     * Connection properties.
      * Database connection.
      */
-    private final ArrayList<Item> items = new ArrayList<>();
-    Connection connection = null;
+    private Properties properties = new Properties();
+
+    private Connection connection = null;
+
+    public Tracker(String filename) {
+        try {
+            InputStream input = Tracker.class.getResourceAsStream("/" + filename);
+            properties.load(input);
+            setConnection();
+            createTable();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Connect the to target database.
+     */
+    private void setConnection() {
+        String hostname = properties.getProperty("hostname");
+        String port = properties.getProperty("port");
+        String database = properties.getProperty("database");
+        String username = properties.getProperty("username");
+        String password = properties.getProperty("password");
+        String dbUrl = "jdbc:postgresql://" + hostname + ":" + port + "/" + database;
+        createDatabase(hostname, port, database, username, password);
+        try {
+            connection = DriverManager.getConnection(dbUrl, username, password);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Connect to the server and create database if such no present.
+     * @param hostname server.
+     * @param port TCP port.
+     * @param database database name.
+     * @param username server user.
+     * @param password user password.
+     */
+    private void createDatabase(String hostname, String port, String database, String username, String password) {
+        String url = "jdbc:postgresql://" + hostname + ":" + port;
+        try (Connection srvConnection = DriverManager.getConnection(url, username, password)) {
+            PreparedStatement ps = srvConnection.prepareStatement("SELECT datname FROM pg_database WHERE datistemplate = false;");
+            ResultSet resultSet = ps.executeQuery();
+            List<String> databases = new LinkedList<>();
+            while (resultSet.next()) {
+                databases.add(resultSet.getString(1));
+            }
+            if (!databases.contains(database)) {
+                Statement statement = srvConnection.createStatement();
+                statement.executeUpdate("CREATE DATABASE " + database);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Create items table.
+     */
+    private void createTable() {
+        try (PreparedStatement statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS items(id text NOT NULL,name text NOT NULL, \"desc\" text, created bigint, PRIMARY KEY (id))")) {
+            statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Clean items table.
+     */
+    public void cleanTable() {
+        try (PreparedStatement statement = connection.prepareStatement("DELETE FROM items")) {
+            statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void close() throws Exception {
-        //TODO
-        if(connection != null) {
+        if (connection != null) {
             connection.close();
         }
     }
@@ -31,21 +111,34 @@ public class Tracker implements AutoCloseable {
      * @return added item.
      */
     public Item add(Item item) {
-        item.setId(generateId());
-        items.add(item);
+        String id = generateId();
+        item.setId(id);
+        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO items(id, name, \"desc\", created) VALUES (?, ?, ?, ?)")) {
+            statement.setString(1, id);
+            statement.setString(2, item.getName());
+            statement.setString(3, item.getDesc());
+            statement.setLong(4, item.getCreated());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return item;
     }
     /**
-     * Replace one item bt another by ID.
+     * Replace one item by another by ID.
      * @param id to replace.
      * @param item replace by.
      */
     public void replace(String id, Item item) {
-        for (Item entry : items) {
-            if (entry.getId() == id) {
-                items.set(items.indexOf(entry), item);
-                return;
-            }
+        try (PreparedStatement statement = connection.prepareStatement("UPDATE items SET id=?, name=?, \"desc\"=?, created=? WHERE id = ?")) {
+            statement.setString(1, item.getId());
+            statement.setString(2, item.getName());
+            statement.setString(3, item.getDesc());
+            statement.setLong(4, item.getCreated());
+            statement.setString(5, id);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     /**
@@ -53,11 +146,11 @@ public class Tracker implements AutoCloseable {
      * @param id to delete.
      */
     public void delete(String id) {
-        for (Item entry : items) {
-            if (entry.getId().equals(id)) {
-                items.remove(items.indexOf(entry));
-                return;
-            }
+        try (PreparedStatement statement = connection.prepareStatement("DELETE FROM items WHERE id = ?")) {
+            statement.setString(1, id);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     /**
@@ -65,19 +158,34 @@ public class Tracker implements AutoCloseable {
      * @return items array.
      */
     public ArrayList<Item> findAll() {
-        return items;
+        ArrayList<Item> result = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM items")) {
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Item current = new Item(rs.getString(1), rs.getString(2), rs.getString(3), rs.getLong(4));
+                result.add(current);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
     /**
      * Finds items by name.
-     * @param key searchname.
+     * @param key search name.
      * @return result array.
      */
     public ArrayList<Item> findByName(String key) {
         ArrayList<Item> result = new ArrayList<>();
-        for (Item entry : items) {
-            if (entry.getName().contains(key)) {
-                result.add(entry);
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM items WHERE name LIKE ?")) {
+            statement.setString(1, "%" + key + "%");
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Item current = new Item(rs.getString(1), rs.getString(2), rs.getString(3), rs.getLong(4));
+                result.add(current);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return result;
     }
@@ -88,10 +196,14 @@ public class Tracker implements AutoCloseable {
      */
     public Item findByID(String id) {
         Item result = null;
-        for (Item entry : items) {
-            if (entry.getId().equals(id)) {
-                result = entry;
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM items WHERE id = ?")) {
+            statement.setString(1, id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                result = new Item(rs.getString(1), rs.getString(2), rs.getString(3), rs.getLong(4));
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return result;
     }
