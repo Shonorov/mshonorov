@@ -1,8 +1,17 @@
 package ru.job4j.tracker;
 
+import javax.xml.transform.Transformer;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Properties;
+
 /**
  * Class for items store and management.
  * @author MShonorov (shonorov@gmail.com).
@@ -15,13 +24,47 @@ public class Tracker implements AutoCloseable {
      * Database connection.
      */
     private final ArrayList<Item> items = new ArrayList<>();
-    Connection connection = null;
+    private Properties properties = new Properties();
+
+    private Connection connection = null;
+
+    public Tracker(String filename) {
+        try {
+            InputStream input = Tracker.class.getResourceAsStream("/config.properties");
+            properties.load(input);
+            setConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setConnection() {
+        String hostname = properties.getProperty("hostname");
+        String port = properties.getProperty("port");
+        String database = properties.getProperty("database");
+        String url = "jdbc:postgresql://" + hostname + ":" + port;
+        try {
+            connection = DriverManager.getConnection(url, properties.getProperty("username"), properties.getProperty("password"));
+            ResultSet resultSet = connection.getMetaData().getCatalogs();
+            while(resultSet.next()) {
+                String catalogs = resultSet.getString(1);
+                if(database.equals(catalogs)){
+                    System.out.println("the database " + database + " exists");
+                } else {
+                    System.out.println("the database " + database + " not exists");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void close() throws Exception {
         //TODO
-        if(connection != null) {
+        if (connection != null) {
             connection.close();
+            System.out.println("Database connection closed!");
         }
     }
 
