@@ -21,7 +21,6 @@ public class StartUI {
      * Initiates and manages project menu.
      */
     public void init() {
-//        Tracker tracker = new Tracker();
         MenuTracker menu = new MenuTracker(this.input, tracker);
         menu.fillActions();
         do {

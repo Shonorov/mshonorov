@@ -17,7 +17,6 @@ public class Item {
     private String name;
     private String desc;
     private long created;
-    private String[] comments;
 
     public Item() {
     }
@@ -28,6 +27,13 @@ public class Item {
     }
 
     public Item(String name, String desc, long created) {
+        this.name = name;
+        this.desc = desc;
+        this.created = created;
+    }
+
+    public Item(String id, String name, String desc, long created) {
+        this.id = id;
         this.name = name;
         this.desc = desc;
         this.created = created;
@@ -52,6 +58,15 @@ public class Item {
     public String getName() {
         return name;
     }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public long getCreated() {
+        return created;
+    }
+
     /**
      * Returns string with item properties for console output.
      * @return formated string.
