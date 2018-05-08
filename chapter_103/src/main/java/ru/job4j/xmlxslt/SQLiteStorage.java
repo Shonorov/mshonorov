@@ -1,5 +1,7 @@
 package ru.job4j.xmlxslt;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.sql.*;
 /**
  * SQLIte JDBC connection class.
@@ -14,7 +16,8 @@ public class SQLiteStorage {
      * Element count.
      */
 
-    private static final String PATH = "C:\\Windows\\temp\\";
+    private static final String PATH = "src\\main\\resources\\";
+
     private String uri;
     private int count;
 

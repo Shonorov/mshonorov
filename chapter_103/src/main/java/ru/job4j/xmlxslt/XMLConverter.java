@@ -18,10 +18,10 @@ import java.util.ArrayList;
  */
 public class XMLConverter {
 
-    private static final String PATH = "C:\\Windows\\temp\\";
+    private static final String PATH = "src\\main\\resources\\";
     private static final String FILENAME1 = "1.xml";
     private static final String FILENAME2 = "2.xml";
-    private static final String FILENAME3 = "src\\main\\java\\ru\\job4j\\xmlxslt\\xml1toxml2.xsl";
+    private static final String FILENAME3 = "xml1toxml2.xsl";
     private int[] data;
 
     public XMLConverter(int[] data) {
@@ -62,7 +62,7 @@ public class XMLConverter {
      * Change style of the XLS file with XSL transformer.
      */
     public void changeStyle() {
-        StreamSource xslcode = new StreamSource(new File(FILENAME3));
+        StreamSource xslcode = new StreamSource(new File(PATH + FILENAME3));
         StreamSource input = new StreamSource(new File(PATH + FILENAME1));
         StreamResult output = new StreamResult(new File(PATH + FILENAME2));
 

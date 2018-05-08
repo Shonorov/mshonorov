@@ -14,17 +14,19 @@ import java.io.IOException;
  */
 public class XMLConverterTest {
 
+    private static final String PATH = "src\\main\\resources\\";
+
     @Test
     public void whenConvertThenEqualObjects() throws IOException {
         int[] input = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         XMLConverter converter = new XMLConverter(input);
         converter.convertXML();
-        File expect = new File("src\\test\\java\\ru\\job4j\\xmlslt\\1.xml");
-        File result = new File("C:\\Windows\\temp\\1.xml");
+        File expect = new File(PATH + "1-example.xml");
+        File result = new File(PATH + "1.xml");
         Assert.assertEquals(FileUtils.readLines(expect), FileUtils.readLines(result));
         converter.changeStyle();
-        File expect2 = new File("src\\test\\java\\ru\\job4j\\xmlslt\\2.xml");
-        File result2 = new File("C:\\Windows\\temp\\2.xml");
+        File expect2 = new File(PATH + "2-example.xml");
+        File result2 = new File(PATH + "2.xml");
         Assert.assertEquals(FileUtils.readLines(expect2), FileUtils.readLines(result2));
     }
 }

@@ -39,7 +39,6 @@ public class SimpleParserTest {
 
     @Test
     public void whenCount10ThenSum55() {
-//        System.setProperty("user.dir", System.getProperty("user.dir").substring(0, System.getProperty("user.dir").length() - 12));
         SimpleParser parser = new SimpleParser("temp.db", 10);
         parser.start();
         assertThat(new String(this.out.toByteArray()), is("55"));
