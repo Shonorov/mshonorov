@@ -16,7 +16,7 @@ public class SQLiteStorage {
      * Element count.
      */
 
-    private static final String PATH = "src\\main\\resources\\";
+    private static final String PATH = "src/main/resources/";
 
     private String uri;
     private int count;

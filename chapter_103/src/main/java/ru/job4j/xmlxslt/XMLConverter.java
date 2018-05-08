@@ -18,7 +18,7 @@ import java.util.ArrayList;
  */
 public class XMLConverter {
 
-    private static final String PATH = "src\\main\\resources\\";
+    private static final String PATH = "src/main/resources/";
     private static final String FILENAME1 = "1.xml";
     private static final String FILENAME2 = "2.xml";
     private static final String FILENAME3 = "xml1toxml2.xsl";
