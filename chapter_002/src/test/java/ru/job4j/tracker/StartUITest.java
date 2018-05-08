@@ -61,7 +61,7 @@ public class StartUITest {
     public void whenUpdateThenTrackerHasUpdatedValue() {
         Tracker tracker = new Tracker("config.properties");
         tracker.cleanTable();
-        Item item = tracker.add(new Item());
+        Item item = tracker.add(new Item("111", "111"));
         Input input = new StubInput(new String[]{"2", item.getId(), "test name", "desc", "y"});
         new StartUI(input, tracker).init();
         assertThat(tracker.findByID(item.getId()).getName(), is("test name"));
@@ -71,7 +71,7 @@ public class StartUITest {
     public void whenDeleteThenEmptyItemsArray() {
         Tracker tracker = new Tracker("config.properties");
         tracker.cleanTable();
-        Item item = tracker.add(new Item());
+        Item item = tracker.add(new Item("111", "111"));
         Input input = new StubInput(new String[]{"3", item.getId(), "y"});
         new StartUI(input, tracker).init();
         assertThat(tracker.findAll().size(), is(0));
@@ -81,7 +81,7 @@ public class StartUITest {
     public void whenFindByIDThenFoundTheSameItem() {
         Tracker tracker = new Tracker("config.properties");
         tracker.cleanTable();
-        Item item = tracker.add(new Item());
+        Item item = tracker.add(new Item("111", "111"));
         Input input = new StubInput(new String[]{"4", item.getId(), "y"});
         new StartUI(input, tracker).init();
         assertThat(tracker.findAll().get(0).getId(), is(item.getId()));

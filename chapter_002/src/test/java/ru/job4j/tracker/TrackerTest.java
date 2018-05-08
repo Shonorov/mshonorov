@@ -26,7 +26,7 @@ public class TrackerTest {
     @Test
     public void whenAddItemThenGetNotNullId() {
         Tracker tracker = new Tracker("config.properties");
-        Item item = tracker.add(new Item());
+        Item item = tracker.add(new Item("111", "111"));
         String expect = item.getId();
         assertThat(expect, is(IsNull.notNullValue()));
     }
