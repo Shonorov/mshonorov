@@ -8,9 +8,10 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * PMultithreaded keyword files search.
+ * Multithreaded keyword files search.
  * @author MShonorov (shonorov@gmail.com)
  * @version $Id$
  * @since 0.1
@@ -25,14 +26,12 @@ public class ParallelSearch {
      * Queue of found files in root directory.
      * List of files with found text.
      */
-    private String root;
-    private String text;
-    private List<String> exts;
+    private final String root;
+    private final String text;
+    private final List<String> exts;
     private volatile boolean finish = false;
-    @GuardedBy("this")
-    private final Queue<String> files = new LinkedList<>();
-    @GuardedBy("this")
-    private final List<String> paths = new ArrayList<>();
+    private final Queue<String> files = new ConcurrentLinkedQueue<>();
+    private final List<String> paths = Collections.synchronizedList(new ArrayList<>());
 
     public ParallelSearch(String root, String text, List<String> exts) {
         this.root = root;
@@ -40,7 +39,7 @@ public class ParallelSearch {
         this.exts = exts;
     }
 
-    public synchronized List<String> getPaths() {
+    public List<String> getPaths() {
         return paths;
     }
 
@@ -77,7 +76,7 @@ public class ParallelSearch {
     /**
      * Find all files in root directory.
      */
-    private synchronized void result() {
+    private void result() {
         Path rootPath = Paths.get(root);
         try {
             Files.walkFileTree(rootPath, new SimpleFileVisitor<Path>() {
@@ -100,7 +99,7 @@ public class ParallelSearch {
     /**
      * Find files with given word.
      */
-    private synchronized void read() {
+    private void read() {
         while (files.size() != 0) {
             try {
                 Path current = Paths.get(files.poll());
