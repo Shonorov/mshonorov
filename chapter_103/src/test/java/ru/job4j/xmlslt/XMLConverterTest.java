@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public class XMLConverterTest {
 
-    private static final String PATH = "src\\main\\resources\\";
+    private static final String PATH = "src/main/resources/";
 
     @Test
     public void whenConvertThenEqualObjects() throws IOException {
