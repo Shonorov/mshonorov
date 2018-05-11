@@ -14,7 +14,7 @@ public class StringWriterTest {
         Thread thread2 = new Thread(new StringWriter(lock, 2));
         try {
             thread1.start();
-            Thread.sleep(1);
+            Thread.sleep(100);
             thread2.start();
             thread1.join();
             thread2.join();
