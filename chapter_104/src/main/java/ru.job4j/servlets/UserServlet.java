@@ -1,6 +1,7 @@
 package ru.job4j.servlets;
 
 import ru.job4j.users.User;
+import ru.job4j.users.ValidateService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,16 +15,28 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 
 /**
- * Servlet for user management web application.
+ * Presentation layout for web application
+ * Servlet for users management.
  * @author MShonorov (shonorov@gmail.com)
  * @version $Id$
  * @since 0.1
  */
 public class UserServlet extends HttpServlet {
-
+    /**
+     * List of users.
+     * Map of action parameters and functions.
+     */
     private List<User> users = new CopyOnWriteArrayList<User>();
-//    private HashMap<String, Function<String, Boolean>> dispatch = new HashMap<>();
+    private HashMap<String, Function<String, Boolean>> dispatch = new HashMap<>();
+    private final ValidateService logic = ValidateService.getInstance();
 
+    /**
+     * Write all users.
+     * @param req HttpServletRequest.
+     * @param resp HttpServletResponse.
+     * @throws ServletException servlet error.
+     * @throws IOException output error.
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
@@ -35,11 +48,141 @@ public class UserServlet extends HttpServlet {
         writer.flush();
     }
 
+    /**
+     * Do action depended on "action" parameter.
+     * Can "create", "update", "delete" user.
+     * @param req HttpServletRequest.
+     * @param resp HttpServletResponse.
+     * @throws ServletException servlet error.
+     * @throws IOException output error.
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        this.users.add(new User(req.getParameter("name"), req.getParameter("login"), req.getParameter("email")));
-        PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        writer.append("User created!").flush();
+        this.initiate(req, resp);
+        String action = req.getParameter("action");
+        this.dispatch.get(action).apply(action);
+    }
+
+    /**
+     * Add user to local store.
+     * @param req HttpServletRequest.
+     * @param resp HttpServletResponse.
+     * @return create user function.
+     */
+    private Function<String, Boolean> createUser(HttpServletRequest req, HttpServletResponse resp) {
+        return new Function<String, Boolean>() {
+            @Override
+            public Boolean apply(String msg) {
+                boolean result = false;
+                User current = new User(req.getParameter("name"), req.getParameter("login"), req.getParameter("email"));
+                String message;
+                if (!users.contains(current)) {
+                    users.add(current);
+                    message = "User created!";
+                    result = true;
+                } else {
+                    message = "User already exists!";
+                }
+                response(message, resp);
+                return result;
+            }
+        };
+    }
+    /**
+     * Update user in local store.
+     * @param req HttpServletRequest.
+     * @param resp HttpServletResponse.
+     * @return update user function.
+     */
+    private Function<String, Boolean> updateUser(HttpServletRequest req, HttpServletResponse resp) {
+        return new Function<String, Boolean>() {
+            @Override
+            public Boolean apply(String msg) {
+                boolean result = false;
+                User current = new User(req.getParameter("name"), req.getParameter("login"), req.getParameter("email"));
+                String newname = req.getParameter("newname");
+                String newlogin = req.getParameter("newlogin");
+                String newemail = req.getParameter("newemail");
+                String message;
+                if (users.contains(current)) {
+                    User update = users.get(users.indexOf(current));
+                    if (newname != null) {
+                        update.setName(newname);
+                    }
+                    if (newlogin != null) {
+                        update.setLogin(newlogin);
+                    }
+                    if (newemail != null) {
+                        update.setEmail(newemail);
+                    }
+                    message = "User updated!";
+                    result = true;
+                } else {
+                    message = "User not found!";
+                }
+                response(message, resp);
+                return result;
+            }
+        };
+    }
+    /**
+     * Remove user from local store.
+     * @param req HttpServletRequest.
+     * @param resp HttpServletResponse.
+     * @return delete user function.
+     */
+    private Function<String, Boolean> deleteUser(HttpServletRequest req, HttpServletResponse resp) {
+        return new Function<String, Boolean>() {
+            @Override
+            public Boolean apply(String msg) {
+                boolean result = false;
+                User current = new User(req.getParameter("name"), req.getParameter("login"), req.getParameter("email"));
+                String message;
+                if (users.contains(current)) {
+                    users.remove(current);
+                    message = "User deleted!";
+                    result = true;
+                } else {
+                    message = "User not found!";
+                }
+                response(message, resp);
+                return result;
+            }
+        };
+    }
+
+    /**
+     * Fill available functions map.
+     * @param req HttpServletRequest.
+     * @param resp HttpServletResponse.
+     */
+    private void initiate(HttpServletRequest req, HttpServletResponse resp) {
+        this.load("create", this.createUser(req, resp));
+        this.load("update", this.updateUser(req, resp));
+        this.load("delete", this.deleteUser(req, resp));
+    }
+
+    /**
+     * Add function to the map.
+     * @param type action type.
+     * @param handle action function.
+     */
+    private void load(String type, Function<String, Boolean> handle) {
+        this.dispatch.put(type, handle);
+    }
+
+    /**
+     * Write action response.
+     * @param message message text.
+     * @param resp HttpServletResponse.
+     */
+    private void response(String message, HttpServletResponse resp) {
+        try {
+            PrintWriter writer = new PrintWriter(resp.getOutputStream());
+            writer.append(message).flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
