@@ -16,12 +16,21 @@ public class User {
     private String email;
     private LocalDateTime createDate;
 
+    public User() {
+        this.createDate = LocalDateTime.now();
+        this.id = createDate.toString() + (short) (Math.random() * 100);
+    }
+
     public User(String name, String login, String email) {
         this.name = name;
         this.login = login;
         this.email = email;
         this.createDate = LocalDateTime.now();
         this.id = createDate.toString() + (short) (Math.random() * 100);
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {

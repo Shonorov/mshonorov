@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 
 /**
@@ -23,10 +21,9 @@ import java.util.function.Function;
  */
 public class UserServlet extends HttpServlet {
     /**
-     * List of users.
      * Map of action parameters and functions.
+     * Application logic singleton.
      */
-    private List<User> users = new CopyOnWriteArrayList<User>();
     private HashMap<String, Function<String, Boolean>> dispatch = new HashMap<>();
     private final ValidateService logic = ValidateService.getInstance();
 
@@ -42,7 +39,7 @@ public class UserServlet extends HttpServlet {
         resp.setContentType("text/html");
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
         writer.append(String.format("%s | %s | %s | %s | %s", "id", "name", "login", "email", "createDate")).append(System.lineSeparator());
-        for (User user : users) {
+        for (User user : logic.findAll()) {
             writer.append(user.toString()).append(System.lineSeparator());
         }
         writer.flush();
@@ -77,8 +74,7 @@ public class UserServlet extends HttpServlet {
                 boolean result = false;
                 User current = new User(req.getParameter("name"), req.getParameter("login"), req.getParameter("email"));
                 String message;
-                if (!users.contains(current)) {
-                    users.add(current);
+                if (logic.add(current)) {
                     message = "User created!";
                     result = true;
                 } else {
@@ -101,21 +97,8 @@ public class UserServlet extends HttpServlet {
             public Boolean apply(String msg) {
                 boolean result = false;
                 User current = new User(req.getParameter("name"), req.getParameter("login"), req.getParameter("email"));
-                String newname = req.getParameter("newname");
-                String newlogin = req.getParameter("newlogin");
-                String newemail = req.getParameter("newemail");
                 String message;
-                if (users.contains(current)) {
-                    User update = users.get(users.indexOf(current));
-                    if (newname != null) {
-                        update.setName(newname);
-                    }
-                    if (newlogin != null) {
-                        update.setLogin(newlogin);
-                    }
-                    if (newemail != null) {
-                        update.setEmail(newemail);
-                    }
+                if (logic.update(current, req.getParameter("newname"), req.getParameter("newlogin"), req.getParameter("newemail"))) {
                     message = "User updated!";
                     result = true;
                 } else {
@@ -139,8 +122,7 @@ public class UserServlet extends HttpServlet {
                 boolean result = false;
                 User current = new User(req.getParameter("name"), req.getParameter("login"), req.getParameter("email"));
                 String message;
-                if (users.contains(current)) {
-                    users.remove(current);
+                if (logic.delete(current)) {
                     message = "User deleted!";
                     result = true;
                 } else {

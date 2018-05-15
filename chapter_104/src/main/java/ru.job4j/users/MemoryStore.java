@@ -1,6 +1,7 @@
 package ru.job4j.users;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -10,39 +11,48 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @since 0.1
  */
 public class MemoryStore implements Store {
-
-    private static final MemoryStore instance = new MemoryStore();
+    /**
+     * Memory store singleton.
+     */
+    private static final MemoryStore INSTANCE = new MemoryStore();
 
     public static MemoryStore getInstance() {
-        return instance;
+        return INSTANCE;
     }
 
-    //TODO Сделать реализацию этого интерфейса MemoryStore. Сделать из него синлетон.
-    //Класс MemoryStore - должен быть потокобезопастный. вы можете использовать внутри потокбезопастные коллекции.
-    //В web.xml указать для UserServiler режим load-on-startup
+    /**
+     * List of users.
+     */
+    private List<User> users = new CopyOnWriteArrayList<User>();
 
     @Override
     public void add(User user) {
-
+        users.add(user);
     }
 
     @Override
     public void update(User user, User update) {
-
+        users.set(users.indexOf(user), update);
     }
 
     @Override
     public void delete(User user) {
-
+        users.remove(user);
     }
 
     @Override
     public List<User> findAll() {
-        return new CopyOnWriteArrayList<User>();
+        return users;
     }
 
     @Override
-    public User findById(String id) {
-        return new User("", "", "");
+    public Optional<User> findById(String id) {
+        Optional<User> result =  Optional.empty();
+        for (User user : users) {
+            if (id.equals(user.getId())) {
+                result = Optional.of(user);
+            }
+        }
+        return result;
     }
 }
