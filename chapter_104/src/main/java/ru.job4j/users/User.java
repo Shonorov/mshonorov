@@ -45,6 +45,10 @@ public class User {
         return email;
     }
 
+    public LocalDateTime getCreateDate() {
+        return createDate;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
