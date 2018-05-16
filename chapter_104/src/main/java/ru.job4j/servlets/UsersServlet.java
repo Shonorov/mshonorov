@@ -41,22 +41,21 @@ public class UsersServlet extends HttpServlet {
                 " <body>" +
                 "  <table><tr>" +
                 "<td>id</td><td>name</td><td>login</td><td>email</td><td>createDate</td>" +
-                "<td><form action='" + req.getContextPath() + "/create' method='GET'><input type='submit' value='Create'/></form></td>" +
+                "<td colspan='2'><form style='margin-bottom:0;' action='" + req.getContextPath() + "/create' method='GET'><input type='submit' value='Create'/></form></td>" +
                 "</tr>");
-        //TODO http://jkorpela.fi/forms/tables.html
         for (User user : logic.findAll()) {
             writer.append("<tr><td>" +
                     user.getId() +
-                    "</td><td>" +
+                    "</td><td name='name'>" +
                     user.getName() +
-                    "</td><td>" +
+                    "</td><td name='login'>" +
                     user.getLogin() +
-                    "</td><td>" +
+                    "</td><td name='email'>" +
                     user.getEmail() +
                     "</td><td>" +
                     user.getCreateDate() +
-                    "</td><td><form action='" + req.getContextPath() + "/edit' method='GET'><input type='submit' value='Edit'/></form></td>" +
-                    "<td><form action='" + req.getContextPath() + "/list' method='POST'><input type='submit' value='Delete'/></form></td></tr>");
+                    "</td><td><form style='margin-bottom:0;' action='" + req.getContextPath() + "/edit' method='GET'><input type='submit' value='Edit'/></form></td>" +
+                    "<td><form style='margin-bottom:0;' action='" + req.getContextPath() + "/list' method='POST'><input type='submit' value='Delete'/></form></td></tr>");
         }
 
         writer.append("  </table>" +

@@ -1,7 +1,7 @@
 package ru.job4j.servlets;
 
+import ru.job4j.users.User;
 import ru.job4j.users.ValidateService;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +26,46 @@ public class UserCreateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        writer.append("Create!").flush();
+        writer.append("<html>" +
+                " <head>" +
+                "  <meta charset='UTF-8'>" +
+                "  <title>Users management</title>" +
+                " </head>" +
+                " <style>" +
+                " table, th, td {" +
+                "    border: 1px solid black;" +
+                " }" +
+                " </style>" +
+                " <body>" +
+                "<tr><td>Create new user:</td></tr>" +
+                "<tr>" +
+                "<td><form action='" + req.getContextPath() + "/create' method='POST'>" +
+                "<input type='text' placeholder='Enter name' name='name'>" +
+                "<input type='text' placeholder='Enter login' name='login'>" +
+                "<input type='text' placeholder='Enter email' name='email'>" +
+                "<input type='submit' value='Create'/></form></td>" +
+                "<td><form style='margin-bottom:0;' action='" + req.getContextPath() + "/list' method='GET'/><input type='submit' value='To list'/></form></td></tr>").flush();
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        User current = new User(req.getParameter("name"), req.getParameter("login"), req.getParameter("email"));
+        String message;
+        if (logic.add(current)) {
+            message = "User created!";
+        } else {
+            message = "User already exists!";
+        }
+        PrintWriter writer = new PrintWriter(resp.getOutputStream());
+        writer.append("<html> " +
+                "<head>" +
+                "<title>User created!</title>" +
+                "<meta http-equiv='Refresh' content='3'> " +
+                "</head>" +
+                "<body bgcolor='White' text='Navy'>" +
+                "<p>" + message + "</p>" +
+                "To users list:<a href='" + req.getContextPath() + "/list'>link</a>." +
+                "</body>" +
+                "</html>").flush();
     }
 }
