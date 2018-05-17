@@ -76,11 +76,11 @@ public class UserCreateServlet extends HttpServlet {
         writer.append("<html> "
                 + "<head>"
                 + "<title>User created!</title>"
-                + "<meta http-equiv='Refresh' content='3'> "
+                + "<meta http-equiv='Refresh' content='3;" + req.getContextPath() + "/UserCreate.jsp'> "
                 + "</head>"
                 + "<body bgcolor='White' text='Navy'>"
                 + "<p>" + message + "</p>"
-                + "To users list:<a href='" + req.getContextPath() + "/list'>link</a>."
+                + "To users list:<a href='" + req.getContextPath() + "/UsersList.jsp'>link</a>."
                 + "</body>"
                 + "</html>").flush();
     }

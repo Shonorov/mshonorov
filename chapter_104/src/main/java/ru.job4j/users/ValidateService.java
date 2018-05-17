@@ -63,8 +63,10 @@ public class ValidateService {
             } else {
                 update.setEmail(user.getEmail());
             }
-            store.update(user, update);
-            result = true;
+            if (!store.findAll().contains(update)) {
+                store.update(user, update);
+                result = true;
+            }
         }
         return result;
     }

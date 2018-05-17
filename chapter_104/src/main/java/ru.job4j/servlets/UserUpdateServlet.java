@@ -82,7 +82,7 @@ public class UserUpdateServlet extends HttpServlet {
         if (logic.update(current, req.getParameter("newname"), req.getParameter("newlogin"), req.getParameter("newemail"))) {
             message = "User modified!";
         } else {
-            message = "User not found!";
+            message = "User already exists!";
         }
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
         writer.append("<html> "
@@ -90,7 +90,7 @@ public class UserUpdateServlet extends HttpServlet {
                 + "<title>User created!</title>"
                 + "<meta http-equiv='Refresh' content='3;"
                 + req.getContextPath()
-                + "/list'>"
+                + "/UsersList.jsp'>"
                 + "</head>"
                 + "<body bgcolor='White' text='Navy'>"
                 + "<p>"
@@ -98,7 +98,7 @@ public class UserUpdateServlet extends HttpServlet {
                 + "</p>"
                 + "To users list:<a href='"
                 + req.getContextPath()
-                + "/list'>link</a>."
+                + "/UsersList.jsp'>link</a>."
                 + "</body>"
                 + "</html>").flush();
     }
