@@ -83,10 +83,7 @@ public class User {
         if (!login.equals(user.login)) {
             return false;
         }
-        if (!email.equals(user.email)) {
-            return false;
-        }
-        return true;
+        return email.equals(user.email);
     }
 
     @Override

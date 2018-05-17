@@ -54,12 +54,12 @@ public class ValidateService {
                 update.setName(user.getName());
             }
             if (newlogin != null) {
-                update.setName(newlogin);
+                update.setLogin(newlogin);
             } else {
                 update.setLogin(user.getLogin());
             }
             if (newemail != null) {
-                update.setName(newemail);
+                update.setEmail(newemail);
             } else {
                 update.setEmail(user.getEmail());
             }

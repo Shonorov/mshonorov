@@ -24,50 +24,98 @@ public class UsersServlet extends HttpServlet {
      */
     private final ValidateService logic = ValidateService.getInstance();
 
+
+    /**
+     * Show all current users.
+     * @param req HttpServletRequest.
+     * @param resp HttpServletResponse.
+     * @throws ServletException if servlet fails.
+     * @throws IOException if IO failed.
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        writer.append("<html>" +
-                " <head>" +
-                "  <meta charset='UTF-8'>" +
-                "  <title>Users management</title>" +
-                " </head>" +
-                " <style>" +
-                " table, th, td {" +
-                "    border: 1px solid black;" +
-                " }" +
-                " </style>" +
-                " <body>" +
-                "  <table><tr>" +
-                "<td>id</td><td>name</td><td>login</td><td>email</td><td>createDate</td>" +
-                "<td colspan='2'><form style='margin-bottom:0;' action='" + req.getContextPath() + "/create' method='GET'><input type='submit' value='Create'/></form></td>" +
-                "</tr>");
+        writer.append("<html>"
+                + " <head>"
+                + "  <meta charset='UTF-8'>"
+                + "  <title>Users management</title>"
+                + " </head>"
+                + " <style>"
+                + " table, th, td {"
+                + "    border: 1px solid black;"
+                + " }"
+                + " </style>"
+                + " <body>"
+                + "<tr><td>All users list:</td></tr>"
+                + "  <table><tr>"
+                + "<td>id</td><td>name</td><td>login</td><td>email</td><td>createDate</td>"
+                + "<td colspan='2'><form style='margin-bottom:0;' action='"
+                + req.getContextPath()
+                + "/create' method='GET'>"
+                + "<input type='submit' value='Create user'/></form></td>"
+                + "</tr>");
         for (User user : logic.findAll()) {
-            writer.append("<tr><td>" +
-                    user.getId() +
-                    "</td><td name='name'>" +
-                    user.getName() +
-                    "</td><td name='login'>" +
-                    user.getLogin() +
-                    "</td><td name='email'>" +
-                    user.getEmail() +
-                    "</td><td>" +
-                    user.getCreateDate() +
-                    "</td><td><form style='margin-bottom:0;' action='" + req.getContextPath() + "/edit' method='GET'><input type='submit' value='Edit'/></form></td>" +
-                    "<td><form style='margin-bottom:0;' action='" + req.getContextPath() + "/list' method='POST'><input type='submit' value='Delete'/></form></td></tr>");
+            writer.append("<tr><td>"
+                    + user.getId()
+                    + "</td><td>"
+                    + user.getName()
+                    + "</td><td>"
+                    + user.getLogin()
+                    + "</td><td>"
+                    + user.getEmail()
+                    + "</td><td>"
+                    + user.getCreateDate()
+                    + "</td><td><form style='margin-bottom:0;' action='"
+                    + req.getContextPath()
+                    + "/edit' method='GET'>"
+                    + "<input type='submit' value='Edit'/>"
+                    + "<input type='hidden' name='id' value='"
+                    + user.getId()
+                    + "'></form></td>"
+                    + "<td><form style='margin-bottom:0;' action='"
+                    + req.getContextPath()
+                    + "/list' method='POST'>"
+                    + "<input type='hidden' name='id' value='"
+                    + user.getId()
+                    + "'>"
+                    + "<input type='submit' value='Delete'/></form></td></tr>");
         }
 
-        writer.append("  </table>" +
-                "  </div>" +
-                " </body>" +
-                "</html>");
+        writer.append("  </table>"
+                + "  </div>"
+                + " </body>"
+                + "</html>");
         writer.flush();
     }
-
+    /**
+     * Delete selected user.
+     * @param req HttpServletRequest.
+     * @param resp HttpServletResponse.
+     * @throws ServletException if servlet fails.
+     * @throws IOException if IO failed.
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        logic.delete();
-        doGet(req, resp);
+        User current = logic.findById(req.getParameter("id")).get();
+        String message;
+        if (logic.delete(current)) {
+            message = "User deleted!";
+        } else {
+            message = "User not found!";
+        }
+        PrintWriter writer = new PrintWriter(resp.getOutputStream());
+        writer.append("<html> "
+                + "<head>"
+                + "<title>User created!</title>"
+                + "<meta http-equiv='Refresh' content='3'> "
+                + "</head>"
+                + "<body bgcolor='White' text='Navy'>"
+                + "<p>" + message + "</p>"
+                + "To users list:<a href='"
+                + req.getContextPath()
+                + "/list'>link</a>."
+                + "</body>"
+                + "</html>").flush();
     }
 }
