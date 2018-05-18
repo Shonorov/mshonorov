@@ -2,6 +2,7 @@ package ru.job4j.users;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.log4j.Logger;
+import org.postgresql.Driver;
 
 import java.io.InputStream;
 import java.sql.*;
@@ -32,7 +33,15 @@ public class MemoryStore implements Store, Runnable {
             properties.load(input);
             dataSource = getDataSource();
             createDatabase(properties.getProperty("hostname"), properties.getProperty("port"), properties.getProperty("database"), properties.getProperty("username"), properties.getProperty("password"));
-            createTable();
+//            createTable();
+//            Connection connection = dataSource.getConnection();
+//            DriverManager.registerDriver(new org.postgresql.Driver());
+//            Connection connection = DriverManager.getConnection("jdbc:postgresql//localhost:5432", "postgres", "postgres");
+//            PreparedStatement statement = connection.prepareStatement("SELECT datname FROM pg_database WHERE datistemplate = false;");
+//            ResultSet set = statement.executeQuery();
+//            while (set.next()) {
+//                System.out.println(set.getString(1));
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,6 +66,7 @@ public class MemoryStore implements Store, Runnable {
         if (dataSource == null) {
             BasicDataSource ds = new BasicDataSource();
             ds.setUrl("jdbc:postgresql://" + properties.getProperty("hostname") + ":" + properties.getProperty("port"));
+            ds.setDriverClassName("org.postgresql.driver");
             ds.setUsername(properties.getProperty("username"));
             ds.setPassword(properties.getProperty("password"));
             ds.setMinIdle(5);
