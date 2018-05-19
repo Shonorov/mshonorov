@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 public class MemoryStoreTest {
     @Test
     public void whenAddThenFind() {
-        MemoryStore store =new MemoryStore("users.properties");
+        MemoryStore store = new MemoryStore("users.properties");
         User user1 = new User("user1", "user1", "user1@contoso.com");
         store.add(user1);
         assertTrue(store.findAll().contains(user1));
@@ -19,7 +19,7 @@ public class MemoryStoreTest {
 
     @Test
     public void whenModifiedThenUserChanged() {
-        MemoryStore store =new MemoryStore("users.properties");
+        MemoryStore store = new MemoryStore("users.properties");
         User user2 = new User("user2", "user2", "user2@contoso.com");
         User user3 = new User("user3", "user3", "user3@contoso.com");
         store.add(user2);
@@ -31,7 +31,7 @@ public class MemoryStoreTest {
 
     @Test
     public void whenFindByIDThenDelete() {
-        MemoryStore store =new MemoryStore("users.properties");
+        MemoryStore store = new MemoryStore("users.properties");
         User user4 = new User("user4", "user4", "user4@contoso.com");
         String id = user4.getId();
         store.add(user4);
