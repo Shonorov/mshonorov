@@ -29,6 +29,14 @@ public class User {
         this.id = createDate.toString() + (short) (Math.random() * 100);
     }
 
+    public User(String id, String name, String login, String email, LocalDateTime createDate) {
+        this.id = id;
+        this.name = name;
+        this.login = login;
+        this.email = email;
+        this.createDate = createDate;
+    }
+
     public String getId() {
         return id;
     }

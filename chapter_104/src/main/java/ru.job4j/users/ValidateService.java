@@ -2,7 +2,6 @@ package ru.job4j.users;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Logic layout for web application.
@@ -13,14 +12,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ValidateService {
     /**
      * ValidateService singleton instance.
+     * MemoryStore instance.
      */
     private static final ValidateService INSTANCE = new ValidateService();
+    private final Store store = MemoryStore.getInstance();
 
     public static ValidateService getInstance() {
         return INSTANCE;
     }
-
-    private final Store store = MemoryStore.getInstance();
 
     /**
      * Check if user exists and add it.

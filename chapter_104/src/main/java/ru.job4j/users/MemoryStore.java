@@ -1,16 +1,15 @@
 package ru.job4j.users;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.apache.log4j.Logger;
-import org.postgresql.Driver;
 
+import java.io.Closeable;
 import java.io.InputStream;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Persistent layout for web application.
@@ -18,30 +17,28 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @version $Id$
  * @since 0.1
  */
-public class MemoryStore implements Store, Runnable {
+public class MemoryStore implements Store, Closeable {
     /**
      * Memory store singleton.
+     * Database connection pool.
+     * Application properties.
      */
     private static final MemoryStore INSTANCE = new MemoryStore("users.properties");
     private BasicDataSource dataSource;
-    private static final Logger LOGGER = Logger.getLogger(MemoryStore.class);
     private Properties properties = new Properties();
 
     public MemoryStore(String filename) {
         InputStream input = MemoryStore.class.getResourceAsStream("/" + filename);
         try {
             properties.load(input);
-            dataSource = getDataSource();
+            try {
+                Class.forName("org.postgresql.Driver");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
             createDatabase(properties.getProperty("hostname"), properties.getProperty("port"), properties.getProperty("database"), properties.getProperty("username"), properties.getProperty("password"));
-//            createTable();
-//            Connection connection = dataSource.getConnection();
-//            DriverManager.registerDriver(new org.postgresql.Driver());
-//            Connection connection = DriverManager.getConnection("jdbc:postgresql//localhost:5432", "postgres", "postgres");
-//            PreparedStatement statement = connection.prepareStatement("SELECT datname FROM pg_database WHERE datistemplate = false;");
-//            ResultSet set = statement.executeQuery();
-//            while (set.next()) {
-//                System.out.println(set.getString(1));
-//            }
+            dataSource = getDataSource();
+            createTable();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -52,7 +49,7 @@ public class MemoryStore implements Store, Runnable {
     }
 
     @Override
-    public void run() {
+    public void close() {
         if (!dataSource.isClosed()) {
             try {
                 dataSource.close();
@@ -62,11 +59,14 @@ public class MemoryStore implements Store, Runnable {
         }
     }
 
+    /**
+     * Create database connection pool.
+     * @return datasource connection pool.
+     */
     private BasicDataSource getDataSource() {
         if (dataSource == null) {
             BasicDataSource ds = new BasicDataSource();
-            ds.setUrl("jdbc:postgresql://" + properties.getProperty("hostname") + ":" + properties.getProperty("port"));
-            ds.setDriverClassName("org.postgresql.driver");
+            ds.setUrl("jdbc:postgresql://" + properties.getProperty("hostname") + ":" + properties.getProperty("port") + "/" + properties.getProperty("database"));
             ds.setUsername(properties.getProperty("username"));
             ds.setPassword(properties.getProperty("password"));
             ds.setMinIdle(5);
@@ -86,69 +86,107 @@ public class MemoryStore implements Store, Runnable {
      * @param password user password.
      */
     private void createDatabase(String hostname, String port, String database, String username, String password) throws SQLException {
-        String url = "jdbc:postgresql://" + hostname + ":" + port;
-        try (Connection srvConnection = dataSource.getConnection()) {
-            PreparedStatement ps = srvConnection.prepareStatement("SELECT datname FROM pg_database WHERE datistemplate = false;");
-            ResultSet resultSet = ps.executeQuery();
+        String url = "jdbc:postgresql://" + hostname + ":" + port + "/postgres";
+        try (Connection srvConnection = DriverManager.getConnection(url, username, password);
+             PreparedStatement ps = srvConnection.prepareStatement("SELECT datname FROM pg_database WHERE datistemplate = false;");
+             ResultSet resultSet = ps.executeQuery()) {
             List<String> databases = new LinkedList<>();
             while (resultSet.next()) {
                 databases.add(resultSet.getString(1));
             }
             if (!databases.contains(database)) {
-                Statement statement = srvConnection.createStatement();
-                statement.executeUpdate("CREATE DATABASE " + database);
-                LOGGER.info("Database created.");
+                try (Statement statement = srvConnection.createStatement()) {
+                    statement.executeUpdate("CREATE DATABASE " + database);
+                }
             }
-        } catch (Exception e) {
-//            LOGGER.error("Can not connect to the postgres server.", e);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
     /**
-     * Create items table.
+     * Create items table if not exists.
      */
     private void createTable() {
         try (Connection localConnection = dataSource.getConnection();
-             PreparedStatement statement = localConnection.prepareStatement("CREATE TABLE IF NOT EXISTS users(id character varying NOT NULL, name character varying NOT NULL, login character varying NOT NULL, email character varying NOT NULL, createDate character varying NOT NULL, PRIMARY KEY (id));")) {
+             PreparedStatement statement = localConnection.prepareStatement("CREATE TABLE IF NOT EXISTS users(id character varying NOT NULL, name character varying NOT NULL, login character varying NOT NULL, email character varying NOT NULL, createdate character varying NOT NULL, PRIMARY KEY (id))")) {
             statement.executeUpdate();
         } catch (Exception e) {
-            LOGGER.error("Failed to create table.", e);
             e.printStackTrace();
         }
     }
 
-    /**
-     * List of users.
-     */
-    private List<User> users = new CopyOnWriteArrayList<User>();
-
     @Override
     public void add(User user) {
-        users.add(user);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO users(id, name, login, email, createdate) VALUES (?, ?, ?, ?, ?);")) {
+            statement.setString(1, user.getId());
+            statement.setString(2, user.getName());
+            statement.setString(3, user.getLogin());
+            statement.setString(4, user.getEmail());
+            statement.setString(5, user.getCreateDate().toString());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void update(User user, User update) {
-        users.set(users.indexOf(user), update);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("UPDATE users SET name=?, login=?, email=? WHERE name=? AND login=? AND email=?;")) {
+            statement.setString(1, update.getName());
+            statement.setString(2, update.getLogin());
+            statement.setString(3, update.getEmail());
+            statement.setString(4, user.getName());
+            statement.setString(5, user.getLogin());
+            statement.setString(6, user.getEmail());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void delete(User user) {
-        users.remove(user);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM users WHERE id=?;")) {
+            statement.setString(1, user.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public List<User> findAll() {
-        return users;
+        List<User> result = new LinkedList<>();
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM users;")) {
+            while (rs.next()) {
+                User current = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), LocalDateTime.parse(rs.getString(5)));
+                result.add(current);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
     public Optional<User> findById(String id) {
-        Optional<User> result =  Optional.empty();
-        for (User user : users) {
-            if (id.equals(user.getId())) {
-                result = Optional.of(user);
+        Optional<User> result = Optional.empty();
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE id=?;")) {
+            statement.setString(1, id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                User current = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), LocalDateTime.parse(rs.getString(5)));
+                result = Optional.of(current);
             }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return result;
     }
