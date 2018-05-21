@@ -14,7 +14,7 @@ import java.util.function.Function;
 
 /**
  * Presentation layout for web application
- * Servlet for users management.
+ * Servlet for users management with REST API.
  * @author MShonorov (shonorov@gmail.com)
  * @version $Id$
  * @since 0.1

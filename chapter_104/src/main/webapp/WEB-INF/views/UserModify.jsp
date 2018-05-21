@@ -1,5 +1,3 @@
-<%@ page import="ru.job4j.users.ValidateService" %>
-<%@ page import="ru.job4j.users.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
@@ -13,16 +11,16 @@
 </style>
 <body>
 <p>Modify user:</p>
-<%User current = ValidateService.getInstance().findById(request.getParameter("id")).get();%>
+<c:set var="current" value="${user}"/>
 <table>
     <tr>
         <td>
             <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/edit" method="POST">
-                <input type="text" value="<%=current.getName()%>" name="newname">
-                <input type="text" value="<%=current.getLogin()%>" name="newlogin">
-                <input type="text" value="<%=current.getEmail()%>" name="newemail">
+                <input type="text" value="${current.name}" name="newname">
+                <input type="text" value="${current.login}" name="newlogin">
+                <input type="text" value="${current.email}" name="newemail">
                 <input type="submit" value="Apply">
-                <input type="hidden" name="id" value="<%=current.getId()%>">
+                <input type="hidden" name="id" value="${current.id}">
             </form>
         </td>
 

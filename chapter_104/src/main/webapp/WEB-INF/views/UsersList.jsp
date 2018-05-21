@@ -26,20 +26,20 @@
     </tr>
     <c:forEach var="user" items="${users}">
     <tr>
-        <td><${user.id}></td>
-        <td><${user.name}></td>
-        <td><${user.login}></td>
-        <td><${user.email}></td>
-        <td><${user.createDate}></td>
+        <td>${user.id}</td>
+        <td>${user.name}</td>
+        <td>${user.login}</td>
+        <td>${user.email}</td>
+        <td>${user.createDate}</td>
         <td>
             <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/edit" method="GET">
-                <input type="hidden" name="id" value="<${user.id}>">
+                <input type="hidden" name="id" value="${user.id}">
                 <input type='submit' value='Edit'>
             </form>
         </td>
         <td>
             <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/" method="POST">
-                <input type="hidden" name="id" value="<${user.id}>">
+                <input type="hidden" name="id" value="${user.id}">
                 <input type='submit' value='Delete'>
             </form>
         </td>

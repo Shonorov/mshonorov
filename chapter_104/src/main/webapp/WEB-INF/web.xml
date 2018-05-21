@@ -9,6 +9,16 @@
         <!--<url-pattern>/list</url-pattern>-->
     <!--</servlet-mapping>-->
 
+    <servlet>
+        <servlet-name>UsersListServlet</servlet-name>
+        <servlet-class>ru.job4j.mvcservlets.UsersListServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UsersListServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
     <!--<servlet>-->
         <!--<servlet-name>UserCreateServlet</servlet-name>-->
         <!--<servlet-class>ru.job4j.servlets.UserCreateServlet</servlet-class>-->
@@ -21,7 +31,7 @@
 
     <servlet>
         <servlet-name>UsersCreateServlet</servlet-name>
-        <servlet-class>ru.job4j.servlets.UsersCreateServlet</servlet-class>
+        <servlet-class>ru.job4j.mvcservlets.UsersCreateServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
@@ -32,7 +42,6 @@
     <!--<servlet>-->
         <!--<servlet-name>UserUpdateServlet</servlet-name>-->
         <!--<servlet-class>ru.job4j.servlets.UserUpdateServlet</servlet-class>-->
-        <!--<load-on-startup>1</load-on-startup>-->
     <!--</servlet>-->
     <!--<servlet-mapping>-->
         <!--<servlet-name>UserUpdateServlet</servlet-name>-->
@@ -40,42 +49,30 @@
     <!--</servlet-mapping>-->
 
     <servlet>
-        <servlet-name>UserUpdateServlet</servlet-name>
-        <servlet-class>ru.job4j.servlets.UserUpdateServlet</servlet-class>
+        <servlet-name>UsersEditServlet</servlet-name>
+        <servlet-class>ru.job4j.mvcservlets.UsersEditServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>UserUpdateServlet</servlet-name>
+        <servlet-name>UsersEditServlet</servlet-name>
         <url-pattern>/edit</url-pattern>
     </servlet-mapping>
 
-    <!--<servlet>-->
-        <!--<servlet-name>EchoServlet</servlet-name>-->
-        <!--<servlet-class>ru.job4j.servlets.EchoServlet</servlet-class>-->
-    <!--</servlet>-->
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>EchoServlet</servlet-name>-->
-        <!--<url-pattern>/echo</url-pattern>-->
-    <!--</servlet-mapping>-->
-
-    <!--<servlet>-->
-        <!--<servlet-name>UserServlet</servlet-name>-->
-        <!--<servlet-class>ru.job4j.servlets.UserServlet</servlet-class>-->
-        <!--<load-on-startup>1</load-on-startup>-->
-    <!--</servlet>-->
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>UserServlet</servlet-name>-->
-        <!--<url-pattern>/</url-pattern>-->
-    <!--</servlet-mapping>-->
-
     <servlet>
-        <servlet-name>UsersListServlet</servlet-name>
-        <servlet-class>ru.job4j.servlets.UsersListServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
+        <servlet-name>EchoServlet</servlet-name>
+        <servlet-class>ru.job4j.servlets.EchoServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>UsersListServlet</servlet-name>
-        <url-pattern>/</url-pattern>
+        <servlet-name>EchoServlet</servlet-name>
+        <url-pattern>/echo</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>UserServlet</servlet-name>
+        <servlet-class>ru.job4j.servlets.UserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserServlet</servlet-name>
+        <url-pattern>/rest</url-pattern>
+    </servlet-mapping>
 </web-app>
