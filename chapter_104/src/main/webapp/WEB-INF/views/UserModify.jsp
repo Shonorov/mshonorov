@@ -1,6 +1,7 @@
 <%@ page import="ru.job4j.users.ValidateService" %>
 <%@ page import="ru.job4j.users.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>Users management</title>
@@ -16,7 +17,7 @@
 <table>
     <tr>
         <td>
-            <form style="margin-bottom:0;" action="<%=request.getContextPath()%>/edit" method="POST">
+            <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/edit" method="POST">
                 <input type="text" value="<%=current.getName()%>" name="newname">
                 <input type="text" value="<%=current.getLogin()%>" name="newlogin">
                 <input type="text" value="<%=current.getEmail()%>" name="newemail">
@@ -28,7 +29,7 @@
     </tr>
 </table>
 <td>
-    <form style="margin-bottom:0;" action="<%=request.getContextPath()%>/UsersList.jsp" method="GET">
+    <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/" method="GET">
         <input type='submit' value='To list'>
     </form>
 </td>

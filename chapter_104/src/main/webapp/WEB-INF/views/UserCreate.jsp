@@ -13,7 +13,7 @@
 <table>
     <tr>
         <td>
-            <form style="margin-bottom:0;" action="<%=request.getContextPath()%>/create" method="POST">
+            <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/create" method="POST">
                 <input type='text' placeholder='Enter name' name='name'>
                 <input type='text' placeholder='Enter login' name='login'>
                 <input type='text' placeholder='Enter email' name='email'>
@@ -23,7 +23,7 @@
     </tr>
 </table>
 <td>
-    <form style="margin-bottom:0;" action="<%=request.getContextPath()%>/UsersList.jsp" method="GET">
+    <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/" method="GET">
         <input type='submit' value='To list'>
     </form>
 </td>

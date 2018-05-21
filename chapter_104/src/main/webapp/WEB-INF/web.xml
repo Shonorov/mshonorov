@@ -1,23 +1,43 @@
 <web-app>
-    <servlet>
-        <servlet-name>UsersServlet</servlet-name>
-        <servlet-class>ru.job4j.servlets.UsersServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>UsersServlet</servlet-name>
-        <url-pattern>/list</url-pattern>
-    </servlet-mapping>
+    <!--<servlet>-->
+        <!--<servlet-name>UsersServlet</servlet-name>-->
+        <!--<servlet-class>ru.job4j.servlets.UsersServlet</servlet-class>-->
+        <!--<load-on-startup>1</load-on-startup>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>UsersServlet</servlet-name>-->
+        <!--<url-pattern>/list</url-pattern>-->
+    <!--</servlet-mapping>-->
+
+    <!--<servlet>-->
+        <!--<servlet-name>UserCreateServlet</servlet-name>-->
+        <!--<servlet-class>ru.job4j.servlets.UserCreateServlet</servlet-class>-->
+        <!--<load-on-startup>1</load-on-startup>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>UserCreateServlet</servlet-name>-->
+        <!--<url-pattern>/create</url-pattern>-->
+    <!--</servlet-mapping>-->
 
     <servlet>
-        <servlet-name>UserCreateServlet</servlet-name>
-        <servlet-class>ru.job4j.servlets.UserCreateServlet</servlet-class>
+        <servlet-name>UsersCreateServlet</servlet-name>
+        <servlet-class>ru.job4j.servlets.UsersCreateServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>UserCreateServlet</servlet-name>
+        <servlet-name>UsersCreateServlet</servlet-name>
         <url-pattern>/create</url-pattern>
     </servlet-mapping>
+
+    <!--<servlet>-->
+        <!--<servlet-name>UserUpdateServlet</servlet-name>-->
+        <!--<servlet-class>ru.job4j.servlets.UserUpdateServlet</servlet-class>-->
+        <!--<load-on-startup>1</load-on-startup>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>UserUpdateServlet</servlet-name>-->
+        <!--<url-pattern>/edit</url-pattern>-->
+    <!--</servlet-mapping>-->
 
     <servlet>
         <servlet-name>UserUpdateServlet</servlet-name>
@@ -29,22 +49,32 @@
         <url-pattern>/edit</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>EchoServlet</servlet-name>
-        <servlet-class>ru.job4j.servlets.EchoServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>EchoServlet</servlet-name>
-        <url-pattern>/echo</url-pattern>
-    </servlet-mapping>
+    <!--<servlet>-->
+        <!--<servlet-name>EchoServlet</servlet-name>-->
+        <!--<servlet-class>ru.job4j.servlets.EchoServlet</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>EchoServlet</servlet-name>-->
+        <!--<url-pattern>/echo</url-pattern>-->
+    <!--</servlet-mapping>-->
+
+    <!--<servlet>-->
+        <!--<servlet-name>UserServlet</servlet-name>-->
+        <!--<servlet-class>ru.job4j.servlets.UserServlet</servlet-class>-->
+        <!--<load-on-startup>1</load-on-startup>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>UserServlet</servlet-name>-->
+        <!--<url-pattern>/</url-pattern>-->
+    <!--</servlet-mapping>-->
 
     <servlet>
-        <servlet-name>UserServlet</servlet-name>
-        <servlet-class>ru.job4j.servlets.UserServlet</servlet-class>
+        <servlet-name>UsersListServlet</servlet-name>
+        <servlet-class>ru.job4j.servlets.UsersListServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>UserServlet</servlet-name>
+        <servlet-name>UsersListServlet</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
