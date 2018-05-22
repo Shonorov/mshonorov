@@ -107,12 +107,51 @@ public class MemoryStore implements Store, Closeable {
      * Create items table if not exists.
      */
     private void createTable() {
+        createRolesTable();
         try (Connection localConnection = dataSource.getConnection();
              PreparedStatement statement = localConnection.prepareStatement("CREATE TABLE IF NOT EXISTS users(id character varying NOT NULL, name character varying NOT NULL, login character varying NOT NULL, email character varying NOT NULL, createdate character varying NOT NULL, PRIMARY KEY (id))")) {
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void createRolesTable() {
+        String query = "CREATE TABLE IF NOT EXISTS roles("
+                + "role character varying NOT NULL,"
+                + "administrator boolean NOT NULL,"
+                + "PRIMARY KEY (role))";
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        insertRoles();
+    }
+
+    private void insertRoles() {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO roles(role, administrator) VALUES (?, ?) ON CONFLICT (role) DO NOTHING;")) {
+            for (Role role : new Roles().getRoles()) {
+                statement.setString(1, role.getRole());
+                statement.setBoolean(2, role.isAdministrator());
+                statement.executeUpdate();
+            }
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createUsersTable() {
+        //TODO
+        String query = "";
+    }
+
+    private void insertUsers() {
+        //TODO
+        String query = "";
     }
 
     @Override
@@ -162,7 +201,7 @@ public class MemoryStore implements Store, Closeable {
         List<User> result = new LinkedList<>();
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM users;")) {
+             ResultSet rs = statement.executeQuery("SELECT * FROM users;")) {
             while (rs.next()) {
                 User current = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), LocalDateTime.parse(rs.getString(5)));
                 result.add(current);

@@ -13,6 +13,8 @@ public class User {
     private String id;
     private String name;
     private String login;
+    private String password;
+    private Role role;
     private String email;
     private LocalDateTime createDate;
 
