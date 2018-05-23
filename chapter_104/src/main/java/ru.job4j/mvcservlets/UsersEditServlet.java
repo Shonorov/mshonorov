@@ -20,6 +20,7 @@ public class UsersEditServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("roles", ValidateService.getInstance().findRoles());
         req.setAttribute("user", ValidateService.getInstance().findById(req.getParameter("id")).get());
         req.getRequestDispatcher("/WEB-INF/views/UserModify.jsp").forward(req, resp);
     }
@@ -28,7 +29,7 @@ public class UsersEditServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User current = ValidateService.getInstance().findById(req.getParameter("id")).get();
         String message;
-        if (ValidateService.getInstance().update(current, req.getParameter("newname"), req.getParameter("newlogin"), req.getParameter("newemail"))) {
+        if (ValidateService.getInstance().update(current, req.getParameter("newname"), req.getParameter("newlogin"), req.getParameter("newemail"), req.getParameter("newpassword"), req.getParameter("newrole"))) {
             message = "User modified!";
         } else {
             message = "User already exists!";

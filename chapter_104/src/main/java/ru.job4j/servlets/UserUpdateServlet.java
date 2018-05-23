@@ -78,12 +78,12 @@ public class UserUpdateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User current = logic.findById(req.getParameter("id")).get();
-        String message;
-        if (logic.update(current, req.getParameter("newname"), req.getParameter("newlogin"), req.getParameter("newemail"))) {
-            message = "User modified!";
-        } else {
-            message = "User already exists!";
-        }
+        String message = "";
+//        if (logic.update(current, req.getParameter("newname"), req.getParameter("newlogin"), req.getParameter("newemail"))) {
+//            message = "User modified!";
+//        } else {
+//            message = "User already exists!";
+//        }
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
         writer.append("<html> "
                 + "<head>"

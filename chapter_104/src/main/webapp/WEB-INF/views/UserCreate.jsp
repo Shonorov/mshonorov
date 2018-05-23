@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -17,7 +18,12 @@
                 <input type='text' placeholder='Enter name' name='name'>
                 <input type='text' placeholder='Enter login' name='login'>
                 <input type='text' placeholder='Enter email' name='email'>
-                <input type='text' placeholder='Select role' name='role'>
+                <input type='text' placeholder='Enter password' name='password'>
+                <select name="role">
+                    <c:forEach var="role" items="${roles}">
+                        <option value="${role}">${role}</option>
+                    </c:forEach>
+                </select>
                 <input type='submit' value='Create'>
             </form>
         </td>

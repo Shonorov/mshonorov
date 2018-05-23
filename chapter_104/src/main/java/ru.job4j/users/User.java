@@ -33,6 +33,16 @@ public class User {
         this.role = "user";
     }
 
+    public User(String name, String login, String email, String password, String role) {
+        this.name = name;
+        this.login = login;
+        this.email = email;
+        this.createDate = LocalDateTime.now();
+        this.id = createDate.toString() + (short) (Math.random() * 100);
+        this.password = password;
+        this.role = role;
+    }
+
     public User(String id, String name, String login, String email, LocalDateTime createDate, String password, String role) {
         this.id = id;
         this.name = name;
@@ -83,6 +93,14 @@ public class User {
         this.email = email;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return String.format("%s : %s : %s : %s : %s", id, name, login, email, createDate.toString());
@@ -105,7 +123,10 @@ public class User {
         if (!login.equals(user.login)) {
             return false;
         }
-        return email.equals(user.email);
+        if (!email.equals(user.email)) {
+            return false;
+        }
+        return role.equals(user.role);
     }
 
     @Override

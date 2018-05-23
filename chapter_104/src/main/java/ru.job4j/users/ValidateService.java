@@ -1,5 +1,6 @@
 package ru.job4j.users;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,7 +44,7 @@ public class ValidateService {
      * @param newemail email to change.
      * @return true if success.
      */
-    public boolean update(User user, String newname, String newlogin, String newemail) {
+    public boolean update(User user, String newname, String newlogin, String newemail, String newpassword, String newrole) {
         boolean result = false;
         User update = new User();
         if (store.findAll().contains(user)) {
@@ -61,6 +62,16 @@ public class ValidateService {
                 update.setEmail(newemail);
             } else {
                 update.setEmail(user.getEmail());
+            }
+            if (newpassword != null) {
+                update.setPassword(newpassword);
+            } else {
+                update.setPassword(user.getPassword());
+            }
+            if (newrole != null) {
+                update.setRole(newrole);
+            } else {
+                update.setRole(user.getRole());
             }
             if (!store.findAll().contains(update)) {
                 store.update(user, update);
@@ -99,5 +110,17 @@ public class ValidateService {
      */
     public Optional<User> findById(String id) {
         return store.findById(id);
+    }
+
+    /**
+     * Get roles list.
+     * @return list of all roles.
+     */
+    public List<String> findRoles() {
+        List<String> result = new ArrayList<>();
+        for (Role role : store.getRoles()) {
+            result.add(role.getRole());
+        }
+        return result;
     }
 }

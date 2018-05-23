@@ -19,7 +19,12 @@
                 <input type="text" value="${current.name}" name="newname">
                 <input type="text" value="${current.login}" name="newlogin">
                 <input type="text" value="${current.email}" name="newemail">
-                <input type="text" value="${current.role}" name="newemail">
+                <input type="text" placeholder='Enter password' name="newepassword">
+                <select name="newrole">
+                    <c:forEach var="role" items="${roles}">
+                        <option value="${role}">${role}</option>
+                    </c:forEach>
+                </select>
                 <input type="submit" value="Apply">
                 <input type="hidden" name="id" value="${current.id}">
             </form>

@@ -23,6 +23,12 @@ public interface Store {
     void addRole(Role role);
 
     /**
+     * Get all current roles.
+     * @return list of roles.
+     */
+    List<Role> getRoles();
+
+    /**
      * Update user in store.
      * @param user user to find.
      * @param update user to update.

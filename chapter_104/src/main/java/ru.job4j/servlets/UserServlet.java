@@ -97,13 +97,13 @@ public class UserServlet extends HttpServlet {
             public Boolean apply(String msg) {
                 boolean result = false;
                 User current = new User(req.getParameter("name"), req.getParameter("login"), req.getParameter("email"));
-                String message;
-                if (logic.update(current, req.getParameter("newname"), req.getParameter("newlogin"), req.getParameter("newemail"))) {
-                    message = "User updated!";
-                    result = true;
-                } else {
-                    message = "User not found!";
-                }
+                String message = "";
+//                if (logic.update(current, req.getParameter("newname"), req.getParameter("newlogin"), req.getParameter("newemail"))) {
+//                    message = "User updated!";
+//                    result = true;
+//                } else {
+//                    message = "User not found!";
+//                }
                 response(message, resp);
                 return result;
             }
@@ -141,7 +141,7 @@ public class UserServlet extends HttpServlet {
      */
     private void initiate(HttpServletRequest req, HttpServletResponse resp) {
         this.load("create", this.createUser(req, resp));
-        this.load("update", this.updateUser(req, resp));
+//        this.load("update", this.updateUser(req, resp));
         this.load("delete", this.deleteUser(req, resp));
     }
 

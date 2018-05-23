@@ -101,12 +101,14 @@ public class MemoryStore implements Store, Closeable {
         }
     }
     /**
-     * Create items table if not exists.
+     * Create tables and builtin users.
+     * Create password encryption extension.
      */
     private void initDB() {
         createRolesTable();
         createUsersTable();
         builtinRoles();
+        pgcrypto();
         builtinUsers();
     }
 
@@ -117,7 +119,7 @@ public class MemoryStore implements Store, Closeable {
         String query = "CREATE TABLE IF NOT EXISTS roles("
                 + "role character varying NOT NULL,"
                 + "administrator boolean NOT NULL,"
-                + "PRIMARY KEY (role))";
+                + "PRIMARY KEY (role));";
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(query);
@@ -152,12 +154,9 @@ public class MemoryStore implements Store, Closeable {
                 + "role character varying NOT NULL,"
                 + "CONSTRAINT users_pkey PRIMARY KEY (id),"
                 + "CONSTRAINT user_role FOREIGN KEY (role)"
-                + "REFERENCES public.roles (role) MATCH SIMPLE)";
-//                + " ON UPDATE NO ACTION"
-//                + " ON DELETE NO ACTION)";
+                + "REFERENCES public.roles (role) MATCH SIMPLE);";
         try (Connection localConnection = dataSource.getConnection();
-//             PreparedStatement statement = localConnection.prepareStatement("CREATE TABLE IF NOT EXISTS users(id character varying NOT NULL, name character varying NOT NULL, login character varying NOT NULL, email character varying NOT NULL, createdate character varying NOT NULL, PRIMARY KEY (id))")) {
-            Statement statement = localConnection.createStatement()) {
+             Statement statement = localConnection.createStatement()) {
             statement.executeUpdate(query);
         } catch (Exception e) {
             e.printStackTrace();
@@ -165,6 +164,7 @@ public class MemoryStore implements Store, Closeable {
     }
 
     /**
+     * Create password encryption extension.
      * Add builtin user at startup.
      */
     private void builtinUsers() {
@@ -176,10 +176,19 @@ public class MemoryStore implements Store, Closeable {
         }
     }
 
+    private void pgcrypto() {
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
+            statement.executeUpdate("CREATE EXTENSION IF NOT EXISTS pgcrypto;");
+        }  catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void add(User user) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO users(id, name, login, email, createdate, password, role) VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT (id) DO NOTHING;")) {
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO users(id, name, login, email, createdate, password, role) VALUES (?, ?, ?, ?, ?, crypt(?, gen_salt('bf')), ?) ON CONFLICT (id) DO NOTHING;")) {
             statement.setString(1, user.getId());
             statement.setString(2, user.getName());
             statement.setString(3, user.getLogin());
@@ -205,6 +214,22 @@ public class MemoryStore implements Store, Closeable {
         }
     }
 
+    @Override
+    public List<Role> getRoles() {
+        List<Role> result = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery("SELECT * FROM roles;")) {
+            while (rs.next()) {
+                result.add(new Role(rs.getString("role"), rs.getBoolean("administrator")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    //TODO add pass & role
     @Override
     public void update(User user, User update) {
         try (Connection connection = dataSource.getConnection();

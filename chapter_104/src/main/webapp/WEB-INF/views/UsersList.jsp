@@ -18,7 +18,7 @@
         <td>login</td>
         <td>email</td>
         <td>createDate</td>
-        <td>role</td>td>
+        <td>role</td>
         <td colspan='2'>
             <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/create" method="GET">
                 <input type='submit' value='Create user'/>
