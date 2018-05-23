@@ -17,6 +17,12 @@ public interface Store {
     void add(User user);
 
     /**
+     * Add role to database.
+     * @param role to add.
+     */
+    void addRole(Role role);
+
+    /**
      * Update user in store.
      * @param user user to find.
      * @param update user to update.

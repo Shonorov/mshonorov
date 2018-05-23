@@ -6,10 +6,7 @@ import java.io.Closeable;
 import java.io.InputStream;
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Persistent layout for web application.
@@ -38,7 +35,7 @@ public class MemoryStore implements Store, Closeable {
             }
             createDatabase(properties.getProperty("hostname"), properties.getProperty("port"), properties.getProperty("database"), properties.getProperty("username"), properties.getProperty("password"));
             dataSource = getDataSource();
-            createTable();
+            initDB();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -106,16 +103,16 @@ public class MemoryStore implements Store, Closeable {
     /**
      * Create items table if not exists.
      */
-    private void createTable() {
+    private void initDB() {
         createRolesTable();
-        try (Connection localConnection = dataSource.getConnection();
-             PreparedStatement statement = localConnection.prepareStatement("CREATE TABLE IF NOT EXISTS users(id character varying NOT NULL, name character varying NOT NULL, login character varying NOT NULL, email character varying NOT NULL, createdate character varying NOT NULL, PRIMARY KEY (id))")) {
-            statement.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        createUsersTable();
+        builtinRoles();
+        builtinUsers();
     }
 
+    /**
+     * Create table for user roles at startup.
+     */
     private void createRolesTable() {
         String query = "CREATE TABLE IF NOT EXISTS roles("
                 + "role character varying NOT NULL,"
@@ -127,42 +124,81 @@ public class MemoryStore implements Store, Closeable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        insertRoles();
     }
 
-    private void insertRoles() {
+    /**
+     * Add builtin roles at startup.
+     */
+    private void builtinRoles() {
+        List<Role> builtin = new ArrayList<>();
+        builtin.add(new Role("administrator", true));
+        builtin.add(new Role("user", false));
+        for (Role role : builtin) {
+            addRole(role);
+        }
+    }
+
+    /**
+     * Create users table at startup.
+     */
+    private void createUsersTable() {
+        String query = "CREATE TABLE IF NOT EXISTS users("
+                + "id character varying NOT NULL,"
+                + "name character varying NOT NULL,"
+                + "login character varying NOT NULL,"
+                + "email character varying NOT NULL,"
+                + "createdate character varying NOT NULL,"
+                + "password character varying NOT NULL,"
+                + "role character varying NOT NULL,"
+                + "CONSTRAINT users_pkey PRIMARY KEY (id),"
+                + "CONSTRAINT user_role FOREIGN KEY (role)"
+                + "REFERENCES public.roles (role) MATCH SIMPLE)";
+//                + " ON UPDATE NO ACTION"
+//                + " ON DELETE NO ACTION)";
+        try (Connection localConnection = dataSource.getConnection();
+//             PreparedStatement statement = localConnection.prepareStatement("CREATE TABLE IF NOT EXISTS users(id character varying NOT NULL, name character varying NOT NULL, login character varying NOT NULL, email character varying NOT NULL, createdate character varying NOT NULL, PRIMARY KEY (id))")) {
+            Statement statement = localConnection.createStatement()) {
+            statement.executeUpdate(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Add builtin user at startup.
+     */
+    private void builtinUsers() {
+        List<User> builtin = new ArrayList<>();
+        builtin.add(new User("0", "admin", "admin", "admin@contoso.com", LocalDateTime.now(), "admin", "administrator"));
+        builtin.add(new User("1", "guest", "guest", "guest@contoso.com", LocalDateTime.now(), "guest", "user"));
+        for (User user : builtin) {
+            add(user);
+        }
+    }
+
+    @Override
+    public void add(User user) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO roles(role, administrator) VALUES (?, ?) ON CONFLICT (role) DO NOTHING;")) {
-            for (Role role : new Roles().getRoles()) {
-                statement.setString(1, role.getRole());
-                statement.setBoolean(2, role.isAdministrator());
-                statement.executeUpdate();
-            }
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO users(id, name, login, email, createdate, password, role) VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT (id) DO NOTHING;")) {
+            statement.setString(1, user.getId());
+            statement.setString(2, user.getName());
+            statement.setString(3, user.getLogin());
+            statement.setString(4, user.getEmail());
+            statement.setString(5, user.getCreateDate().toString());
+            statement.setString(6, user.getPassword());
+            statement.setString(7, user.getRole());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private void createUsersTable() {
-        //TODO
-        String query = "";
-    }
-
-    private void insertUsers() {
-        //TODO
-        String query = "";
-    }
-
     @Override
-    public void add(User user) {
+    public void addRole(Role role) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO users(id, name, login, email, createdate) VALUES (?, ?, ?, ?, ?);")) {
-            statement.setString(1, user.getId());
-            statement.setString(2, user.getName());
-            statement.setString(3, user.getLogin());
-            statement.setString(4, user.getEmail());
-            statement.setString(5, user.getCreateDate().toString());
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO roles(role, administrator) VALUES (?, ?) ON CONFLICT (role) DO NOTHING;")) {
+            statement.setString(1, role.getRole());
+            statement.setBoolean(2, role.isAdministrator());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -203,7 +239,7 @@ public class MemoryStore implements Store, Closeable {
              Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery("SELECT * FROM users;")) {
             while (rs.next()) {
-                User current = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), LocalDateTime.parse(rs.getString(5)));
+                User current = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), LocalDateTime.parse(rs.getString(5)), rs.getString(6), rs.getString(7));
                 result.add(current);
             }
         } catch (SQLException e) {
@@ -220,7 +256,7 @@ public class MemoryStore implements Store, Closeable {
             statement.setString(1, id);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                User current = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), LocalDateTime.parse(rs.getString(5)));
+                User current = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), LocalDateTime.parse(rs.getString(5)), rs.getString(6), rs.getString(7));
                 result = Optional.of(current);
             }
             rs.close();

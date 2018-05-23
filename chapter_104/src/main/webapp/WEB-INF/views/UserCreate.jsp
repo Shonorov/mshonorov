@@ -17,6 +17,7 @@
                 <input type='text' placeholder='Enter name' name='name'>
                 <input type='text' placeholder='Enter login' name='login'>
                 <input type='text' placeholder='Enter email' name='email'>
+                <input type='text' placeholder='Select role' name='role'>
                 <input type='submit' value='Create'>
             </form>
         </td>

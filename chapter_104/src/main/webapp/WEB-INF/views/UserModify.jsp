@@ -19,6 +19,7 @@
                 <input type="text" value="${current.name}" name="newname">
                 <input type="text" value="${current.login}" name="newlogin">
                 <input type="text" value="${current.email}" name="newemail">
+                <input type="text" value="${current.role}" name="newemail">
                 <input type="submit" value="Apply">
                 <input type="hidden" name="id" value="${current.id}">
             </form>

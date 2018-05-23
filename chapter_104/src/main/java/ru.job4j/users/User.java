@@ -13,10 +13,10 @@ public class User {
     private String id;
     private String name;
     private String login;
-    private String password;
-    private Role role;
     private String email;
     private LocalDateTime createDate;
+    private String password;
+    private String role;
 
     public User() {
         this.createDate = LocalDateTime.now();
@@ -29,14 +29,18 @@ public class User {
         this.email = email;
         this.createDate = LocalDateTime.now();
         this.id = createDate.toString() + (short) (Math.random() * 100);
+        this.password = login;
+        this.role = "user";
     }
 
-    public User(String id, String name, String login, String email, LocalDateTime createDate) {
+    public User(String id, String name, String login, String email, LocalDateTime createDate, String password, String role) {
         this.id = id;
         this.name = name;
         this.login = login;
         this.email = email;
         this.createDate = createDate;
+        this.password = password;
+        this.role = role;
     }
 
     public String getId() {
@@ -57,6 +61,14 @@ public class User {
 
     public LocalDateTime getCreateDate() {
         return createDate;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getRole() {
+        return role;
     }
 
     public void setName(String name) {
