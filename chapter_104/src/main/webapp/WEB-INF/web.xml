@@ -59,6 +59,16 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>UsersSignInServlet</servlet-name>
+        <servlet-class>ru.job4j.mvcservlets.UsersSignInServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UsersSignInServlet</servlet-name>
+        <url-pattern>/signin</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>EchoServlet</servlet-name>
         <servlet-class>ru.job4j.servlets.EchoServlet</servlet-class>
     </servlet>

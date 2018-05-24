@@ -229,17 +229,20 @@ public class MemoryStore implements Store, Closeable {
         return result;
     }
 
-    //TODO add pass & role
     @Override
     public void update(User user, User update) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement("UPDATE users SET name=?, login=?, email=? WHERE name=? AND login=? AND email=?;")) {
+             PreparedStatement statement = connection.prepareStatement("UPDATE users SET name=?, login=?, email=?, password=crypt(?, gen_salt('bf')), role=? WHERE name=? AND login=? AND email=? AND role=?;")) {
+            System.out.println(update);
             statement.setString(1, update.getName());
             statement.setString(2, update.getLogin());
             statement.setString(3, update.getEmail());
-            statement.setString(4, user.getName());
-            statement.setString(5, user.getLogin());
-            statement.setString(6, user.getEmail());
+            statement.setString(4, update.getPassword());
+            statement.setString(5, update.getRole());
+            statement.setString(6, user.getName());
+            statement.setString(7, user.getLogin());
+            statement.setString(8, user.getEmail());
+            statement.setString(9, user.getRole());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -283,6 +286,24 @@ public class MemoryStore implements Store, Closeable {
             while (rs.next()) {
                 User current = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), LocalDateTime.parse(rs.getString(5)), rs.getString(6), rs.getString(7));
                 result = Optional.of(current);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public Optional<User> checkCredentials(String login, String password) {
+        Optional<User> result = Optional.empty();
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT id FROM users WHERE login=? AND password = crypt(?, password);")) {
+            statement.setString(1, login);
+            statement.setString(2, password);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                result = findById(rs.getString(1));
             }
             rs.close();
         } catch (SQLException e) {

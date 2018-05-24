@@ -53,4 +53,12 @@ public interface Store {
      * @return Optional of User.
      */
     Optional<User> findById(String id);
+
+    /**
+     * Find user with same credentials.
+     * @param login to check.
+     * @param password to check.
+     * @return optional of user.
+     */
+    Optional<User> checkCredentials(String login, String password);
 }

@@ -123,4 +123,14 @@ public class ValidateService {
         }
         return result;
     }
+
+    /**
+     * Find user with same credentials.
+     * @param login to check.
+     * @param password to check.
+     * @return optional of user.
+     */
+    public Optional<User> authenticate(String login, String password) {
+        return store.checkCredentials(login, password);
+    }
 }

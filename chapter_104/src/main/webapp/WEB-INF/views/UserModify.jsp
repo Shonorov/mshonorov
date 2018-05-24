@@ -19,10 +19,15 @@
                 <input type="text" value="${current.name}" name="newname">
                 <input type="text" value="${current.login}" name="newlogin">
                 <input type="text" value="${current.email}" name="newemail">
-                <input type="text" placeholder='Enter password' name="newepassword">
+                <input type="text" placeholder='Enter new password' name="newepassword">
                 <select name="newrole">
+                    <option value="${current.role}">${current.role}</option>
                     <c:forEach var="role" items="${roles}">
-                        <option value="${role}">${role}</option>
+                        <c:choose>
+                            <c:when test="${role != current.role}">
+                                <option value="${role}">${role}</option>
+                            </c:when>
+                        </c:choose>
                     </c:forEach>
                 </select>
                 <input type="submit" value="Apply">
