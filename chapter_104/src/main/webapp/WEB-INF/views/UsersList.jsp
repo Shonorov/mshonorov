@@ -4,6 +4,10 @@
 <head>
     <title>Users management</title>
 </head>
+<form action="${pageContext.servletContext.contextPath}/signout" method="POST">
+    <c:out value='${sessionScope.login}'/> : <c:out value='${sessionScope.role}'/>
+    <input type='submit' value='Sign out'/>
+</form>
 <style>
     table, th, td {
         border: 1px solid black;

@@ -1,5 +1,6 @@
 package ru.job4j.mvcservlets;
 
+import ru.job4j.users.User;
 import ru.job4j.users.ValidateService;
 
 import javax.servlet.ServletException;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Servlet for users login.
@@ -26,9 +28,12 @@ public class UsersSignInServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-        if (ValidateService.getInstance().authenticate(login, password).isPresent()) {
+        Optional<User> current = ValidateService.getInstance().authenticate(login, password);
+        if (current.isPresent()) {
             HttpSession session = req.getSession();
             session.setAttribute("login", login);
+            session.setAttribute("id", current.get().getId());
+            session.setAttribute("role", current.get().getRole());
             resp.sendRedirect(String.format("%s/", req.getContextPath()));
         } else {
             req.setAttribute("error", "Invalid credentials!");

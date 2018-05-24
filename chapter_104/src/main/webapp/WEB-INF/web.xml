@@ -1,4 +1,23 @@
 <web-app>
+
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>ru.job4j.mvcservlets.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>RoleFilter</filter-name>
+        <filter-class>ru.job4j.mvcservlets.RoleFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>RoleFilter</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
+
     <!--<servlet>-->
         <!--<servlet-name>UsersServlet</servlet-name>-->
         <!--<servlet-class>ru.job4j.servlets.UsersServlet</servlet-class>-->
@@ -66,6 +85,15 @@
     <servlet-mapping>
         <servlet-name>UsersSignInServlet</servlet-name>
         <url-pattern>/signin</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserSignOutServlet</servlet-name>
+        <servlet-class>ru.job4j.mvcservlets.UserSignOutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserSignOutServlet</servlet-name>
+        <url-pattern>/signout</url-pattern>
     </servlet-mapping>
 
     <servlet>
