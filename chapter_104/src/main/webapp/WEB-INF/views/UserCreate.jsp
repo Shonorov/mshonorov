@@ -17,20 +17,27 @@
 <p>Create new user:</p>
 <table>
     <tr>
-        <td>
-            <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/create" method="POST">
-                <input type='text' placeholder='Enter name' name='name'>
-                <input type='text' placeholder='Enter login' name='login'>
-                <input type='text' placeholder='Enter email' name='email'>
-                <input type='text' placeholder='Enter password' name='password'>
-                <select name="role">
-                    <c:forEach var="role" items="${roles}">
-                        <option value="${role}">${role}</option>
-                    </c:forEach>
-                </select>
-                <input type='submit' value='Create'>
-            </form>
-        </td>
+        <td>Name</td>
+        <td>Login</td>
+        <td>Email</td>
+        <td>Password</td>
+        <td>Role</td>
+        <td></td>
+    </tr>
+    <tr>
+        <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/create" method="POST">
+            <td><input type='text' placeholder='Enter name' name='name'></td>
+            <td><input type='text' placeholder='Enter login' name='login'></td>
+            <td><input type='text' placeholder='Enter email' name='email'></td>
+            <td> <input type='text' placeholder='Enter password' name='password'></td>
+            <td><select name="role">
+                <c:forEach var="role" items="${roles}">
+                    <option value="${role}">${role}</option>
+                </c:forEach>
+            </select>
+            <td><input type='submit' value='Create'></td>
+        </form>
+
     </tr>
 </table>
 <td>

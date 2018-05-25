@@ -19,33 +19,44 @@ public class RoleFilter implements Filter {
 
     }
 
-    //TODO Role filter.
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
-        HttpSession session = req.getSession();
-        String role = (String) req.getSession().getAttribute("role");
-        String id = (String) req.getSession().getAttribute("id");
-        System.out.println("Session " + session.getAttribute("id"));
-        System.out.println("Request1 " + req.getAttribute("id"));
-        System.out.println("Request2 " + servletRequest.getAttribute("id"));
 
-        if (role.equals("user")) {
-            if (req.getRequestURI().contains("/create")) {
-                req.setAttribute("error", "Access denied!");
-                resp.sendRedirect(String.format("%s/", req.getContextPath()));
+        HttpSession session = req.getSession();
+        if (req.getRequestURI().contains("/signin") || req.getRequestURI().contains("/signout")) {
+            filterChain.doFilter(servletRequest, servletResponse);
+        } else {
+            String role = (String) req.getSession().getAttribute("role");
+            String id = (String) req.getSession().getAttribute("id");
+            if (role.equals("user")) {
+                if (req.getRequestURI().contains("/create")) {
+                    session.setAttribute("error", "Access denied!");
+                    resp.sendRedirect(String.format("%s/", req.getContextPath()));
+                    return;
+                }
+                if (req.getRequestURI().contains("/edit")) {
+                    if (!id.equals(req.getParameter("id"))) {
+                        session.setAttribute("error", "Access denied!");
+                        resp.sendRedirect(String.format("%s/", req.getContextPath()));
+                        return;
+                    }
+
+                    if (req.getMethod().equals("POST") && !req.getParameter("newrole").equals("user")) {
+                        session.setAttribute("error", "Access denied!");
+                        resp.sendRedirect(String.format("%s/", req.getContextPath()));
+                        return;
+                    }
+                }
+                if (req.getRequestURI().equals("/users/") && req.getMethod().equals("POST")) {
+                    session.setAttribute("error", "Access denied!");
+                    resp.sendRedirect(String.format("%s/", req.getContextPath()));
+                    return;
+                }
             }
-            if (req.getRequestURI().contains("/edit") && !id.equals(req.getAttribute("id"))) {
-                req.setAttribute("error", "Access denied!");
-                resp.sendRedirect(String.format("%s/", req.getContextPath()));
-            }
-            if (req.getRequestURI().contains("/delete")) {
-                req.setAttribute("error", "Access denied!");
-                resp.sendRedirect(String.format("%s/", req.getContextPath()));
-            }
+            filterChain.doFilter(servletRequest, servletResponse);
         }
-        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override

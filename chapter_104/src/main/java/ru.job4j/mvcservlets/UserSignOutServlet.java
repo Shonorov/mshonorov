@@ -30,10 +30,10 @@ public class UserSignOutServlet extends HttpServlet {
                 + "<p>"
                 + "Sign out success!<br/>"
                 + "Redirecting to sign in..."
-                + "</p>"
-                + "Sign in:<a href='"
+                + "<a href='"
                 + req.getContextPath()
                 + "/signin'>link</a>."
+                + "</p>"
                 + "</body>"
                 + "</html>").flush();
     }

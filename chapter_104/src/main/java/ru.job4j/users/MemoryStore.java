@@ -233,7 +233,6 @@ public class MemoryStore implements Store, Closeable {
     public void update(User user, User update) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement("UPDATE users SET name=?, login=?, email=?, password=crypt(?, gen_salt('bf')), role=? WHERE name=? AND login=? AND email=? AND role=?;")) {
-            System.out.println(update);
             statement.setString(1, update.getName());
             statement.setString(2, update.getLogin());
             statement.setString(3, update.getEmail());

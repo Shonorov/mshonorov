@@ -18,27 +18,32 @@
 <c:set var="current" value="${user}"/>
 <table>
     <tr>
-        <td>
-            <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/edit" method="POST">
-                <input type="text" value="${current.name}" name="newname">
-                <input type="text" value="${current.login}" name="newlogin">
-                <input type="text" value="${current.email}" name="newemail">
-                <input type="text" placeholder='Enter new password' name="newepassword">
-                <select name="newrole">
-                    <option value="${current.role}">${current.role}</option>
-                    <c:forEach var="role" items="${roles}">
-                        <c:choose>
-                            <c:when test="${role != current.role}">
-                                <option value="${role}">${role}</option>
-                            </c:when>
-                        </c:choose>
-                    </c:forEach>
-                </select>
-                <input type="submit" value="Apply">
-                <input type="hidden" name="id" value="${current.id}">
-            </form>
-        </td>
-
+        <td>Name</td>
+        <td>Login</td>
+        <td>Email</td>
+        <td>Password</td>
+        <td>Role</td>
+        <td></td>
+    </tr>
+    <tr>
+        <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/edit" method="POST">
+            <td><input type="text" value="${current.name}" name="newname"></td>
+            <td><input type="text" value="${current.login}" name="newlogin"></td>
+            <td><input type="text" value="${current.email}" name="newemail"></td>
+            <td><input type="text" placeholder='Enter new password' name="newpassword"></td>
+            <td><select name="newrole">
+                <option value="${current.role}">${current.role}</option>
+                <c:forEach var="role" items="${roles}">
+                    <c:choose>
+                        <c:when test="${role != current.role}">
+                            <option value="${role}">${role}</option>
+                        </c:when>
+                    </c:choose>
+                </c:forEach>
+            </select>
+            <td><input type="submit" value="Apply"></td>
+            <input type="hidden" name="id" value="${current.id}">
+        </form>
     </tr>
 </table>
 <td>

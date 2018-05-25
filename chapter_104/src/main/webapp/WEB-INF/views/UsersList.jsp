@@ -15,14 +15,20 @@
 </style>
 <body>
 <p>All users list:</p>
+<c:if test="${error !=null}">
+    <div style="background-color: red">
+        <c:out value="${error}"/>
+    </div>
+</c:if>
+<c:set var="error" value="${null}" scope="session"  />
 <table>
     <tr>
-        <td>id</td>
-        <td>name</td>
-        <td>login</td>
-        <td>email</td>
-        <td>createDate</td>
-        <td>role</td>
+        <td>ID</td>
+        <td>Name</td>
+        <td>Login</td>
+        <td>Email</td>
+        <td>CreateDate</td>
+        <td>Role</td>
         <td colspan='2'>
             <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/create" method="GET">
                 <input type='submit' value='Create user'/>
