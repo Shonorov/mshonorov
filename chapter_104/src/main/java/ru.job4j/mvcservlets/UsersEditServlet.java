@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * Servlet for user modification.
@@ -34,22 +33,8 @@ public class UsersEditServlet extends HttpServlet {
         } else {
             message = "User already exists!";
         }
-        PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        writer.append("<html> "
-                + "<head>"
-                + "<title>User created!</title>"
-                + "<meta http-equiv='Refresh' content='2;"
-                + req.getContextPath()
-                + "/'>"
-                + "</head>"
-                + "<body bgcolor='White' text='Navy'>"
-                + "<p>"
-                + message
-                + "</p>"
-                + "To users list:<a href='"
-                + req.getContextPath()
-                + "/'>link</a>."
-                + "</body>"
-                + "</html>").flush();
+        req.setAttribute("message", message);
+        req.setAttribute("redirect", "edit");
+        req.getRequestDispatcher("/WEB-INF/views/Redirect.jsp").forward(req, resp);
     }
 }

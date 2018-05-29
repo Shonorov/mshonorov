@@ -7,9 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * Servlet for users output.
@@ -34,18 +32,8 @@ public class UsersListServlet extends HttpServlet {
         } else {
             message = "User not found!";
         }
-        PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        writer.append("<html> "
-                + "<head>"
-                + "<title>User created!</title>"
-                + "<meta http-equiv='Refresh' content='2'> "
-                + "</head>"
-                + "<body bgcolor='White' text='Navy'>"
-                + "<p>" + message + "</p>"
-                + "To users list:<a href='"
-                + req.getContextPath()
-                + "/'>link</a>."
-                + "</body>"
-                + "</html>").flush();
+        req.setAttribute("message", message);
+        req.setAttribute("redirect", "");
+        req.getRequestDispatcher("/WEB-INF/views/Redirect.jsp").forward(req, resp);
     }
 }

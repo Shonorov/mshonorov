@@ -113,6 +113,15 @@ public class ValidateService {
     }
 
     /**
+     * Find User by login.
+     * @param login to find.
+     * @return Optional of user.
+     */
+    public Optional<User> findByLogin(String login) {
+        return store.findByLogin(login);
+    }
+
+    /**
      * Get roles list.
      * @return list of all roles.
      */

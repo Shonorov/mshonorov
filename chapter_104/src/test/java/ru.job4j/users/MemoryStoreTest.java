@@ -39,4 +39,14 @@ public class MemoryStoreTest {
         store.delete(user4);
         assertFalse(store.findAll().contains(user4));
     }
+
+    @Test
+    public void whenFindByNameThenDelete() {
+        MemoryStore store = new MemoryStore("users.properties");
+        User user5 = new User("user5", "user5", "user5@contoso.com");
+        store.add(user5);
+        assertThat(store.findByLogin("user5").get(), is(user5));
+        store.delete(user5);
+        assertFalse(store.findAll().contains(user5));
+    }
 }

@@ -55,6 +55,13 @@ public interface Store {
     Optional<User> findById(String id);
 
     /**
+     * Find User by its login.
+     * @param login to search.
+     * @return Optional of User.
+     */
+    Optional<User> findByLogin(String login);
+
+    /**
      * Find user with same credentials.
      * @param login to check.
      * @param password to check.

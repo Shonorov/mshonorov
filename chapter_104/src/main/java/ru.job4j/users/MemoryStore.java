@@ -294,6 +294,24 @@ public class MemoryStore implements Store, Closeable {
     }
 
     @Override
+    public Optional<User> findByLogin(String login) {
+        Optional<User> result = Optional.empty();
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE login=?;")) {
+            statement.setString(1, login);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                User current = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), LocalDateTime.parse(rs.getString(5)), rs.getString(6), rs.getString(7));
+                result = Optional.of(current);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
     public Optional<User> checkCredentials(String login, String password) {
         Optional<User> result = Optional.empty();
         try (Connection connection = dataSource.getConnection();

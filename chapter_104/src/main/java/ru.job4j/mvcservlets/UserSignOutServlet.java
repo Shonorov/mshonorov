@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * Servlet for user signing out.
@@ -18,23 +17,8 @@ public class UserSignOutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getSession().invalidate();
-        PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        writer.append("<html> "
-                + "<head>"
-                + "<title>User created!</title>"
-                + "<meta http-equiv='Refresh' content='2;"
-                + req.getContextPath()
-                + "/signin'>"
-                + "</head>"
-                + "<body bgcolor='White' text='Navy'>"
-                + "<p>"
-                + "Sign out success!<br/>"
-                + "Redirecting to sign in..."
-                + "<a href='"
-                + req.getContextPath()
-                + "/signin'>link</a>."
-                + "</p>"
-                + "</body>"
-                + "</html>").flush();
+        req.setAttribute("message", "Logging out...");
+        req.setAttribute("redirect", "signin");
+        req.getRequestDispatcher("/WEB-INF/views/Redirect.jsp").forward(req, resp);
     }
 }
