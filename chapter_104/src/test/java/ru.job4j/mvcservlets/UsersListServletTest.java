@@ -20,17 +20,23 @@ import static org.mockito.Mockito.*;
 public class UsersListServletTest {
 
     @Test
-    public void whenGetThenForward() throws ServletException, IOException {
+    public void whenGetThenForward() {
         String path = "/WEB-INF/views/UsersList.jsp";
         UsersListServlet servlet = new UsersListServlet();
         HttpServletRequest request = mock(HttpServletRequest.class);
         RequestDispatcher dispatcher = mock(RequestDispatcher.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         when(request.getRequestDispatcher(path)).thenReturn(dispatcher);
-        servlet.doGet(request, response);
+        try {
+            servlet.doGet(request, response);
+            verify(dispatcher).forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         verify(request, times(1)).getRequestDispatcher(path);
         verify(request, never()).getSession();
-        verify(dispatcher).forward(request, response);
     }
 
     @Test
@@ -53,8 +59,8 @@ public class UsersListServletTest {
             e.printStackTrace();
         }
         verify(request, atLeast(1)).getParameter("id");
-        verify(request, atLeast(1)).setAttribute("message","User deleted!");
-        verify(request, atLeast(1)).setAttribute("redirect","");
+        verify(request, atLeast(1)).setAttribute("message", "User deleted!");
+        verify(request, atLeast(1)).setAttribute("redirect", "");
         assertFalse(ValidateService.getInstance().findAll().contains(user));
     }
 }

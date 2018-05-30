@@ -35,7 +35,7 @@ public class UserSignOutServletTest {
             e.printStackTrace();
         }
         verify(session, atLeast(1)).invalidate();
-        verify(request, atLeast(1)).setAttribute("message","Logging out...");
-        verify(request, atLeast(1)).setAttribute("redirect","signin");
+        verify(request, atLeast(1)).setAttribute("message", "Logging out...");
+        verify(request, atLeast(1)).setAttribute("redirect", "signin");
     }
 }

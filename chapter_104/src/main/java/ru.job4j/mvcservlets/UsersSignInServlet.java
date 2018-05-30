@@ -37,7 +37,7 @@ public class UsersSignInServlet extends HttpServlet {
             resp.sendRedirect(String.format("%s/", req.getContextPath()));
         } else {
             req.setAttribute("error", "Invalid credentials!");
-            doGet(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/UserSignIn.jsp").forward(req, resp);
         }
     }
 }
