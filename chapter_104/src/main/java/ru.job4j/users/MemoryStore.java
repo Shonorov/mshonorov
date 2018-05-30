@@ -1,5 +1,14 @@
 package ru.job4j.users;
 
+import liquibase.Contexts;
+import liquibase.LabelExpression;
+import liquibase.Liquibase;
+import liquibase.database.Database;
+import liquibase.database.DatabaseFactory;
+import liquibase.database.jvm.JdbcConnection;
+import liquibase.exception.DatabaseException;
+import liquibase.exception.LiquibaseException;
+import liquibase.resource.ClassLoaderResourceAccessor;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.io.Closeable;
@@ -35,7 +44,9 @@ public class MemoryStore implements Store, Closeable {
             }
             createDatabase(properties.getProperty("hostname"), properties.getProperty("port"), properties.getProperty("database"), properties.getProperty("username"), properties.getProperty("password"));
             dataSource = getDataSource();
-            initDB();
+            pgcrypto();
+            liquibaseUpdate();
+//            initDB();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -75,6 +86,23 @@ public class MemoryStore implements Store, Closeable {
     }
 
     /**
+     * Update database structure with liquibase plugin.
+     */
+    private void liquibaseUpdate() {
+        try (Connection connection = dataSource.getConnection()) {
+            Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
+            Liquibase liquibase = new liquibase.Liquibase("db.changelog-master.xml", new ClassLoaderResourceAccessor(), database);
+            liquibase.update(new Contexts(), new LabelExpression());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        } catch (LiquibaseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Connect to the server and create database if such no present.
      * @param hostname server.
      * @param port TCP port.
@@ -100,81 +128,81 @@ public class MemoryStore implements Store, Closeable {
             e.printStackTrace();
         }
     }
-    /**
-     * Create tables and builtin users.
-     * Create password encryption extension.
-     */
-    private void initDB() {
-        createRolesTable();
-        createUsersTable();
-        builtinRoles();
-        pgcrypto();
-        builtinUsers();
-    }
-
-    /**
-     * Create table for user roles at startup.
-     */
-    private void createRolesTable() {
-        String query = "CREATE TABLE IF NOT EXISTS roles("
-                + "role character varying NOT NULL,"
-                + "administrator boolean NOT NULL,"
-                + "PRIMARY KEY (role));";
-        try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Add builtin roles at startup.
-     */
-    private void builtinRoles() {
-        List<Role> builtin = new ArrayList<>();
-        builtin.add(new Role("administrator", true));
-        builtin.add(new Role("user", false));
-        for (Role role : builtin) {
-            addRole(role);
-        }
-    }
-
-    /**
-     * Create users table at startup.
-     */
-    private void createUsersTable() {
-        String query = "CREATE TABLE IF NOT EXISTS users("
-                + "id character varying NOT NULL,"
-                + "name character varying NOT NULL,"
-                + "login character varying NOT NULL,"
-                + "email character varying NOT NULL,"
-                + "createdate character varying NOT NULL,"
-                + "password character varying NOT NULL,"
-                + "role character varying NOT NULL,"
-                + "CONSTRAINT users_pkey PRIMARY KEY (id),"
-                + "CONSTRAINT user_role FOREIGN KEY (role)"
-                + "REFERENCES public.roles (role) MATCH SIMPLE);";
-        try (Connection localConnection = dataSource.getConnection();
-             Statement statement = localConnection.createStatement()) {
-            statement.executeUpdate(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Create password encryption extension.
-     * Add builtin user at startup.
-     */
-    private void builtinUsers() {
-        List<User> builtin = new ArrayList<>();
-        builtin.add(new User("0", "admin", "admin", "admin@contoso.com", LocalDateTime.now(), "admin", "administrator"));
-        builtin.add(new User("1", "guest", "guest", "guest@contoso.com", LocalDateTime.now(), "guest", "user"));
-        for (User user : builtin) {
-            add(user);
-        }
-    }
+//    /**
+//     * Create tables and builtin users.
+//     * Create password encryption extension.
+//     */
+//    private void initDB() {
+//        createRolesTable();
+//        createUsersTable();
+//        builtinRoles();
+//        pgcrypto();
+//        builtinUsers();
+//    }
+//
+//    /**
+//     * Create table for user roles at startup.
+//     */
+//    private void createRolesTable() {
+//        String query = "CREATE TABLE IF NOT EXISTS roles("
+//                + "role character varying NOT NULL,"
+//                + "administrator boolean NOT NULL,"
+//                + "PRIMARY KEY (role));";
+//        try (Connection connection = dataSource.getConnection();
+//             Statement statement = connection.createStatement()) {
+//            statement.executeUpdate(query);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    /**
+//     * Add builtin roles at startup.
+//     */
+//    private void builtinRoles() {
+//        List<Role> builtin = new ArrayList<>();
+//        builtin.add(new Role("administrator", true));
+//        builtin.add(new Role("user", false));
+//        for (Role role : builtin) {
+//            addRole(role);
+//        }
+//    }
+//
+//    /**
+//     * Create users table at startup.
+//     */
+//    private void createUsersTable() {
+//        String query = "CREATE TABLE IF NOT EXISTS users("
+//                + "id character varying NOT NULL,"
+//                + "name character varying NOT NULL,"
+//                + "login character varying NOT NULL,"
+//                + "email character varying NOT NULL,"
+//                + "createdate character varying NOT NULL,"
+//                + "password character varying NOT NULL,"
+//                + "role character varying NOT NULL,"
+//                + "CONSTRAINT users_pkey PRIMARY KEY (id),"
+//                + "CONSTRAINT user_role FOREIGN KEY (role)"
+//                + "REFERENCES public.roles (role) MATCH SIMPLE);";
+//        try (Connection localConnection = dataSource.getConnection();
+//             Statement statement = localConnection.createStatement()) {
+//            statement.executeUpdate(query);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    /**
+//     * Create password encryption extension.
+//     * Add builtin user at startup.
+//     */
+//    private void builtinUsers() {
+//        List<User> builtin = new ArrayList<>();
+//        builtin.add(new User("0", "admin", "admin", "admin@contoso.com", LocalDateTime.now(), "admin", "administrator"));
+//        builtin.add(new User("1", "guest", "guest", "guest@contoso.com", LocalDateTime.now(), "guest", "user"));
+//        for (User user : builtin) {
+//            add(user);
+//        }
+//    }
 
     private void pgcrypto() {
         try (Connection connection = dataSource.getConnection();
