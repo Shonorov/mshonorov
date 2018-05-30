@@ -1,4 +1,5 @@
 package ru.job4j.mvcservlets;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 import ru.job4j.users.User;
@@ -8,7 +9,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 import static org.mockito.Mockito.*;
 
 /**
@@ -54,6 +54,13 @@ public class UsersCreateServletTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        verify(request, atLeast(1)).getParameter("name");
+        verify(request, atLeast(1)).getParameter("login");
+        verify(request, atLeast(1)).getParameter("email");
+        verify(request, atLeast(1)).getParameter("password");
+        verify(request, atLeast(1)).getParameter("role");
+        verify(request, atLeast(1)).setAttribute("message","User created!");
+        verify(request, atLeast(1)).setAttribute("redirect","create");
         assertTrue(ValidateService.getInstance().findAll().contains(expect));
         ValidateService.getInstance().delete(ValidateService.getInstance().findByLogin("login").get());
         assertFalse(ValidateService.getInstance().findAll().contains(expect));

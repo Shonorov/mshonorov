@@ -1,21 +1,14 @@
 package ru.job4j.mvcservlets;
 
-import org.junit.Before;
 import org.junit.Test;
 import ru.job4j.users.User;
 import ru.job4j.users.ValidateService;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.util.List;
-
-import static org.hamcrest.core.Is.is;
+import java.time.LocalDateTime;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -42,10 +35,26 @@ public class UsersListServletTest {
 
     @Test
     public void whenPostThenDelete() {
+        String path = "/WEB-INF/views/Redirect.jsp";
         UsersListServlet servlet = new UsersListServlet();
         HttpServletRequest request = mock(HttpServletRequest.class);
-        RequestDispatcher dispatcher = mock(RequestDispatcher.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
-        //TODO
+        RequestDispatcher dispatcher = mock(RequestDispatcher.class);
+        when(request.getParameter("id")).thenReturn("21");
+        when(request.getRequestDispatcher(path)).thenReturn(dispatcher);
+        User user = new User("21", "name", "login", "email", LocalDateTime.now(), "password", "user");
+        ValidateService.getInstance().add(user);
+        try {
+            servlet.doPost(request, response);
+            verify(dispatcher).forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        verify(request, atLeast(1)).getParameter("id");
+        verify(request, atLeast(1)).setAttribute("message","User deleted!");
+        verify(request, atLeast(1)).setAttribute("redirect","");
+        assertFalse(ValidateService.getInstance().findAll().contains(user));
     }
 }
