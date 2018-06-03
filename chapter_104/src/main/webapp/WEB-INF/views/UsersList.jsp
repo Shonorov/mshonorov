@@ -29,6 +29,8 @@
         <td>Email</td>
         <td>CreateDate</td>
         <td>Role</td>
+        <td>Country</td>
+        <td>City</td>
         <td colspan='2'>
             <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/create" method="GET">
                 <input type='submit' value='Create user'/>
@@ -43,6 +45,8 @@
         <td>${user.email}</td>
         <td>${user.createDate}</td>
         <td>${user.role}</td>
+        <td>${user.country}</td>
+        <td>${user.city}</td>
         <td>
             <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/edit" method="GET">
                 <input type="hidden" name="id" value="${user.id}">

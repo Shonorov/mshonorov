@@ -16,11 +16,11 @@ public interface Store {
      */
     void add(User user);
 
-    /**
-     * Add role to database.
-     * @param role to add.
-     */
-    void addRole(Role role);
+//    /**
+//     * Add role to database.
+//     * @param role to add.
+//     */
+//    void addRole(Role role);
 
     /**
      * Get all current roles.
@@ -68,4 +68,17 @@ public interface Store {
      * @return optional of user.
      */
     Optional<User> checkCredentials(String login, String password);
+
+    /**
+     * Get list of countries from database.
+     * @return list of all countries.
+     */
+    List<Country> getCountries();
+
+    /**
+     * Get list of cities in one country.
+     * @param countryID to find.
+     * @return list of cities.
+     */
+    List<City> getCitiesByCountryID(String countryID);
 }
