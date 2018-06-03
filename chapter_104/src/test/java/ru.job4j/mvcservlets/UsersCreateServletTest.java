@@ -50,8 +50,10 @@ public class UsersCreateServletTest {
         when(request.getParameter("email")).thenReturn("email");
         when(request.getParameter("password")).thenReturn("password");
         when(request.getParameter("role")).thenReturn("user");
+        when(request.getParameter("country")).thenReturn("Russia");
+        when(request.getParameter("city")).thenReturn("Moscow");
         when(request.getRequestDispatcher(path)).thenReturn(dispatcher);
-        User expect = new User("name", "login", "email", "password", "user");
+        User expect = new User("name", "login", "email", "password", "user", "Russia", "Moscow");
         try {
             servlet.doPost(request, response);
             verify(dispatcher).forward(request, response);

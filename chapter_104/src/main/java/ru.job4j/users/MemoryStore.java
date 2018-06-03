@@ -45,7 +45,7 @@ public class MemoryStore implements Store, Closeable {
             createDatabase(properties.getProperty("hostname"), properties.getProperty("port"), properties.getProperty("database"), properties.getProperty("username"), properties.getProperty("password"));
             dataSource = getDataSource();
             pgcrypto();
-            liquibaseUpdate();
+//            liquibaseUpdate();
 //            initDB();
         } catch (Exception e) {
             e.printStackTrace();
@@ -216,7 +216,7 @@ public class MemoryStore implements Store, Closeable {
     @Override
     public void add(User user) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO users(id, name, login, email, createdate, password, role) VALUES (?, ?, ?, ?, ?, crypt(?, gen_salt('bf')), ?) ON CONFLICT (id) DO NOTHING;")) {
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO users(id, name, login, email, createdate, password, role, country_id, city_id) VALUES (?, ?, ?, ?, ?, crypt(?, gen_salt('bf')), ?, ?, ?) ON CONFLICT (id) DO NOTHING;")) {
             statement.setString(1, user.getId());
             statement.setString(2, user.getName());
             statement.setString(3, user.getLogin());
@@ -224,23 +224,25 @@ public class MemoryStore implements Store, Closeable {
             statement.setString(5, user.getCreateDate().toString());
             statement.setString(6, user.getPassword());
             statement.setString(7, user.getRole());
+            statement.setString(8, user.getCountry());
+            statement.setString(9, user.getCity());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    @Override
-    public void addRole(Role role) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO roles(role, administrator) VALUES (?, ?) ON CONFLICT (role) DO NOTHING;")) {
-            statement.setString(1, role.getRole());
-            statement.setBoolean(2, role.isAdministrator());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+//    @Override
+//    public void addRole(Role role) {
+//        try (Connection connection = dataSource.getConnection();
+//             PreparedStatement statement = connection.prepareStatement("INSERT INTO roles(role, administrator) VALUES (?, ?) ON CONFLICT (role) DO NOTHING;")) {
+//            statement.setString(1, role.getRole());
+//            statement.setBoolean(2, role.isAdministrator());
+//            statement.executeUpdate();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     public List<Role> getRoles() {
@@ -260,16 +262,20 @@ public class MemoryStore implements Store, Closeable {
     @Override
     public void update(User user, User update) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement("UPDATE users SET name=?, login=?, email=?, password=crypt(?, gen_salt('bf')), role=? WHERE name=? AND login=? AND email=? AND role=?;")) {
+             PreparedStatement statement = connection.prepareStatement("UPDATE users SET name=?, login=?, email=?, password=crypt(?, gen_salt('bf')), role=?, country_id=?, city_id=? WHERE name=? AND login=? AND email=? AND role=? AND country_id=? AND city_id=?;")) {
             statement.setString(1, update.getName());
             statement.setString(2, update.getLogin());
             statement.setString(3, update.getEmail());
             statement.setString(4, update.getPassword());
             statement.setString(5, update.getRole());
-            statement.setString(6, user.getName());
-            statement.setString(7, user.getLogin());
-            statement.setString(8, user.getEmail());
-            statement.setString(9, user.getRole());
+            statement.setString(6, update.getCountry());
+            statement.setString(7, update.getCity());
+            statement.setString(8, user.getName());
+            statement.setString(9, user.getLogin());
+            statement.setString(10, user.getEmail());
+            statement.setString(11, user.getRole());
+            statement.setString(12, user.getCountry());
+            statement.setString(13, user.getCity());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -294,7 +300,7 @@ public class MemoryStore implements Store, Closeable {
              Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery("SELECT * FROM users;")) {
             while (rs.next()) {
-                User current = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), LocalDateTime.parse(rs.getString(5)), rs.getString(6), rs.getString(7));
+                User current = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), LocalDateTime.parse(rs.getString(5)), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9));
                 result.add(current);
             }
         } catch (SQLException e) {
@@ -311,7 +317,7 @@ public class MemoryStore implements Store, Closeable {
             statement.setString(1, id);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                User current = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), LocalDateTime.parse(rs.getString(5)), rs.getString(6), rs.getString(7));
+                User current = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), LocalDateTime.parse(rs.getString(5)), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9));
                 result = Optional.of(current);
             }
             rs.close();
@@ -329,7 +335,7 @@ public class MemoryStore implements Store, Closeable {
             statement.setString(1, login);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                User current = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), LocalDateTime.parse(rs.getString(5)), rs.getString(6), rs.getString(7));
+                User current = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), LocalDateTime.parse(rs.getString(5)), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9));
                 result = Optional.of(current);
             }
             rs.close();
@@ -355,5 +361,125 @@ public class MemoryStore implements Store, Closeable {
             e.printStackTrace();
         }
         return result;
+    }
+
+    @Override
+    public List<Country> getCountries() {
+        List<Country> countries = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM country;")) {
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Country current = new Country(rs.getString(1), rs.getString(2));
+                countries.add(current);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return countries;
+    }
+
+    @Override
+    public List<City> getCitiesByCountryName(String name) {
+        List<City> cities = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM city WHERE country_id=?;")) {
+            statement.setString(1, name);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                City current = new City(rs.getString(1), rs.getString(2), rs.getString(3));
+                cities.add(current);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cities;
+    }
+
+    @Override
+    public List<City> getCities() {
+        List<City> cities = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM city;")) {
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                City current = new City(rs.getString(1), rs.getString(2), rs.getString(3));
+                cities.add(current);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cities;
+    }
+
+    @Override
+    public String getCountryID(String name) {
+        String id = "";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT id FROM country WHERE name=?;")) {
+            statement.setString(1, name);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                id = rs.getString(1);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
+    @Override
+    public String getCityID(String name) {
+        String id = "";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT id FROM city WHERE name=?;")) {
+            statement.setString(1, name);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                id = rs.getString(1);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
+    @Override
+    public String getCountryName(String id) {
+        String name = "";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT name FROM country WHERE id=?;")) {
+            statement.setString(1, id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                name = rs.getString(1);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return name;
+    }
+
+    @Override
+    public String getCityName(String id) {
+        String name = "";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT name FROM city WHERE id=?;")) {
+            statement.setString(1, id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                name = rs.getString(1);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return name;
     }
 }

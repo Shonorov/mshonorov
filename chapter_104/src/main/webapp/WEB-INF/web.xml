@@ -67,4 +67,19 @@
         <url-pattern>/signout</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>CountryAjaxServlet</servlet-name>
+        <servlet-class>ru.job4j.mvcservlets.CountryAjaxServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CountryAjaxServlet</servlet-name>
+        <url-pattern>/country</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.css</url-pattern>
+        <url-pattern>*.jpg</url-pattern>
+    </servlet-mapping>
+
 </web-app>

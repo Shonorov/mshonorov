@@ -1,6 +1,8 @@
 package ru.job4j.mvcservlets;
 
 import org.junit.Test;
+import ru.job4j.users.City;
+import ru.job4j.users.Country;
 import ru.job4j.users.User;
 import ru.job4j.users.ValidateService;
 import javax.servlet.RequestDispatcher;
@@ -32,7 +34,9 @@ public class UsersEditServletTest {
         when(request.getRequestDispatcher(path)).thenReturn(dispatcher);
         when(request.getParameter("id")).thenReturn("1");
         List<String> roles = ValidateService.getInstance().findRoles();
-        User user = ValidateService.getInstance().findById("1").get();
+        User user = ValidateService.getInstance().findByIdView("1").get();
+        List<Country> countries = ValidateService.getInstance().getCountries();
+        List<City> cities = ValidateService.getInstance().getCities();
         try {
             servlet.doGet(request, response);
             verify(dispatcher).forward(request, response);
@@ -43,6 +47,8 @@ public class UsersEditServletTest {
         }
         verify(request, atLeast(1)).setAttribute("roles", roles);
         verify(request, atLeast(1)).setAttribute("user", user);
+        verify(request, atLeast(1)).setAttribute("countries", countries);
+        verify(request, atLeast(1)).setAttribute("cities", cities);
         verify(request, times(1)).getRequestDispatcher(path);
         verify(request, never()).getSession();
     }
@@ -60,9 +66,11 @@ public class UsersEditServletTest {
         when(request.getParameter("newemail")).thenReturn("newemail");
         when(request.getParameter("newpassword")).thenReturn("newpassword");
         when(request.getParameter("newrole")).thenReturn("user");
+        when(request.getParameter("newcountry")).thenReturn("Ukraine");
+        when(request.getParameter("newcity")).thenReturn("Kiev");
         when(request.getRequestDispatcher(path)).thenReturn(dispatcher);
-        User add = new User("20", "name", "login", "email", LocalDateTime.now(), "password", "user");
-        User replace = new User("newname", "newlogin", "newemail", "newpassword", "user");
+        User add = new User("20", "name", "login", "email", LocalDateTime.now(), "password", "user", "Russia", "Moscow");
+        User replace = new User("newname", "newlogin", "newemail", "newpassword", "user", "Ukraine", "Kiev");
         ValidateService.getInstance().add(add);
         try {
             servlet.doPost(request, response);
@@ -78,7 +86,7 @@ public class UsersEditServletTest {
         verify(request, atLeast(1)).getParameter("newpassword");
         verify(request, atLeast(1)).getParameter("newrole");
         verify(request, atLeast(1)).setAttribute("message", "User modified!");
-        verify(request, atLeast(1)).setAttribute("redirect", "edit");
+        verify(request, atLeast(1)).setAttribute("redirect", "");
         assertTrue(ValidateService.getInstance().findAll().contains(replace));
         ValidateService.getInstance().delete(ValidateService.getInstance().findByLogin("newlogin").get());
         assertFalse(ValidateService.getInstance().findAll().contains(replace));

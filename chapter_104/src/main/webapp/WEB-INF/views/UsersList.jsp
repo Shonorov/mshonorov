@@ -2,17 +2,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="./style/style.css"><meta charset="UTF-8">
     <title>Users management</title>
 </head>
-<form action="${pageContext.servletContext.contextPath}/signout" method="POST">
+<form class="login" action="${pageContext.servletContext.contextPath}/signout" method="POST">
     <c:out value='${sessionScope.login}'/> : <c:out value='${sessionScope.role}'/>
     <input type='submit' value='Sign out'/>
 </form>
-<style>
-    table, th, td {
-        border: 1px solid black;
-    }
-</style>
 <body>
 <p>All users list:</p>
 <c:if test="${error !=null}">
@@ -29,9 +25,11 @@
         <td>Email</td>
         <td>CreateDate</td>
         <td>Role</td>
+        <td>Country</td>
+        <td>City</td>
         <td colspan='2'>
-            <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/create" method="GET">
-                <input type='submit' value='Create user'/>
+            <form style="margin-bottom:0; height: 100%" action="${pageContext.servletContext.contextPath}/create" method="GET">
+                <input style="width: 100%" type='submit' value='Create user'/>
             </form>
         </td>
     </tr>
@@ -43,6 +41,8 @@
         <td>${user.email}</td>
         <td>${user.createDate}</td>
         <td>${user.role}</td>
+        <td>${user.country}</td>
+        <td>${user.city}</td>
         <td>
             <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/edit" method="GET">
                 <input type="hidden" name="id" value="${user.id}">

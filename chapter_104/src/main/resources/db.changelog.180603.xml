@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="Create country table" author="Shonorov" runAlways="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="country" schemaName="public"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="country">
+            <column name="id" type="varchar(50)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Create city table" author="Shonorov" runAlways="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="city" schemaName="public"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="city">
+            <column name="id" type="varchar(50)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country_id" type="varchar(50)">
+                <constraints nullable="false"
+                             foreignKeyName="CountryID_Country"
+                             referencedTableName="country" referencedColumnNames="id" deleteCascade="true"  />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Insert country" author="Shonorov" runAlways="true">
+        <preConditions onFail="MARK_RAN">
+            <rowCount expectedRows="0" tableName="country" schemaName="public"/>
+        </preConditions>
+        <loadData encoding="UTF-8" file="country.csv" tableName="country" separator=";">
+            <column name="id" type="STRING"/>
+            <column name="name" type="STRING"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="Insert city" author="Shonorov" runAlways="true">
+        <preConditions onFail="MARK_RAN">
+            <rowCount expectedRows="0" tableName="city" schemaName="public"/>
+        </preConditions>
+        <loadData encoding="UTF-8" file="city.csv" tableName="city" separator=";">
+            <column name="id" type="STRING"/>
+            <column name="name" type="STRING"/>
+            <column name="country_id" type="STRING"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="Modify user" author="Shonorov" runAlways="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="users" columnName="country_id"/>
+            </not>
+           <not>
+               <columnExists tableName="users" columnName="city_id"/>
+           </not>
+        </preConditions>
+        <addColumn tableName="users" schemaName="public">
+            <column name="country_id" type="varchar(50)" defaultValue="0"/>
+            <column name="city_id" type="varchar(50)" defaultValue="0"/>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="users"
+                                 baseColumnNames="country_id"
+                                 constraintName="CountryID_Country"
+                                 referencedTableName="country"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="users"
+                                 baseColumnNames="city_id"
+                                 constraintName="CityID_City"
+                                 referencedTableName="city"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

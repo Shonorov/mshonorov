@@ -28,9 +28,12 @@ public class ValidateService {
      * @return true if success.
      */
     public boolean add(User user) {
+        User current = user;
+        current.setCountry(getCountryID(user.getCountry()));
+        current.setCity(getCityID(user.getCity()));
         boolean result = false;
-        if (!store.findAll().contains(user)) {
-            store.add(user);
+        if (!store.findAll().contains(current)) {
+            store.add(current);
             result = true;
         }
         return result;
@@ -44,7 +47,7 @@ public class ValidateService {
      * @param newemail email to change.
      * @return true if success.
      */
-    public boolean update(User user, String newname, String newlogin, String newemail, String newpassword, String newrole) {
+    public boolean update(User user, String newname, String newlogin, String newemail, String newpassword, String newrole, String newcountry, String newcity) {
         boolean result = false;
         User update = new User();
         if (store.findAll().contains(user)) {
@@ -73,6 +76,16 @@ public class ValidateService {
             } else {
                 update.setRole(user.getRole());
             }
+            if (newcountry != null) {
+                update.setCountry(getCountryID(newcountry));
+            } else {
+                update.setCountry(getCountryID(user.getCountry()));
+            }
+            if (newcity != null) {
+                update.setCity(getCityID(newcity));
+            } else {
+                update.setCity(getCityID(user.getCity()));
+            }
             if (!store.findAll().contains(update)) {
                 store.update(user, update);
                 result = true;
@@ -100,7 +113,12 @@ public class ValidateService {
      * @return User list.
      */
     public List<User> findAll() {
-        return store.findAll();
+        List<User> result = store.findAll();
+        for (User user : result) {
+            user.setCountry(getCountryName(user.getCountry()));
+            user.setCity(getCityName(user.getCity()));
+        }
+        return result;
     }
 
     /**
@@ -113,12 +131,25 @@ public class ValidateService {
     }
 
     /**
+     * Find User by id to display.
+     * @param id to find.
+     * @return Optional of user.
+     */
+    public Optional<User> findByIdView(String id) {
+        User current = store.findById(id).get();
+        current.setCountry(getCountryName(current.getCountry()));
+        current.setCity(getCityName(current.getCity()));
+        return Optional.of(current);
+    }
+
+    /**
      * Find User by login.
      * @param login to find.
      * @return Optional of user.
      */
     public Optional<User> findByLogin(String login) {
-        return store.findByLogin(login);
+        Optional<User> result = store.findByLogin(login);
+        return result;
     }
 
     /**
@@ -141,5 +172,66 @@ public class ValidateService {
      */
     public Optional<User> authenticate(String login, String password) {
         return store.checkCredentials(login, password);
+    }
+
+    /**
+     * Get list of countries.
+     * @return list of all countries.
+     */
+    public List<Country> getCountries() {
+        return store.getCountries();
+    }
+
+    /**
+     * Get list of cities.
+     * @return list of all cities.
+     */
+    public List<City> getCities() {
+        return store.getCities();
+    }
+
+    /**
+     * Get list of cities in one country.
+     * @param name id to find.
+     * @return list of cities.
+     */
+    public List<City> getCitiesByCountryName(String name) {
+        return store.getCitiesByCountryName(getCountryID(name));
+    }
+
+    /**
+     * Get country ID by name.
+     * @param name to find.
+     * @return country ID.
+     */
+    public String getCountryID(String name) {
+        return store.getCountryID(name);
+    }
+
+    /**
+     * Get city ID by name.
+     * @param name to find.
+     * @return city ID.
+     */
+    public String getCityID(String name) {
+        return store.getCityID(name);
+    }
+
+    /**
+     * Get country name by ID.
+     * @param id to find.
+     * @return country name.
+     */
+    String getCountryName(String id) {
+        return store.getCountryName(id);
+    }
+
+    /**
+     * Get city name by ID.
+     * @param id to find.
+     * @return city name.
+     */
+    public String getCityName(String id) {
+        return store.getCityName(id);
     }
 }

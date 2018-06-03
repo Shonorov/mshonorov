@@ -20,12 +20,14 @@ public class UsersCreateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("roles", ValidateService.getInstance().findRoles());
+        req.setAttribute("countries", ValidateService.getInstance().getCountries());
+        req.setAttribute("cities", ValidateService.getInstance().getCities());
         req.getRequestDispatcher("/WEB-INF/views/UserCreate.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User current = new User(req.getParameter("name"), req.getParameter("login"), req.getParameter("email"), req.getParameter("password"), req.getParameter("role"));
+        User current = new User(req.getParameter("name"), req.getParameter("login"), req.getParameter("email"), req.getParameter("password"), req.getParameter("role"), req.getParameter("country"), req.getParameter("city"));
         String message;
         if (ValidateService.getInstance().add(current)) {
             message = "User created!";
