@@ -6,16 +6,13 @@ sudo: false
 services:
   - postgresql
 
-postgres:
-  adapter: postgresql
-  database: users
-  username: postgres
-  password: postgres
+ addons:
+    postgresql: "10.3"
 
 before_script:
-  - psql -c "create schema public;" -U postgres
-  - psql -c 'create database users;' -U postgres
-  - rake db:migrate
+#  - psql -c 'create schema public;' -U postgres
+  - psql -c 'create database travis_ci_test;' -U postgres
+#  - rake db:migrate
 
 # после выполнения сборки запустить скрипт, который будет собирать статистику по JaCoCo
 # Здесь используется сторонни сервис https://codecov.io/
