@@ -68,6 +68,14 @@
     </changeSet>
 
     <changeSet id="Modify user" author="Shonorov" runAlways="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="users" columnName="country_id"/>
+            </not>
+           <not>
+               <columnExists tableName="users" columnName="city_id"/>
+           </not>
+        </preConditions>
         <addColumn tableName="users" schemaName="public">
             <column name="country_id" type="varchar(50)" defaultValue="0"/>
             <column name="city_id" type="varchar(50)" defaultValue="0"/>

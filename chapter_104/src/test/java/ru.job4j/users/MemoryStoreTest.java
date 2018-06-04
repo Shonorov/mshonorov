@@ -14,7 +14,7 @@ public class MemoryStoreTest {
     @Test
     public void whenAddThenFind() {
         MemoryStore store = new MemoryStore("users.properties");
-        User user1 = new User("user1", "user1", "user1@contoso.com");
+        User user1 = new User("test1", "user1", "user1", "user1@contoso.com", LocalDateTime.now(), "user1", "user", "0", "0");
         store.add(user1);
         assertTrue(store.findAll().contains(user1));
         store.delete(user1);
@@ -61,8 +61,8 @@ public class MemoryStoreTest {
         assertTrue(store.getRoles().size() >= 2);
         assertTrue(store.getRoles().contains(admin));
         assertTrue(store.getRoles().contains(user));
-        User administrator = new User("0", "admin", "admin", "admin@contoso.com", LocalDateTime.now(), "admin", "administrator");
-        User guest = new User("1", "guest", "guest", "guest@contoso.com", LocalDateTime.now(), "guest", "user");
+        User administrator = new User("0", "admin", "admin", "admin@contoso.com", LocalDateTime.now(), "admin", "administrator", "0", "0");
+        User guest = new User("1", "guest", "guest", "guest@contoso.com", LocalDateTime.now(), "guest", "user", "0", "0");
         assertTrue(store.findAll().size() >= 2);
         assertTrue(store.findAll().contains(administrator));
         assertTrue(store.findAll().contains(guest));

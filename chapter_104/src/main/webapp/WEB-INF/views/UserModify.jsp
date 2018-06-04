@@ -23,7 +23,8 @@
         <td>Email</td>
         <td>Password</td>
         <td>Role</td>
-        <td></td>
+        <td>Country</td>
+        <td>City</td>
     </tr>
     <tr>
         <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/edit" method="POST">
@@ -41,6 +42,30 @@
                     </c:choose>
                 </c:forEach>
             </select>
+            <td>
+                <select name="newcountry">
+                    <option value="${current.country}">${current.country}</option>
+                    <c:forEach var="country" items="${countries}">
+                        <c:choose>
+                            <c:when test="${country.name != current.country}">
+                                <option value="${country.name}">${country.name}</option>
+                            </c:when>
+                        </c:choose>
+                    </c:forEach>
+                </select>
+            </td>
+            <td>
+                <select name="newcity">
+                    <option value="${current.city}">${current.city}</option>
+                    <c:forEach var="city" items="${cities}">
+                        <c:choose>
+                            <c:when test="${city.name != current.city}">
+                                <option value="${city.name}">${city.name}</option>
+                            </c:when>
+                        </c:choose>
+                    </c:forEach>
+                </select>
+            </td>
             <td><input type="submit" value="Apply"></td>
             <input type="hidden" name="id" value="${current.id}">
         </form>

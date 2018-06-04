@@ -33,11 +33,11 @@ public class User {
         this.id = createDate.toString() + (short) (Math.random() * 100);
         this.password = login;
         this.role = "user";
-        this.country = "Russia";
-        this.city = "Moscow";
+        this.country = "0";
+        this.city = "0";
     }
 
-    public User(String name, String login, String email, String password, String role) {
+    public User(String name, String login, String email, String password, String role, String country, String city) {
         this.name = name;
         this.login = login;
         this.email = email;
@@ -45,8 +45,8 @@ public class User {
         this.id = createDate.toString() + (short) (Math.random() * 100);
         this.password = password;
         this.role = role;
-        this.country = "Russia";
-        this.city = "Moscow";
+        this.country = country;
+        this.city = city;
     }
 
     public User(String id, String name, String login, String email, LocalDateTime createDate, String password, String role) {

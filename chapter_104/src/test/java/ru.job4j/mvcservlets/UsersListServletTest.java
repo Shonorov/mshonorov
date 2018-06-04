@@ -48,7 +48,7 @@ public class UsersListServletTest {
         RequestDispatcher dispatcher = mock(RequestDispatcher.class);
         when(request.getParameter("id")).thenReturn("21");
         when(request.getRequestDispatcher(path)).thenReturn(dispatcher);
-        User user = new User("21", "name", "login", "email", LocalDateTime.now(), "password", "user");
+        User user = new User("21", "name", "login", "email", LocalDateTime.now(), "password", "user", "Russia", "Moscow");
         ValidateService.getInstance().add(user);
         try {
             servlet.doPost(request, response);

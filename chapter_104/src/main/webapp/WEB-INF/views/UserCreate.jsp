@@ -22,19 +22,36 @@
         <td>Email</td>
         <td>Password</td>
         <td>Role</td>
-        <td></td>
+        <td>Country</td>
+        <td>City</td>
     </tr>
     <tr>
         <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/create" method="POST">
             <td><input type='text' placeholder='Enter name' name='name'></td>
             <td><input type='text' placeholder='Enter login' name='login'></td>
             <td><input type='text' placeholder='Enter email' name='email'></td>
-            <td> <input type='text' placeholder='Enter password' name='password'></td>
-            <td><select name="role">
-                <c:forEach var="role" items="${roles}">
-                    <option value="${role}">${role}</option>
-                </c:forEach>
-            </select>
+            <td><input type='text' placeholder='Enter password' name='password'></td>
+            <td>
+                <select name="role">
+                    <c:forEach var="role" items="${roles}">
+                        <option value="${role}">${role}</option>
+                    </c:forEach>
+                </select>
+            </td>
+            <td>
+                <select name="country">
+                    <c:forEach var="country" items="${countries}">
+                        <option value="${country.name}">${country.name}</option>
+                    </c:forEach>
+                </select>
+            </td>
+            <td>
+                <select name="city">
+                    <c:forEach var="city" items="${cities}">
+                        <option value="${city.name}">${city.name}</option>
+                    </c:forEach>
+                </select>
+            </td>
             <td><input type='submit' value='Create'></td>
         </form>
 
