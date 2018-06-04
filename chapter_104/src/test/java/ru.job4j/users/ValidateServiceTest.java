@@ -33,12 +33,6 @@ public class ValidateServiceTest {
 //            System.out.println(user);
 //        }
     }
+    
 
-    @Test
-    public void whenAddThenPresent() {
-        ValidateService service = new ValidateService();
-        User user1 = new User("test1", "user1", "user1", "user1@contoso.com", LocalDateTime.now(), "user1", "user", "Ukraine", "Kiev");
-        service.add(user1);
-
-    }
 }
