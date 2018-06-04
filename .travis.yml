@@ -3,6 +3,18 @@ language: java
 # используем режим обычного пользователя для сборки проекта.
 sudo: false
 
+services:
+  - postgresql
+
+ addons:
+    postgresql: "10.3"
+
+before_script:
+#  - psql -c 'create schema public;' -U postgres
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - psql -c 'create database users;' -U postgres
+#  - rake db:migrate
+
 # после выполнения сборки запустить скрипт, который будет собирать статистику по JaCoCo
 # Здесь используется сторонни сервис https://codecov.io/
 after_success:
@@ -14,4 +26,4 @@ notifications:
     recipients:
       - shonorov@gmail.com
     on_success: never # default: change
-    on_failure: always # default: always
+    on_failure: never # default: always

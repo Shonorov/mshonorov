@@ -1,5 +1,8 @@
 package ru.job4j.users;
 import org.junit.Test;
+
+import java.time.LocalDateTime;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 /**
@@ -48,5 +51,20 @@ public class MemoryStoreTest {
         assertThat(store.findByLogin("user5").get(), is(user5));
         store.delete(user5);
         assertFalse(store.findAll().contains(user5));
+    }
+
+    @Test
+    public void whenStartThenLiquibasePrepareDatabase() {
+        MemoryStore store = new MemoryStore("users.properties");
+        Role admin = new Role("administrator", true);
+        Role user = new Role("user", false);
+        assertTrue(store.getRoles().size() >= 2);
+        assertTrue(store.getRoles().contains(admin));
+        assertTrue(store.getRoles().contains(user));
+        User administrator = new User("0", "admin", "admin", "admin@contoso.com", LocalDateTime.now(), "admin", "administrator");
+        User guest = new User("1", "guest", "guest", "guest@contoso.com", LocalDateTime.now(), "guest", "user");
+        assertTrue(store.findAll().size() >= 2);
+        assertTrue(store.findAll().contains(administrator));
+        assertTrue(store.findAll().contains(guest));
     }
 }

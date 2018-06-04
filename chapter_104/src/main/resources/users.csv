@@ -1,0 +1,3 @@
+﻿id;name;login;email;createdate;password;role
+0;admin;admin;admin@contoso.com;2018-06-02T14:58:04.750;$2a$06$WExjjbm7VLaH0AJLcdRRc.nxXgdL2NqEZRA.G8l3PAuvZdQpIAufO;administrator
+1;guest;guest;guest@contoso.com;2018-06-02T14:58:04.750;$2a$06$ARwzDkW2HcJDYYm/WOfqy./CcgsffmsT/EEMHaXmYWI7bXa332G7C;user

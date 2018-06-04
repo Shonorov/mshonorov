@@ -17,6 +17,8 @@ public class User {
     private LocalDateTime createDate;
     private String password;
     private String role;
+    private String country;
+    private String city;
 
     public User() {
         this.createDate = LocalDateTime.now();
@@ -31,6 +33,8 @@ public class User {
         this.id = createDate.toString() + (short) (Math.random() * 100);
         this.password = login;
         this.role = "user";
+        this.country = "Russia";
+        this.city = "Moscow";
     }
 
     public User(String name, String login, String email, String password, String role) {
@@ -41,6 +45,8 @@ public class User {
         this.id = createDate.toString() + (short) (Math.random() * 100);
         this.password = password;
         this.role = role;
+        this.country = "Russia";
+        this.city = "Moscow";
     }
 
     public User(String id, String name, String login, String email, LocalDateTime createDate, String password, String role) {
@@ -51,6 +57,20 @@ public class User {
         this.createDate = createDate;
         this.password = password;
         this.role = role;
+        this.country = "Russia";
+        this.city = "Moscow";
+    }
+
+    public User(String id, String name, String login, String email, LocalDateTime createDate, String password, String role, String country, String city) {
+        this.id = id;
+        this.name = name;
+        this.login = login;
+        this.email = email;
+        this.createDate = createDate;
+        this.password = password;
+        this.role = role;
+        this.country = country;
+        this.city = city;
     }
 
     public String getId() {
@@ -101,9 +121,25 @@ public class User {
         this.role = role;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     @Override
     public String toString() {
-        return String.format("%s : %s : %s : %s : %s : %s : %s", id, name, login, email, createDate.toString(), password, role);
+        return String.format("%s : %s : %s : %s : %s : %s : %s : %s : %s", id, name, login, email, createDate.toString(), password, role, country, city);
     }
 
     @Override
@@ -126,6 +162,12 @@ public class User {
         if (!email.equals(user.email)) {
             return false;
         }
+        if (!country.equals(user.country)) {
+            return false;
+        }
+        if (!city.equals(user.city)) {
+            return false;
+        }
         return role.equals(user.role);
     }
 
@@ -134,6 +176,9 @@ public class User {
         int result = name.hashCode();
         result = 31 * result + login.hashCode();
         result = 31 * result + email.hashCode();
+        result = 31 * result + country.hashCode();
+        result = 31 * result + city.hashCode();
+        result = 31 * result + role.hashCode();
         return result;
     }
 }

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="Create roles" author="shonorov" runAlways="true">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="roles" schemaName="public"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="roles">
+            <column name="role" type="varchar(50)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="administrator" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+
+    </changeSet>
+
+    <changeSet id="Create users database" author="Shonorov" runAlways="true">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="users" schemaName="public"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="users">
+            <column name="id" type="varchar(50)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="login" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdate" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="varchar(50)">
+                <constraints nullable="false"
+                             foreignKeyName="Role_RoleName"
+                             referencedTableName="roles" referencedColumnNames="role" deleteCascade="true"  />
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="Insert roles" author="shonorov" runAlways="true">
+        <preConditions onFail="MARK_RAN">
+            <rowCount expectedRows="0" tableName="roles" schemaName="public"/>
+        </preConditions>
+        <loadData encoding="UTF-8" file="roles.csv" tableName="roles" separator=";">
+            <column name="role" type="STRING"/>
+            <column name="administrator" type="boolean"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="Insert users" author="shonorov" runAlways="true">
+        <preConditions onFail="MARK_RAN">
+            <rowCount expectedRows="0" tableName="users" schemaName="public"/>
+        </preConditions>
+        <loadData encoding="UTF-8" file="users.csv" tableName="users" separator=";">
+            <column name="id" type="STRING"/>
+            <column name="name" type="STRING"/>
+            <column name="login" type="STRING"/>
+            <column name="email" type="STRING"/>
+            <column name="createdate" type="STRING"/>
+            <column name="password" type="STRING"/>
+            <column name="role" type="STRING"/>
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>
+
+
+
+

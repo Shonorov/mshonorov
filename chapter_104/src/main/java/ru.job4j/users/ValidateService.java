@@ -142,4 +142,21 @@ public class ValidateService {
     public Optional<User> authenticate(String login, String password) {
         return store.checkCredentials(login, password);
     }
+
+    /**
+     * Get list of countries.
+     * @return list of all countries.
+     */
+    public List<Country> getCountries() {
+        return store.getCountries();
+    }
+
+    /**
+     * Get list of cities in one country.
+     * @param countryID id to find.
+     * @return list of cities.
+     */
+    public List<City> getCitiesByCountryID(String countryID) {
+        return store.getCitiesByCountryID(countryID);
+    }
 }
