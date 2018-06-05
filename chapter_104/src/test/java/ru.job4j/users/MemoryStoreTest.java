@@ -67,4 +67,10 @@ public class MemoryStoreTest {
         assertTrue(store.findAll().contains(administrator));
         assertTrue(store.findAll().contains(guest));
     }
+
+    @Test
+    public void whenRussiaThenFindCities() {
+        MemoryStore store = new MemoryStore("users.properties");
+        assertNotEquals(store.getCitiesByCountryName("0").size(), 0);
+    }
 }

@@ -83,10 +83,10 @@ public interface Store {
 
     /**
      * Get list of cities in one country.
-     * @param countryID to find.
+     * @param name to find.
      * @return list of cities.
      */
-    List<City> getCitiesByCountryID(String countryID);
+    List<City> getCitiesByCountryName(String name);
 
     /**
      * Get country ID by name.

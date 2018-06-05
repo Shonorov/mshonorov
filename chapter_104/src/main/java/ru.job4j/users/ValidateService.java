@@ -192,11 +192,11 @@ public class ValidateService {
 
     /**
      * Get list of cities in one country.
-     * @param countryID id to find.
+     * @param name id to find.
      * @return list of cities.
      */
-    public List<City> getCitiesByCountryID(String countryID) {
-        return store.getCitiesByCountryID(countryID);
+    public List<City> getCitiesByCountryName(String name) {
+        return store.getCitiesByCountryName(getCountryID(name));
     }
 
     /**

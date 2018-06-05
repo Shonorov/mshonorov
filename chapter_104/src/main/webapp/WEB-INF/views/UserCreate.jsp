@@ -13,23 +13,31 @@
         $(document).ready(function () {
             $("select[name='country']").bind("change", function () {
                 $("select[name='city']").empty();
+                $.get("./country", {country : $("select[name='country']").val()},
+                    function (data) {
+                        // alert("123");
+                        var resp1 = JSON.parse(data.responseText);
+                        alert("wer");
+                    })
+                // alert(JSON.parse(data.responseText));
 
-                $.ajax("./country"), {
-                    method : 'get',
-                    data : { country : document.getElementsByName("country")[0].value}
-                }, function (data) {
-                    alert(country);
-                    // data = JSON.parse(data.responseText);
-                    // alert(data);
-                    // var result = ""
-                    // for(var id in data) {
-                    //     result+="<option value='" + id.name + "'>" + id.name + "</option>";
-                        // $("select[name='city']").append($("<option value='" + id + "'>" + data[id] + "</option>"));
-                        // console.log(id)
-                    // }
-                }
-            })
-        })
+                // for(var id in resp) {
+                //     alert(resp);
+                // $("select[name='city']").append($("<option value='test'>test</option>"));
+                //     alert(id);
+                //     $("select[name='city']").append($("<option value='" + id.name + "'>" + id.name + "</option>"));
+                //     console.log(resp);
+                // alert(data);
+                // }
+                // data = JSON.parse(data.responseText);
+                // alert(data);
+                // var result = ""
+                // for(var id in data) {
+                //     result+="<option value='" + id.name + "'>" + id.name + "</option>";
+
+                // console.log(id)
+            });
+        });
 
         function validate() {
             var text = "";
@@ -76,6 +84,7 @@
         <td>Role</td>
         <td>Country</td>
         <td>City</td>
+        <td></td>
     </tr>
     <tr>
         <form name="input" style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/create" method="POST" onsubmit="return validate();">
@@ -100,7 +109,7 @@
             <td>
                 <select name="city">
                     <%--<c:forEach var="city" items="${cities}">--%>
-                        <%--<option value="${city.name}">${city.name}</option>--%>
+                    <%--<option value="${city.name}">${city.name}</option>--%>
                     <%--</c:forEach>--%>
                 </select>
             </td>

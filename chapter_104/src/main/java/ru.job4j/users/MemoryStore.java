@@ -381,11 +381,11 @@ public class MemoryStore implements Store, Closeable {
     }
 
     @Override
-    public List<City> getCitiesByCountryID(String countryID) {
+    public List<City> getCitiesByCountryName(String name) {
         List<City> cities = new ArrayList<>();
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM city WHERE id=?;")) {
-            statement.setString(1, countryID);
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM city WHERE country_id=?;")) {
+            statement.setString(1, name);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 City current = new City(rs.getString(1), rs.getString(2), rs.getString(3));

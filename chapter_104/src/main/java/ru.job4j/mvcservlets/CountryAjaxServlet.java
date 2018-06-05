@@ -1,4 +1,8 @@
 package ru.job4j.mvcservlets;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import ru.job4j.users.City;
 import ru.job4j.users.User;
 import ru.job4j.users.ValidateService;
@@ -24,10 +28,14 @@ public class CountryAjaxServlet extends HttpServlet {
         resp.setContentType("text/json");
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
         String country = req.getParameter("country");
-//        String country = req.getAttribute("country").toString();
         System.out.println(country);
-        List<City> cities = ValidateService.getInstance().getCitiesByCountryID(country);
-        writer.append("[{\"name\":\"Moscow\"}, {\"name\":\"Kiev\"}, {\"name\":\"Minsk\"}]");
+        List<City> cities = ValidateService.getInstance().getCitiesByCountryName(country);
+//        writer.append("[{\"name\":\"Moscow\"}, {\"name\":\"Kiev\"}, {\"name\":\"Minsk\"}]");
+        Gson gson = new GsonBuilder().create();
+        JsonArray jarray = gson.toJsonTree(cities).getAsJsonArray();
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.add("cities", jarray);
+        writer.append(jsonObject.toString());
         writer.flush();
     }
 }
