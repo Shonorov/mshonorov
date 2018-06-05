@@ -4,6 +4,24 @@
 <html>
 <head>
     <title>Users management</title>
+    <script>
+        function validate() {
+            var text = "";
+            var login = document.forms["input"]["password"].value;
+            if (login == "") {
+                text += "Field 'name' must be filled out!\n";
+            }
+            var password = document.forms["input"]["password"].value;
+            if (password == "") {
+                text += "Field 'login' must be filled out!\n";
+            }
+
+            if (text != "") {
+                alert(text);
+                return false;
+            }
+        }
+    </script>
 </head>
 <p>Sign in:</p>
 <body>
@@ -13,7 +31,7 @@
     </div>
 </c:if>
 <table>
-    <form action="${pageContext.servletContext.contextPath}/signin" method="POST">
+    <form name="input" action="${pageContext.servletContext.contextPath}/signin" method="POST" onsubmit="return validate();">
         <tr>
             <td>
                 Login :<input type="text" placeholder="Enter login" name="login"><br/>

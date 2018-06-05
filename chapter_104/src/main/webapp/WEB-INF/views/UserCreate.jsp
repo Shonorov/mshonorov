@@ -3,6 +3,58 @@
 <html>
 <head>
     <title>Users management</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("select[name='country']").bind("change", function () {
+                $("select[name='city']").empty();
+
+                $.ajax("./country"), {
+                    method : 'get',
+                    data : { country : document.getElementsByName("country")[0].value}
+                }, function (data) {
+                    alert(country);
+                    // data = JSON.parse(data.responseText);
+                    // alert(data);
+                    // var result = ""
+                    // for(var id in data) {
+                    //     result+="<option value='" + id.name + "'>" + id.name + "</option>";
+                        // $("select[name='city']").append($("<option value='" + id + "'>" + data[id] + "</option>"));
+                        // console.log(id)
+                    // }
+                }
+            })
+        })
+
+        function validate() {
+            var text = "";
+            var name = document.forms["input"]["name"].value;
+            if (name == "") {
+                text += "Field 'name' must be filled out!\n";
+            }
+            var login = document.forms["input"]["login"].value;
+            if (login == "") {
+                text += "Field 'login' must be filled out!\n";
+            }
+            var email = document.forms["input"]["email"].value;
+            if (email == "") {
+                text += "Field 'email' must be filled out!\n";
+            }
+            var password = document.forms["input"]["password"].value;
+            if (password == "") {
+                text += "Field 'password' must be filled out!\n";
+            }
+            if (text != "") {
+                alert(text);
+                return false;
+            }
+        }
+    </script>
 </head>
 <form action="${pageContext.servletContext.contextPath}/signout" method="POST">
     <c:out value='${sessionScope.login}'/> : <c:out value='${sessionScope.role}'/>
@@ -26,7 +78,7 @@
         <td>City</td>
     </tr>
     <tr>
-        <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/create" method="POST">
+        <form name="input" style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/create" method="POST" onsubmit="return validate();">
             <td><input type='text' placeholder='Enter name' name='name'></td>
             <td><input type='text' placeholder='Enter login' name='login'></td>
             <td><input type='text' placeholder='Enter email' name='email'></td>
@@ -47,9 +99,9 @@
             </td>
             <td>
                 <select name="city">
-                    <c:forEach var="city" items="${cities}">
-                        <option value="${city.name}">${city.name}</option>
-                    </c:forEach>
+                    <%--<c:forEach var="city" items="${cities}">--%>
+                        <%--<option value="${city.name}">${city.name}</option>--%>
+                    <%--</c:forEach>--%>
                 </select>
             </td>
             <td><input type='submit' value='Create'></td>

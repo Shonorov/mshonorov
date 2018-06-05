@@ -3,6 +3,38 @@
 <html>
 <head>
     <title>Users management</title>
+    <title>Users management</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script>
+        function validate() {
+            var text = "";
+            var newname = document.forms["input"]["newname"].value;
+            if (newname == "") {
+                text += "Field 'name' must be filled out!\n";
+            }
+            var newlogin = document.forms["input"]["newlogin"].value;
+            if (newlogin == "") {
+                text += "Field 'login' must be filled out!\n";
+            }
+            var newemail = document.forms["input"]["newemail"].value;
+            if (newemail == "") {
+                text += "Field 'email' must be filled out!\n";
+            }
+            var newpassword = document.forms["input"]["newpassword"].value;
+            if (newpassword == "") {
+                text += "Field 'password' must be filled out!\n";
+            }
+            if (text != "") {
+                alert(text);
+                return false;
+            }
+        }
+    </script>
 </head>
 <form action="${pageContext.servletContext.contextPath}/signout" method="POST">
     <c:out value='${sessionScope.login}'/> : <c:out value='${sessionScope.role}'/>
@@ -27,7 +59,7 @@
         <td>City</td>
     </tr>
     <tr>
-        <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/edit" method="POST">
+        <form name="input" style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/edit" method="POST" onsubmit="return validate();">
             <td><input type="text" value="${current.name}" name="newname"></td>
             <td><input type="text" value="${current.login}" name="newlogin"></td>
             <td><input type="text" value="${current.email}" name="newemail"></td>
