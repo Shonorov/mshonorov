@@ -11,32 +11,26 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function () {
-            $("select[name='country']").bind("change", function () {
-                $("select[name='city']").empty();
-                $.get("./country", {country : $("select[name='country']").val()},
-                    function (data) {
-                        // alert("123");
-                        var resp1 = JSON.parse(data.responseText);
-                        alert("wer");
+            $("select[name='country']").bind("change",
+                function () {
+                    $("select[name='city']").empty();
+                    $.ajax({
+                        type: "GET",
+                        url: "./country",
+                        datatype: "JSON",
+                        data: {country : $("select[name='country']").val()},
+                        success: function (response) {
+                            var data = response["cities"];
+                            if(data.length == 0) {
+                                $("select[name='city']").append("<option value=''>Country not set</option>");
+                            }
+                            for (var i in data) {
+                                $("select[name='city']").append($("<option value='" + data[i].name+ "'>" + data[i].name + "</option>"));
+                            }
+                        }
                     })
-                // alert(JSON.parse(data.responseText));
-
-                // for(var id in resp) {
-                //     alert(resp);
-                // $("select[name='city']").append($("<option value='test'>test</option>"));
-                //     alert(id);
-                //     $("select[name='city']").append($("<option value='" + id.name + "'>" + id.name + "</option>"));
-                //     console.log(resp);
-                // alert(data);
-                // }
-                // data = JSON.parse(data.responseText);
-                // alert(data);
-                // var result = ""
-                // for(var id in data) {
-                //     result+="<option value='" + id.name + "'>" + id.name + "</option>";
-
-                // console.log(id)
-            });
+                }
+            );
         });
 
         function validate() {
@@ -56,6 +50,14 @@
             var password = document.forms["input"]["password"].value;
             if (password == "") {
                 text += "Field 'password' must be filled out!\n";
+            }
+            var country = document.forms["input"]["country"].value;
+            if (country == "Select country") {
+                text += "Field 'country' must be filled out!\n";
+            }
+            var city = document.forms["input"]["city"].value;
+            if (city == "Country not set") {
+                text += "Field 'city' must be filled out!\n";
             }
             if (text != "") {
                 alert(text);
@@ -101,6 +103,7 @@
             </td>
             <td>
                 <select name="country">
+                    <option value="Select country">Select country</option>
                     <c:forEach var="country" items="${countries}">
                         <option value="${country.name}">${country.name}</option>
                     </c:forEach>
@@ -108,9 +111,7 @@
             </td>
             <td>
                 <select name="city">
-                    <%--<c:forEach var="city" items="${cities}">--%>
-                    <%--<option value="${city.name}">${city.name}</option>--%>
-                    <%--</c:forEach>--%>
+                    <option value="Country not set">Country not set</option>
                 </select>
             </td>
             <td><input type='submit' value='Create'></td>

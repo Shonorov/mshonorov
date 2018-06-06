@@ -28,9 +28,7 @@ public class CountryAjaxServlet extends HttpServlet {
         resp.setContentType("text/json");
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
         String country = req.getParameter("country");
-        System.out.println(country);
         List<City> cities = ValidateService.getInstance().getCitiesByCountryName(country);
-//        writer.append("[{\"name\":\"Moscow\"}, {\"name\":\"Kiev\"}, {\"name\":\"Minsk\"}]");
         Gson gson = new GsonBuilder().create();
         JsonArray jarray = gson.toJsonTree(cities).getAsJsonArray();
         JsonObject jsonObject = new JsonObject();

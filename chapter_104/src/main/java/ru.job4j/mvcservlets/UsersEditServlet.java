@@ -22,7 +22,8 @@ public class UsersEditServlet extends HttpServlet {
         req.setAttribute("roles", ValidateService.getInstance().findRoles());
         req.setAttribute("user", ValidateService.getInstance().findByIdView(req.getParameter("id")).get());
         req.setAttribute("countries", ValidateService.getInstance().getCountries());
-        req.setAttribute("cities", ValidateService.getInstance().getCities());
+        User current = ValidateService.getInstance().findByIdView(req.getParameter("id")).get();
+        req.setAttribute("cities", ValidateService.getInstance().getCitiesByCountryName(current.getCountry()));
         req.getRequestDispatcher("/WEB-INF/views/UserModify.jsp").forward(req, resp);
     }
 

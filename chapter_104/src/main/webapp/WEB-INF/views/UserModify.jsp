@@ -11,6 +11,30 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script>
+        $(document).ready(function () {
+            $("select[name='newcountry']").bind("change",
+                function () {
+                    $("select[name='newcity']").empty();
+                    $.ajax({
+                        type: "GET",
+                        url: "./country",
+                        datatype: "JSON",
+                        data: {country : $("select[name='newcountry']").val()},
+                        success: function (response) {
+                            var data = response["cities"];
+                            console.log(data);
+                            if(data.length == 0) {
+                                $("select[name='newcity']").append("<option value=''>Country not set</option>");
+                            }
+                            for (var i in data) {
+                                $("select[name='newcity']").append($("<option value='" + data[i].name+ "'>" + data[i].name + "</option>"));
+                            }
+                        }
+                    })
+                }
+            );
+        });
+
         function validate() {
             var text = "";
             var newname = document.forms["input"]["newname"].value;
@@ -28,6 +52,15 @@
             var newpassword = document.forms["input"]["newpassword"].value;
             if (newpassword == "") {
                 text += "Field 'password' must be filled out!\n";
+            }
+            var country = document.forms["input"]["newcountry"].value;
+            console.log(country);
+            if (country == "") {
+                text += "Field 'country' must be filled out!\n";
+            }
+            var city = document.forms["input"]["newcity"].value;
+            if (city == "") {
+                text += "Field 'city' must be filled out!\n";
             }
             if (text != "") {
                 alert(text);

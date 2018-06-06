@@ -7,13 +7,13 @@
     <script>
         function validate() {
             var text = "";
-            var login = document.forms["input"]["password"].value;
+            var login = document.forms["input"]["login"].value;
             if (login == "") {
-                text += "Field 'name' must be filled out!\n";
+                text += "Field 'login' must be filled out!\n";
             }
             var password = document.forms["input"]["password"].value;
             if (password == "") {
-                text += "Field 'login' must be filled out!\n";
+                text += "Field 'password' must be filled out!\n";
             }
 
             if (text != "") {
