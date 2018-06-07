@@ -22,6 +22,11 @@
             }
         }
     </script>
+    <style>
+        p {
+            font-size: larger;
+        }
+    </style>
 </head>
 <p>Sign in:</p>
 <body>

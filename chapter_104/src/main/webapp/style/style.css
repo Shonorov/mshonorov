@@ -1,0 +1,12 @@
+table, th, td {
+    border: 2px solid black;
+}
+p {
+    font-size: large;
+}
+.login {
+    background-color: deepskyblue;
+    text-align: right;
+}
+
+

@@ -2,17 +2,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="./style/style.css"><meta charset="UTF-8">
     <title>Users management</title>
 </head>
-<form action="${pageContext.servletContext.contextPath}/signout" method="POST">
+<form class="login" action="${pageContext.servletContext.contextPath}/signout" method="POST">
     <c:out value='${sessionScope.login}'/> : <c:out value='${sessionScope.role}'/>
     <input type='submit' value='Sign out'/>
 </form>
-<style>
-    table, th, td {
-        border: 1px solid black;
-    }
-</style>
 <body>
 <p>All users list:</p>
 <c:if test="${error !=null}">
