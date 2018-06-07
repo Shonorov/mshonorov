@@ -111,13 +111,12 @@
             </td>
             <td><input type='submit' value='Create'></td>
         </form>
-
     </tr>
 </table>
-<td>
+<div>
     <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/" method="GET">
         <input type='submit' value='To list'>
     </form>
-</td>
+</div>
 </body>
 </html>

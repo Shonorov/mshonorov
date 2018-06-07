@@ -72,11 +72,6 @@
     <c:out value='${sessionScope.login}'/> : <c:out value='${sessionScope.role}'/>
     <input type='submit' value='Sign out'/>
 </form>
-<style>
-    table, th, td {
-        border: 1px solid black;
-    }
-</style>
 <body>
 <p>Modify user:</p>
 <c:set var="current" value="${user}"/>
@@ -89,6 +84,7 @@
         <td>Role</td>
         <td>Country</td>
         <td>City</td>
+        <td></td>
     </tr>
     <tr>
         <form name="input" style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/edit" method="POST" onsubmit="return validate();">

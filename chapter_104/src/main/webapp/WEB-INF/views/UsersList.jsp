@@ -28,8 +28,8 @@
         <td>Country</td>
         <td>City</td>
         <td colspan='2'>
-            <form style="margin-bottom:0;" action="${pageContext.servletContext.contextPath}/create" method="GET">
-                <input type='submit' value='Create user'/>
+            <form style="margin-bottom:0; height: 100%" action="${pageContext.servletContext.contextPath}/create" method="GET">
+                <input style="width: 100%" type='submit' value='Create user'/>
             </form>
         </td>
     </tr>

@@ -26,9 +26,21 @@
         p {
             font-size: larger;
         }
+
+        body {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            margin-right: -50%;
+            transform: translate(-50%, -50%)
+        }
+
+        table {
+            background-color: aliceblue;
+        }
     </style>
 </head>
-<p>Sign in:</p>
+<p style="background-color: deepskyblue">Sign in:</p>
 <body>
 <c:if test="${error !=null}">
     <div style="background-color: red">
@@ -39,12 +51,12 @@
     <form name="input" action="${pageContext.servletContext.contextPath}/signin" method="POST" onsubmit="return validate();">
         <tr>
             <td>
-                Login :<input type="text" placeholder="Enter login" name="login"><br/>
+                Login : <input style="float: right; width: 150px" type="text" placeholder="Enter login" name="login"><br/>
             </td>
         </tr>
         <tr>
             <td>
-                Password :<input type="password" placeholder="Enter password" name="password"><br/>
+                Password : <input style="width: 150px" type="password" placeholder="Enter password" name="password"><br/>
             </td>
         </tr>
         <tr>
