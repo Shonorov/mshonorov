@@ -1,0 +1,4 @@
+id;name;login;password;address_ID;role
+0;admin;admin;$2a$06$WExjjbm7VLaH0AJLcdRRc.nxXgdL2NqEZRA.G8l3PAuvZdQpIAufO;0;administrator
+1;guest;guest;$2a$06$ARwzDkW2HcJDYYm/WOfqy./CcgsffmsT/EEMHaXmYWI7bXa332G7C;1;user
+2;mandator;mandator;$2a$06$W.iMGyd6023l9ccBwLjB5ucVRcKHBV7daVhvw103X1olKPqzpsoYm;2;mandator
