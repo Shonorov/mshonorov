@@ -18,7 +18,6 @@ import java.util.ArrayList;
  */
 public class XMLConverter {
 
-    private static final String PATH = "src/main/resources/";
     private static final String FILENAME1 = "1.xml";
     private static final String FILENAME2 = "2.xml";
     private static final String FILENAME3 = "xml1toxml2.xsl";
@@ -48,7 +47,7 @@ public class XMLConverter {
      */
     public void convertXML() {
         try {
-            File file = new File(PATH + FILENAME1);
+            File file = new File(FILENAME1);
             Entries entries = fill();
             JAXBContext jaxbContext = JAXBContext.newInstance(Entries.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -62,9 +61,9 @@ public class XMLConverter {
      * Change style of the XLS file with XSL transformer.
      */
     public void changeStyle() {
-        StreamSource xslcode = new StreamSource(new File(PATH + FILENAME3));
-        StreamSource input = new StreamSource(new File(PATH + FILENAME1));
-        StreamResult output = new StreamResult(new File(PATH + FILENAME2));
+        StreamSource xslcode = new StreamSource(new File(FILENAME3));
+        StreamSource input = new StreamSource(new File(FILENAME1));
+        StreamResult output = new StreamResult(new File(FILENAME2));
 
         TransformerFactory tf = TransformerFactory.newInstance();
         try {
@@ -82,7 +81,7 @@ public class XMLConverter {
     public long sum() {
         long result = 0;
         try {
-            File file = new File(PATH + FILENAME2);
+            File file = new File(FILENAME2);
             JAXBContext jaxbContext = JAXBContext.newInstance(EntriesAttribute.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             EntriesAttribute entries = (EntriesAttribute) jaxbUnmarshaller.unmarshal(file);
