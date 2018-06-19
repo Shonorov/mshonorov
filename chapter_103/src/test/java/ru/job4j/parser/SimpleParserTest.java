@@ -16,12 +16,11 @@ public class SimpleParserTest {
             }
         });
         thread.start();
-        thread.sleep(4000);
-//        Thread.currentThread().join();
+        Thread.sleep(4000);
     }
 
     @Test
-    public void whenParseThen() {
+    public void whenParseThenParse() {
         SimpleParser parser = new SimpleParser("parser.properties");
         parser.parse();
     }

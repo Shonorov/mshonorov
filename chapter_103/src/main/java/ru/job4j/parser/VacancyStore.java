@@ -36,7 +36,6 @@ public class VacancyStore implements Closeable {
             createTable();
         } catch (IOException e) {
             LOGGER.error("Can not read properties.", e);
-            e.printStackTrace();
         }
     }
 
@@ -56,7 +55,7 @@ public class VacancyStore implements Closeable {
             LOGGER.info("Database connected successfully.");
             connection.setAutoCommit(false);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Database connection failed!", e);
         }
     }
 
@@ -70,9 +69,9 @@ public class VacancyStore implements Closeable {
      */
     private void createDatabase(String hostname, String port, String database, String username, String password) {
         String url = "jdbc:postgresql://" + hostname + ":" + port;
-        try (Connection srvConnection = DriverManager.getConnection(url, username, password)) {
-            PreparedStatement ps = srvConnection.prepareStatement("SELECT datname FROM pg_database WHERE datistemplate = false;");
-            ResultSet resultSet = ps.executeQuery();
+        try (Connection srvConnection = DriverManager.getConnection(url, username, password);
+             PreparedStatement ps = srvConnection.prepareStatement("SELECT datname FROM pg_database WHERE datistemplate = false;");
+             ResultSet resultSet = ps.executeQuery()) {
             List<String> databases = new LinkedList<>();
             while (resultSet.next()) {
                 databases.add(resultSet.getString(1));
@@ -84,7 +83,6 @@ public class VacancyStore implements Closeable {
             }
         } catch (Exception e) {
             LOGGER.error("Can not connect to the postgres server.", e);
-            e.printStackTrace();
         }
     }
 
@@ -95,8 +93,7 @@ public class VacancyStore implements Closeable {
         try (PreparedStatement statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS vacancies(id serial NOT NULL, name character varying NOT NULL, url character varying NOT NULL, PRIMARY KEY (id));")) {
             statement.executeUpdate();
         } catch (Exception e) {
-            LOGGER.error("Failed to create table.", e);
-            e.printStackTrace();
+            LOGGER.error("Failed to create table!", e);
         }
     }
 
@@ -108,8 +105,7 @@ public class VacancyStore implements Closeable {
             statement.executeUpdate();
             LOGGER.info("Database purged.");
         } catch (Exception e) {
-            LOGGER.error("Database purge failed.", e);
-            e.printStackTrace();
+            LOGGER.error("Database purge failed!", e);
         }
     }
 
@@ -125,8 +121,7 @@ public class VacancyStore implements Closeable {
             statement.executeUpdate();
             LOGGER.info("Vacancy inserted: " + title + " " + url);
         } catch (Exception e) {
-            LOGGER.error("Insert failed.", e);
-            e.printStackTrace();
+            LOGGER.error("Insert failed!", e);
         }
     }
 
@@ -142,9 +137,8 @@ public class VacancyStore implements Closeable {
             }
             connection.commit();
         } catch (SQLException e) {
-            LOGGER.error("Mass INSERT failed. Rolling back.", e);
+            LOGGER.error("Mass INSERT failed. Rolling back!", e);
             connection.rollback();
-            e.printStackTrace();
         }
         writeDate();
     }
@@ -158,8 +152,7 @@ public class VacancyStore implements Closeable {
             OutputStream output = new FileOutputStream(new File("src/main/resources/" + filename));
             properties.store(output, "Last run date:");
         } catch (IOException e) {
-            LOGGER.error("Can not wright date.", e);
-            e.printStackTrace();
+            LOGGER.error("Can not wright date!", e);
         }
     }
 
@@ -169,15 +162,14 @@ public class VacancyStore implements Closeable {
      */
     public ArrayList<Vacancy> findAll() {
         ArrayList<Vacancy> result = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM vacancies")) {
-            ResultSet rs = statement.executeQuery();
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM vacancies");
+             ResultSet rs = statement.executeQuery()) {
             while (rs.next()) {
                 Vacancy current = new Vacancy(rs.getString(2), rs.getString(3));
                 result.add(current);
             }
         } catch (Exception e) {
-            LOGGER.error("SELECT operation failed.", e);
-            e.printStackTrace();
+            LOGGER.error("SELECT operation failed!", e);
         }
         return result;
     }
@@ -189,8 +181,7 @@ public class VacancyStore implements Closeable {
                 connection.close();
                 LOGGER.info("Database connection closed.");
             } catch (SQLException e) {
-                LOGGER.info("Database connection failed.", e);
-                e.printStackTrace();
+                LOGGER.info("Database connection failed!", e);
             }
         }
     }

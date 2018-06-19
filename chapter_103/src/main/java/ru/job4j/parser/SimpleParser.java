@@ -49,7 +49,7 @@ public class SimpleParser {
         final Runnable parser = new Runnable() {
             @Override
             public void run() {
-                LOGGER.info(Thread.currentThread().getName() + " started.");
+                LOGGER.info(String.format("Thread %s is started.", Thread.currentThread().getName()));
                 parse();
             }
         };
@@ -58,7 +58,7 @@ public class SimpleParser {
         scheduler.schedule(new Runnable() {
             public void run() {
                 beeperHandle.cancel(true);
-                LOGGER.info(Thread.currentThread().getName() + " stopped.");
+                LOGGER.info(String.format("Thread %s is stopped.", Thread.currentThread().getName()));
             }
         }, delay, timeUnit);
     }
@@ -73,30 +73,31 @@ public class SimpleParser {
             String url = JOB + "/" + i;
             try {
                 Document doc = Jsoup.connect(url).get();
-                Elements created = doc.getElementsByClass("altCol");
-                if (!checkDate(created)) {
-                    LOGGER.info("No current year vacancies on page: " + i);
+                if (!doc.getElementsByClass("msgBody").text().contains("Указанный форум не найден")) {
+                    Elements created = doc.getElementsByClass("altCol");
+                    if (!checkDate(created)) {
+                        LOGGER.info(String.format("No current year vacancies on page: %s", i));
+                        break;
+                    }
+                    Elements elementsRefs = doc.getElementsByClass("postslisttopic");
+                    for (Element element : elementsRefs) {
+                        String title = element.child(0).text().toLowerCase();
+                        if (title.contains("java") && !title.contains("script")) {
+                            vacancies.add(new Vacancy(title, element.child(0).attr("href")));
+                        }
+                    }
+                } else {
                     break;
                 }
-                Elements elementsRefs = doc.getElementsByClass("postslisttopic");
-                for (Element element : elementsRefs) {
-                    String title = element.child(0).text().toLowerCase();
-                    if (title.contains("java") && !title.contains("script")) {
-                        vacancies.add(new Vacancy(title, element.child(0).attr("href")));
-                    }
-                }
             } catch (IOException e) {
-                LOGGER.error("URL read failed.", e);
-                e.printStackTrace();
-                break;
+                LOGGER.error("URL read failed!", e);
             }
             i++;
         }
         try {
             store.addAll(vacancies);
         } catch (SQLException e) {
-            LOGGER.error("Failed to write vacancies.", e);
-            e.printStackTrace();
+            LOGGER.error("Failed to write vacancies!", e);
         }
     }
 
@@ -111,13 +112,15 @@ public class SimpleParser {
         SimpleDateFormat formatter = new SimpleDateFormat("DD MMM YY, HH:mm");
         for (Element element : elements) {
             try {
-                String current = formatter.parse(element.text()).toString();
-                if (current.contains(year)) {
-                    result = true;
-                    break;
+                if (element.text().contains(year.substring(year.length() - 2,year.length()))) {
+                    String current = formatter.parse(element.text()).toString();
+                    if (current.contains(year)) {
+                        result = true;
+                        break;
+                    }
                 }
             } catch (ParseException e) {
-                //Do nothing.
+                LOGGER.warn("Can not parse date!", e);
             }
         }
         return result;
