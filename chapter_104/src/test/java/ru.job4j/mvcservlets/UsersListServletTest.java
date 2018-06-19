@@ -20,27 +20,21 @@ import static org.mockito.Mockito.*;
 public class UsersListServletTest {
 
     @Test
-    public void whenGetThenForward() {
+    public void whenGetThenForward() throws IOException, ServletException {
         String path = "/WEB-INF/views/UsersList.jsp";
         UsersListServlet servlet = new UsersListServlet();
         HttpServletRequest request = mock(HttpServletRequest.class);
         RequestDispatcher dispatcher = mock(RequestDispatcher.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         when(request.getRequestDispatcher(path)).thenReturn(dispatcher);
-        try {
-            servlet.doGet(request, response);
-            verify(dispatcher).forward(request, response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        servlet.doGet(request, response);
+        verify(dispatcher).forward(request, response);
         verify(request, times(1)).getRequestDispatcher(path);
         verify(request, never()).getSession();
     }
 
     @Test
-    public void whenPostThenDelete() {
+    public void whenPostThenDelete() throws IOException, ServletException {
         String path = "/WEB-INF/views/Redirect.jsp";
         UsersListServlet servlet = new UsersListServlet();
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -50,14 +44,8 @@ public class UsersListServletTest {
         when(request.getRequestDispatcher(path)).thenReturn(dispatcher);
         User user = new User("21", "name", "login", "email", LocalDateTime.now(), "password", "user", "Russia", "Moscow");
         ValidateService.getInstance().add(user);
-        try {
-            servlet.doPost(request, response);
-            verify(dispatcher).forward(request, response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        servlet.doPost(request, response);
+        verify(dispatcher).forward(request, response);
         verify(request, atLeast(1)).getParameter("id");
         verify(request, atLeast(1)).setAttribute("message", "User deleted!");
         verify(request, atLeast(1)).setAttribute("redirect", "");

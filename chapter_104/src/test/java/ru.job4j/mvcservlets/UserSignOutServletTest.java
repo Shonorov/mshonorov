@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 public class UserSignOutServletTest {
 
     @Test
-    public void whenPostThenSignOut() {
+    public void whenPostThenSignOut() throws IOException, ServletException {
         String path = "/WEB-INF/views/Redirect.jsp";
         UserSignOutServlet servlet = new UserSignOutServlet();
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -26,14 +26,8 @@ public class UserSignOutServletTest {
         HttpSession session = mock(HttpSession.class);
         when(request.getRequestDispatcher(path)).thenReturn(dispatcher);
         when(request.getSession()).thenReturn(session);
-        try {
-            servlet.doPost(request, response);
-            verify(dispatcher).forward(request, response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        servlet.doPost(request, response);
+        verify(dispatcher).forward(request, response);
         verify(session, atLeast(1)).invalidate();
         verify(request, atLeast(1)).setAttribute("message", "Logging out...");
         verify(request, atLeast(1)).setAttribute("redirect", "signin");

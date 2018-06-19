@@ -17,24 +17,18 @@ import static org.mockito.Mockito.*;
 public class RoleFilterTest {
 
     @Test
-    public void whenSignInServletThenDoFilter() {
+    public void whenSignInServletThenDoFilter() throws IOException, ServletException {
         RoleFilter filter = new RoleFilter();
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         FilterChain filterChain = mock(FilterChain.class);
         when(request.getRequestURI()).thenReturn("/signin");
-        try {
-            filter.doFilter(request, response, filterChain);
-            verify(filterChain, atLeast(1)).doFilter(request, response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
-            e.printStackTrace();
-        }
+        filter.doFilter(request, response, filterChain);
+        verify(filterChain, atLeast(1)).doFilter(request, response);
     }
 
     @Test
-    public void whenNotUserCallAnyServletThenDoFilter() {
+    public void whenNotUserCallAnyServletThenDoFilter() throws IOException, ServletException {
         RoleFilter filter = new RoleFilter();
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
@@ -44,18 +38,12 @@ public class RoleFilterTest {
         when(request.getSession()).thenReturn(session);
         when(session.getAttribute("role")).thenReturn("administrator");
         when(session.getAttribute("id")).thenReturn("0");
-        try {
-            filter.doFilter(request, response, filterChain);
-            verify(filterChain, atLeast(1)).doFilter(request, response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
-            e.printStackTrace();
-        }
+        filter.doFilter(request, response, filterChain);
+        verify(filterChain, atLeast(1)).doFilter(request, response);
     }
 
     @Test
-    public void whenUserCallCreateServletThenDenied() {
+    public void whenUserCallCreateServletThenDenied() throws IOException, ServletException {
         RoleFilter filter = new RoleFilter();
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
@@ -65,19 +53,13 @@ public class RoleFilterTest {
         when(session.getAttribute("role")).thenReturn("user");
         when(session.getAttribute("id")).thenReturn("1");
         when(request.getRequestURI()).thenReturn("/create");
-        try {
-            filter.doFilter(request, response, filterChain);
-            verify(response, atLeast(1)).sendRedirect(String.format("%s/", request.getContextPath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
-            e.printStackTrace();
-        }
+        filter.doFilter(request, response, filterChain);
+        verify(response, atLeast(1)).sendRedirect(String.format("%s/", request.getContextPath()));
         verify(session, atLeast(1)).setAttribute("error", "Access denied!");
     }
 
     @Test
-    public void whenUserCallEditServletForOtherUserThenDenied() {
+    public void whenUserCallEditServletForOtherUserThenDenied() throws IOException, ServletException {
         RoleFilter filter = new RoleFilter();
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
@@ -88,19 +70,13 @@ public class RoleFilterTest {
         when(session.getAttribute("id")).thenReturn("1");
         when(request.getParameter("id")).thenReturn("2");
         when(request.getRequestURI()).thenReturn("/edit");
-        try {
-            filter.doFilter(request, response, filterChain);
-            verify(response, atLeast(1)).sendRedirect(String.format("%s/", request.getContextPath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
-            e.printStackTrace();
-        }
+        filter.doFilter(request, response, filterChain);
+        verify(response, atLeast(1)).sendRedirect(String.format("%s/", request.getContextPath()));
         verify(session, atLeast(1)).setAttribute("error", "Access denied!");
     }
 
     @Test
-    public void whenUserCallEditServletForSelfAndChangeRoleToAdminThenDenied() {
+    public void whenUserCallEditServletForSelfAndChangeRoleToAdminThenDenied() throws IOException, ServletException {
         RoleFilter filter = new RoleFilter();
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
@@ -113,19 +89,13 @@ public class RoleFilterTest {
         when(request.getMethod()).thenReturn("POST");
         when(request.getParameter("newrole")).thenReturn("administrator");
         when(request.getRequestURI()).thenReturn("/edit");
-        try {
-            filter.doFilter(request, response, filterChain);
-            verify(response, atLeast(1)).sendRedirect(String.format("%s/", request.getContextPath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
-            e.printStackTrace();
-        }
+        filter.doFilter(request, response, filterChain);
+        verify(response, atLeast(1)).sendRedirect(String.format("%s/", request.getContextPath()));
         verify(session, atLeast(1)).setAttribute("error", "Access denied!");
     }
 
     @Test
-    public void whenUserDeleteThenDenied() {
+    public void whenUserDeleteThenDenied() throws IOException, ServletException {
         RoleFilter filter = new RoleFilter();
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
@@ -136,14 +106,8 @@ public class RoleFilterTest {
         when(session.getAttribute("id")).thenReturn("1");
         when(request.getMethod()).thenReturn("POST");
         when(request.getRequestURI()).thenReturn("/users/");
-        try {
-            filter.doFilter(request, response, filterChain);
-            verify(response, atLeast(1)).sendRedirect(String.format("%s/", request.getContextPath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
-            e.printStackTrace();
-        }
+        filter.doFilter(request, response, filterChain);
+        verify(response, atLeast(1)).sendRedirect(String.format("%s/", request.getContextPath()));
         verify(session, atLeast(1)).setAttribute("error", "Access denied!");
     }
 }

@@ -17,24 +17,19 @@ import static org.mockito.Mockito.*;
 public class AuthFilterTest {
 
     @Test
-    public void whenSignInServletThenDoFilter() {
+    public void whenSignInServletThenDoFilter() throws IOException, ServletException {
         AuthFilter filter = new AuthFilter();
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         FilterChain filterChain = mock(FilterChain.class);
         when(request.getRequestURI()).thenReturn("/signin");
-        try {
-            filter.doFilter(request, response, filterChain);
-            verify(filterChain, atLeast(1)).doFilter(request, response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
-            e.printStackTrace();
-        }
+        filter.doFilter(request, response, filterChain);
+        verify(filterChain, atLeast(1)).doFilter(request, response);
+
     }
 
     @Test
-    public void whenOtherServletAndSessionNullThenRedirect() {
+    public void whenOtherServletAndSessionNullThenRedirect() throws IOException, ServletException {
         AuthFilter filter = new AuthFilter();
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
@@ -43,18 +38,13 @@ public class AuthFilterTest {
         when(request.getRequestURI()).thenReturn("/");
         when(request.getSession()).thenReturn(session);
         when(session.getAttribute("id")).thenReturn(null);
-        try {
-            filter.doFilter(request, response, filterChain);
-            verify(response, atLeast(1)).sendRedirect(String.format("%s/signin", request.getContextPath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
-            e.printStackTrace();
-        }
+        filter.doFilter(request, response, filterChain);
+        verify(response, atLeast(1)).sendRedirect(String.format("%s/signin", request.getContextPath()));
+
     }
 
     @Test
-    public void whenOtherServletAndSessionNotNullThenDoFilter() {
+    public void whenOtherServletAndSessionNotNullThenDoFilter() throws IOException, ServletException {
         AuthFilter filter = new AuthFilter();
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
@@ -63,13 +53,8 @@ public class AuthFilterTest {
         when(request.getRequestURI()).thenReturn("/");
         when(request.getSession()).thenReturn(session);
         when(session.getAttribute("id")).thenReturn("0");
-        try {
-            filter.doFilter(request, response, filterChain);
-            verify(filterChain, atLeast(1)).doFilter(request, response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
-            e.printStackTrace();
-        }
+        filter.doFilter(request, response, filterChain);
+        verify(filterChain, atLeast(1)).doFilter(request, response);
+
     }
 }
