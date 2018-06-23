@@ -1,0 +1,14 @@
+<hibernate-mapping>
+    <class name="ru.job4j.cars.model.Manufacturer" table="manufacturer">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="name" column="name"/>
+        <property name="country" column="country"/>
+
+        <bag name="models" cascade="all">
+            <key column="manufacturer_id" not-null="true"/>
+            <one-to-many class="ru.job4j.cars.model.Model"/>
+        </bag>
+    </class>
+</hibernate-mapping>

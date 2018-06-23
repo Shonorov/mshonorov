@@ -1,0 +1,11 @@
+<hibernate-mapping>
+    <class name="ru.job4j.cars.model.Engine" table="engine">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="type" column="type"/>
+        <property name="volume" column="volume"/>
+        <property name="power" column="power"/>
+        <property name="mileage" column="mileage"/>
+    </class>
+</hibernate-mapping>

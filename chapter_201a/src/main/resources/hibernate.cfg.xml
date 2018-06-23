@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-configuration >
+    <session-factory>
+        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="connection.url">jdbc:postgresql://localhost:5432/carshop</property>
+        <property name="connection.username">postgres</property>
+        <property name="connection.password">postgres</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQL94Dialect</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>
+
+        <mapping resource="ru/job4j/cars/model/Body.hbm.xml"/>
+        <mapping resource="ru/job4j/cars/model/Car.hbm.xml"/>
+        <mapping resource="ru/job4j/cars/model/Engine.hbm.xml"/>
+        <mapping resource="ru/job4j/cars/model/GearBox.hbm.xml"/>
+        <mapping resource="ru/job4j/cars/model/Manufacturer.hbm.xml"/>
+        <mapping resource="ru/job4j/cars/model/Model.hbm.xml"/>
+        <mapping resource="ru/job4j/cars/model/Item.hbm.xml"/>
+        <mapping resource="ru/job4j/cars/model/User.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>

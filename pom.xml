@@ -23,6 +23,7 @@
 		<module>chapter_104</module>
         <module>chapter_104a</module>
         <module>chapter_201</module>
+        <module>chapter_201a</module>
     </modules>
 
 	<dependencies>
