@@ -1,0 +1,13 @@
+<web-app>
+
+    <servlet>
+        <servlet-name>ItemsServlet</servlet-name>
+        <servlet-class>ru.job4j.todolist.ItemsServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ItemsServlet</servlet-name>
+        <url-pattern>/items</url-pattern>
+    </servlet-mapping>
+
+</web-app>

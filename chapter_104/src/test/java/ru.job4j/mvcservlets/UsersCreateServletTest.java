@@ -19,27 +19,21 @@ import static org.mockito.Mockito.*;
 public class UsersCreateServletTest {
 
     @Test
-    public void whenGetThenForward() {
+    public void whenGetThenForward() throws IOException, ServletException {
         String path = "/WEB-INF/views/UserCreate.jsp";
         UsersCreateServlet servlet = new UsersCreateServlet();
         HttpServletRequest request = mock(HttpServletRequest.class);
         RequestDispatcher dispatcher = mock(RequestDispatcher.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         when(request.getRequestDispatcher(path)).thenReturn(dispatcher);
-        try {
-            servlet.doGet(request, response);
-            verify(dispatcher).forward(request, response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        servlet.doGet(request, response);
+        verify(dispatcher).forward(request, response);
         verify(request, times(1)).getRequestDispatcher(path);
         verify(request, never()).getSession();
     }
 
     @Test
-    public void whenPostThenCreateUser()  {
+    public void whenPostThenCreateUser() throws IOException, ServletException {
         String path = "/WEB-INF/views/Redirect.jsp";
         UsersCreateServlet servlet = new UsersCreateServlet();
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -54,14 +48,8 @@ public class UsersCreateServletTest {
         when(request.getParameter("city")).thenReturn("Moscow");
         when(request.getRequestDispatcher(path)).thenReturn(dispatcher);
         User expect = new User("name", "login", "email", "password", "user", "Russia", "Moscow");
-        try {
-            servlet.doPost(request, response);
-            verify(dispatcher).forward(request, response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        servlet.doPost(request, response);
+        verify(dispatcher).forward(request, response);
         verify(request, atLeast(1)).getParameter("name");
         verify(request, atLeast(1)).getParameter("login");
         verify(request, atLeast(1)).getParameter("email");

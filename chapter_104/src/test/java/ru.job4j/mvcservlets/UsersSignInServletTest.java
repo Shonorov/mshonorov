@@ -17,28 +17,22 @@ import static org.mockito.Mockito.*;
 public class UsersSignInServletTest {
 
     @Test
-    public void whenGetThenForward() {
+    public void whenGetThenForward() throws IOException, ServletException {
         String path = "/WEB-INF/views/UserSignIn.jsp";
         UsersSignInServlet servlet = new UsersSignInServlet();
         HttpServletRequest request = mock(HttpServletRequest.class);
         RequestDispatcher dispatcher = mock(RequestDispatcher.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         when(request.getRequestDispatcher(path)).thenReturn(dispatcher);
-        try {
-            servlet.doGet(request, response);
-            verify(dispatcher).forward(request, response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        servlet.doGet(request, response);
+        verify(dispatcher).forward(request, response);
         verify(request, times(1)).getRequestDispatcher(path);
         verify(request, never()).getSession();
 
     }
 
     @Test
-    public void whenPostThenAuthenticate() {
+    public void whenPostThenAuthenticate() throws IOException, ServletException {
         UsersSignInServlet servlet = new UsersSignInServlet();
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
@@ -46,21 +40,15 @@ public class UsersSignInServletTest {
         when(request.getParameter("login")).thenReturn("guest");
         when(request.getParameter("password")).thenReturn("guest");
         when(request.getSession()).thenReturn(session);
-        try {
-            servlet.doPost(request, response);
-            verify(response, atLeast(1)).sendRedirect(String.format("%s/", request.getContextPath()));
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        servlet.doPost(request, response);
+        verify(response, atLeast(1)).sendRedirect(String.format("%s/", request.getContextPath()));
         verify(session, atLeast(1)).setAttribute("login", "guest");
         verify(session, atLeast(1)).setAttribute("id", "1");
         verify(session, atLeast(1)).setAttribute("role", "user");
     }
 
     @Test
-    public void whenPostThenDoNotAuthenticate() {
+    public void whenPostThenDoNotAuthenticate() throws IOException, ServletException {
         String path = "/WEB-INF/views/UserSignIn.jsp";
         UsersSignInServlet servlet = new UsersSignInServlet();
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -69,14 +57,8 @@ public class UsersSignInServletTest {
         when(request.getParameter("login")).thenReturn("fail");
         when(request.getParameter("password")).thenReturn("fail");
         when(request.getRequestDispatcher(path)).thenReturn(dispatcher);
-        try {
-            servlet.doPost(request, response);
-            verify(dispatcher, atLeast(1)).forward(request, response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        servlet.doPost(request, response);
+        verify(dispatcher, atLeast(1)).forward(request, response);
         verify(request, times(1)).getRequestDispatcher(path);
         verify(request, atLeast(1)).setAttribute("error", "Invalid credentials!");
     }

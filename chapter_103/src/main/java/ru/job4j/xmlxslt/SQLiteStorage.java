@@ -1,7 +1,5 @@
 package ru.job4j.xmlxslt;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.sql.*;
 /**
  * SQLIte JDBC connection class.
@@ -16,20 +14,16 @@ public class SQLiteStorage {
      * Element count.
      */
 
-    private static final String PATH = "src/main/resources/";
-
     private String uri;
     private int count;
 
-    private Connection connection = null;
-
     public SQLiteStorage(String database, int count) {
-        this.uri = "jdbc:sqlite:" + PATH + database;
+        this.uri = "jdbc:sqlite:" + database;
         this.count = count;
     }
 
     public void setDatabase(String database) {
-        this.uri = "jdbc:sqlite:" + PATH + database;
+        this.uri = "jdbc:sqlite:" + database;
     }
 
     public void setCount(int count) {
@@ -42,25 +36,15 @@ public class SQLiteStorage {
      */
     public int[] process() {
         int[] result = new int[count];
-        try {
-            connection = DriverManager.getConnection(uri);
+        try (Connection connection = DriverManager.getConnection(uri);
+             Statement statement = connection.createStatement()) {
             connection.setAutoCommit(false);
-            Statement statement = connection.createStatement();
             statement.executeUpdate("DROP TABLE if EXISTS test");
             statement.executeUpdate("CREATE TABLE test (field INTEGER PRIMARY KEY AUTOINCREMENT)");
-            insert(statement);
+            insert(statement, connection);
             result = select(statement);
-            statement.close();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
         return result;
     }
@@ -69,7 +53,7 @@ public class SQLiteStorage {
      * Insert N values to the test table.
      * @param statement to use.
      */
-    private void insert(Statement statement) throws SQLException {
+    private void insert(Statement statement, Connection connection) throws SQLException {
         try {
             for (int i = 0; i < count; i++) {
                 statement.executeUpdate("INSERT INTO test (field) VALUES (NULL)");
@@ -88,13 +72,11 @@ public class SQLiteStorage {
      */
     private int[] select(Statement statement) {
         int[] result = new int[count];
-        try {
-            ResultSet resultSet = statement.executeQuery("SELECT field FROM test");
+        try (ResultSet resultSet = statement.executeQuery("SELECT field FROM test")) {
             for (int i = 0; i < count; i++) {
                 resultSet.next();
                 result[i] = resultSet.getInt("field");
             }
-            resultSet.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

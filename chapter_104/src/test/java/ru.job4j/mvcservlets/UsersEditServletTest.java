@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
 public class UsersEditServletTest {
 
     @Test
-    public void whenGetThenForward() {
+    public void whenGetThenForward() throws IOException, ServletException {
         String path = "/WEB-INF/views/UserModify.jsp";
         UsersEditServlet servlet = new UsersEditServlet();
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -37,14 +37,8 @@ public class UsersEditServletTest {
         User user = ValidateService.getInstance().findByIdView("1").get();
         List<Country> countries = ValidateService.getInstance().getCountries();
         List<City> cities = ValidateService.getInstance().getCities();
-        try {
-            servlet.doGet(request, response);
-            verify(dispatcher).forward(request, response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        servlet.doGet(request, response);
+        verify(dispatcher).forward(request, response);
         verify(request, atLeast(1)).setAttribute("roles", roles);
         verify(request, atLeast(1)).setAttribute("user", user);
         verify(request, atLeast(1)).setAttribute("countries", countries);
@@ -54,7 +48,7 @@ public class UsersEditServletTest {
     }
 
     @Test
-    public void whenPostThenUpdate() {
+    public void whenPostThenUpdate() throws IOException, ServletException {
         String path = "/WEB-INF/views/Redirect.jsp";
         UsersEditServlet servlet = new UsersEditServlet();
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -72,14 +66,8 @@ public class UsersEditServletTest {
         User add = new User("20", "name", "login", "email", LocalDateTime.now(), "password", "user", "Russia", "Moscow");
         User replace = new User("newname", "newlogin", "newemail", "newpassword", "user", "Ukraine", "Kiev");
         ValidateService.getInstance().add(add);
-        try {
-            servlet.doPost(request, response);
-            verify(dispatcher).forward(request, response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        servlet.doPost(request, response);
+        verify(dispatcher).forward(request, response);
         verify(request, atLeast(1)).getParameter("newname");
         verify(request, atLeast(1)).getParameter("newlogin");
         verify(request, atLeast(1)).getParameter("newemail");
