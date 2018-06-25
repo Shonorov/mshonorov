@@ -5,11 +5,14 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 import ru.job4j.cars.model.*;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -23,6 +26,12 @@ public class CarsRepository implements Closeable {
 
     private static final CarsRepository INSTANCE = new CarsRepository();
     private final SessionFactory factory = new Configuration().configure().buildSessionFactory();
+    private Comparator<Item> comparator = new Comparator<Item>() {
+        @Override
+        public int compare(Item o1, Item o2) {
+            return o1.getId().compareTo(o2.getId());
+        }
+    };
 
     public CarsRepository() {
     }
@@ -48,14 +57,76 @@ public class CarsRepository implements Closeable {
         final Session session = factory.openSession();
         final Transaction tx = session.beginTransaction();
         try {
+            System.out.println("try");
             return command.apply(session);
         } catch (final Exception e) {
+            System.out.println("back");
             session.getTransaction().rollback();
             throw e;
         } finally {
-            tx.commit();
+            if (!tx.getStatus().equals(TransactionStatus.ROLLED_BACK)) {
+                System.out.println("commit");
+                tx.commit();
+            }
             session.close();
         }
+    }
+
+    /**
+     * Find all items in database.
+     * @return list of all items.
+     */
+    public List<Item> getAllItems() {
+        return this.tx(
+                session -> {
+                    List<Item> result = session.createQuery("from Item").list();
+                    result.sort(comparator);
+                    return result;
+                }
+        );
+    }
+
+    /**
+     * Find Item by id.
+     * @param id id to find.
+     * @return optional of Item.
+     */
+    public Optional<Item> findItemById(String id) {
+        return this.tx(
+                session -> {
+                    Query query = session.createQuery("from Item where id=:itemid");
+                    query.setParameter("itemid", Integer.valueOf(id));
+                    return Optional.of((Item) query.getSingleResult());
+                }
+        );
+    }
+
+    /**
+     * Save Item object to database.
+     * @param item object to save.
+     * @return generated id.
+     */
+    public Serializable createItem(Item item) {
+        return this.tx(
+                session -> session.save(item)
+        );
+    }
+
+    /**
+     * Set status of item.
+     * @param id of item.
+     * @param status new status.
+     */
+    public boolean setStatus(String id, boolean status) {
+        return this.tx(
+                session -> {
+                    Item item = findItemById(id).get();
+                    item.setId(Integer.valueOf(id));
+                    item.setSold(status);
+                    session.update(item);
+                    return true;
+                }
+        );
     }
 
     /**
@@ -80,6 +151,26 @@ public class CarsRepository implements Closeable {
                     Query query = session.createQuery("from Car where id=:carid");
                     query.setParameter("carid", Integer.valueOf(id));
                     return Optional.of((Car) query.getSingleResult());
+                }
+        );
+    }
+
+    /**
+     * Update car photo.
+     * @param carid id of the car.
+     * @param photo new photo.
+     * @return true if success.
+     */
+    public boolean setCarPhoto(String carid, byte[] photo) {
+        return this.tx(
+                session -> {
+                    if (findCarById(carid).isPresent()) {
+                        Car car = findCarById(carid).get();
+                        car.setPhoto(photo);
+                        session.update(car);
+                        return true;
+                    }
+                    return false;
                 }
         );
     }
@@ -136,6 +227,49 @@ public class CarsRepository implements Closeable {
     public Serializable createManufacturer(Manufacturer manufacturer) {
         return this.tx(
                 session -> session.save(manufacturer)
+        );
+    }
+
+    /**
+     * Save User object to database.
+     * @param user object to save.
+     * @return generated id.
+     */
+    public Serializable createUser(User user) {
+        return this.tx(
+                session -> session.save(user)
+        );
+    }
+
+    /**
+     * Find user by its id.
+     * @param id to find.
+     * @return optional of user.
+     */
+    public Optional<User> findUserByID(String id) {
+        return this.tx(
+                session -> {
+                    Query query = session.createQuery("from User where id=:userid");
+                    query.setParameter("userid", Integer.valueOf(id));
+                    return Optional.of((User) query.getSingleResult());
+                }
+        );
+    }
+
+    /**
+     * Get user by login and password.
+     * @param login user login.
+     * @param password user password.
+     * @return optional of user.
+     */
+    public Optional<User> authenticate(String login, String password) {
+        return this.tx(
+                session -> {
+                    Query query = session.createQuery("from User where login = :userlogin and password = :userpassword");
+                    query.setParameter("userlogin", login);
+                    query.setParameter("userpassword", password);
+                    return Optional.of((User) query.getSingleResult());
+                }
         );
     }
 

@@ -1,6 +1,7 @@
 package ru.job4j.cars.model;
 
 import java.util.List;
+import javax.persistence.*;
 
 /**
  * Car manufacturer model for car shop web application.
@@ -8,11 +9,24 @@ import java.util.List;
  * @version $Id$
  * @since 0.1
  */
+
+@Entity
+@Table (name = "manufacturer")
 public class Manufacturer {
 
+    @Id
+    @GeneratedValue (strategy = GenerationType.SEQUENCE)
+    @Column (name = "id")
     private Integer id;
+
+    @Column (name = "name")
     private String name;
+
+    @Column (name = "country")
     private String country;
+
+    @Column (name = "models")
+    @OneToMany
     private List<Model> models;
 
     public Manufacturer() {
