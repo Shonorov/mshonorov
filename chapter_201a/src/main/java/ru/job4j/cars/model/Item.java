@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 public class Item {
 
     private Integer id;
+    private String header;
     private String text;
     private User author;
     private LocalDateTime created;
@@ -26,6 +27,14 @@ public class Item {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getHeader() {
+        return header;
+    }
+
+    public void setHeader(String header) {
+        this.header = header;
     }
 
     public String getText() {
@@ -82,6 +91,9 @@ public class Item {
         if (sold != item.sold) {
             return false;
         }
+        if (!header.equals(item.header)) {
+            return false;
+        }
         if (!text.equals(item.text)) {
             return false;
         }
@@ -97,6 +109,7 @@ public class Item {
     @Override
     public int hashCode() {
         int result = text.hashCode();
+        result = 31 * result + header.hashCode();
         result = 31 * result + author.hashCode();
         result = 31 * result + created.hashCode();
         result = 31 * result + car.hashCode();
@@ -107,6 +120,7 @@ public class Item {
     @Override
     public String toString() {
         return "Item{" + "id=" + id
+                + ", header='" + header
                 + ", text='" + text
                 + ", author=" + author
                 + ", car=" + car
