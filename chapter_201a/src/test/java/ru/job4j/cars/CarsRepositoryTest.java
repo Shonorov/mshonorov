@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 public class CarsRepositoryTest {
 
     @Test
-    public void whenCreateCarThenCreated() {
+    public void whenCreateAllEntitiesThenFind() {
         String str = "01-01-2010 00:00";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         CarsRepository repository = new CarsRepository();
@@ -26,15 +26,20 @@ public class CarsRepositoryTest {
         Model model = new Model("Kalina", LocalDateTime.parse(str, formatter), true);
         models.add(model);
         manufacturer.setModels(models);
-        repository.createManufacturer(manufacturer);
+
         car.setModel(model);
         car.setEngine(engine);
         car.setGearbox(gearBox);
         car.setBody(body);
         car.setManufacturer(manufacturer);
 
-        String id = repository.createCar(car).toString();
-        assertThat(repository.findCarById(id).get(), is(car));
+        User user = new User("Test user", "test_user", "user");
+        Item item = new Item("Kalina, 2010", "Want to sell test car");
+        item.setAuthor(user);
+        item.setCar(car);
+
+        String id = repository.createItem(item).toString();
+        assertThat(repository.findItemById(id).get(), is(item));
     }
 
     @Test

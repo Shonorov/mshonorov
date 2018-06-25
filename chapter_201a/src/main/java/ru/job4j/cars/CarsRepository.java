@@ -10,6 +10,7 @@ import ru.job4j.cars.model.*;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -56,6 +57,45 @@ public class CarsRepository implements Closeable {
             tx.commit();
             session.close();
         }
+    }
+
+    /**
+     * Find all items in database.
+     * @return list of all items.
+     */
+    public List<Item> getAllItems() {
+        return this.tx(
+                session -> {
+                    List<Item> result = session.createQuery("from Item").list();
+                    return result;
+                }
+        );
+    }
+
+    /**
+     * Find Item by id.
+     * @param id id to find.
+     * @return optional of Item.
+     */
+    public Optional<Item> findItemById(String id) {
+        return this.tx(
+                session -> {
+                    Query query = session.createQuery("from Item where id=:itemid");
+                    query.setParameter("itemid", Integer.valueOf(id));
+                    return Optional.of((Item) query.getSingleResult());
+                }
+        );
+    }
+
+    /**
+     * Save Item object to database.
+     * @param item object to save.
+     * @return generated id.
+     */
+    public Serializable createItem(Item item) {
+        return this.tx(
+                session -> session.save(item)
+        );
     }
 
     /**
@@ -136,6 +176,17 @@ public class CarsRepository implements Closeable {
     public Serializable createManufacturer(Manufacturer manufacturer) {
         return this.tx(
                 session -> session.save(manufacturer)
+        );
+    }
+
+    /**
+     * Save User object to database.
+     * @param user object to save.
+     * @return generated id.
+     */
+    public Serializable createUser(User user) {
+        return this.tx(
+                session -> session.save(user)
         );
     }
 

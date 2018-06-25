@@ -21,6 +21,22 @@ public class Item {
     public Item() {
     }
 
+    public Item(String header, String text) {
+        this.header = header;
+        this.text = text;
+        this.created = LocalDateTime.now();
+        this.sold = false;
+    }
+
+    public Item(String header, String text, User author, Car car) {
+        this.header = header;
+        this.text = text;
+        this.author = author;
+        this.created = LocalDateTime.now();
+        this.sold = false;
+        this.car = car;
+    }
+
     public Integer getId() {
         return id;
     }
