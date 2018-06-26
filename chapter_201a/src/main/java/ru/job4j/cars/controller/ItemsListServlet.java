@@ -1,4 +1,5 @@
 package ru.job4j.cars.controller;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -26,8 +27,10 @@ public class ItemsListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/json");
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        List<Item> items = CarsRepository.getInstance().getAllItems();;
-        Gson gson = new GsonBuilder().create();
+        List<Item> items = CarsRepository.getInstance().getAllItems();
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
+        Gson gson = builder.create();
         JsonArray jarray = gson.toJsonTree(items).getAsJsonArray();
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("items", jarray);

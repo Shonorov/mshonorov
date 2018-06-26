@@ -1,14 +1,14 @@
 <web-app>
 
-    <!--<servlet>-->
-        <!--<servlet-name>ItemsListServlet</servlet-name>-->
-        <!--<servlet-class>ru.job4j.cars.controller.ItemsListServlet</servlet-class>-->
-        <!--<load-on-startup>1</load-on-startup>-->
-    <!--</servlet>-->
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>ItemsListServlet</servlet-name>-->
-        <!--<url-pattern>/list</url-pattern>-->
-    <!--</servlet-mapping>-->
+    <servlet>
+        <servlet-name>ItemsListServlet</servlet-name>
+        <servlet-class>ru.job4j.cars.controller.ItemsListServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ItemsListServlet</servlet-name>
+        <url-pattern>/list</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>CarShopServlet</servlet-name>
@@ -20,15 +20,15 @@
         <url-pattern>/shop</url-pattern>
     </servlet-mapping>
 
-    <!--<servlet>-->
-        <!--<servlet-name>SignInServlet</servlet-name>-->
-        <!--<servlet-class>ru.job4j.cars.controller.SignInServlet</servlet-class>-->
-        <!--<load-on-startup>1</load-on-startup>-->
-    <!--</servlet>-->
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>SignInServlet</servlet-name>-->
-        <!--<url-pattern>/signin</url-pattern>-->
-    <!--</servlet-mapping>-->
+    <servlet>
+        <servlet-name>SignInServlet</servlet-name>
+        <servlet-class>ru.job4j.cars.controller.SignInServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SignInServlet</servlet-name>
+        <url-pattern>/signin</url-pattern>
+    </servlet-mapping>
 
 
     <!--<servlet-mapping>-->

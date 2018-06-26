@@ -1,0 +1,23 @@
+body {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.itemelement {
+    background-color: lightgrey;
+    margin: 5px;
+    width: 1000px;
+
+}
+
+.header {
+    font-size: 30px;
+}
+
+.createdate {
+    align: right;
+}
+
+tr, td {
+    border: 1px solid black;
+}

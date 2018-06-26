@@ -43,6 +43,15 @@ public class CarsRepositoryTest {
     }
 
     @Test
+    public void whenSelectAllThenFind() {
+        CarsRepository repository = new CarsRepository();
+        List<Item> items = repository.getAllItems();
+        for (Item item : items) {
+            System.out.println(item);
+        }
+    }
+
+    @Test
     public void whenCreateManufacturerThenModelSaved() {
         String str = "01-01-2010 00:00";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
