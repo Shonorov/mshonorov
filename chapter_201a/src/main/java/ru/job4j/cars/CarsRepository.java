@@ -10,6 +10,7 @@ import ru.job4j.cars.model.*;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -24,6 +25,12 @@ public class CarsRepository implements Closeable {
 
     private static final CarsRepository INSTANCE = new CarsRepository();
     private final SessionFactory factory = new Configuration().configure().buildSessionFactory();
+    private Comparator<Item> comparator = new Comparator<Item>() {
+        @Override
+        public int compare(Item o1, Item o2) {
+            return o1.getId().compareTo(o2.getId());
+        }
+    };
 
     public CarsRepository() {
     }
@@ -67,6 +74,7 @@ public class CarsRepository implements Closeable {
         return this.tx(
                 session -> {
                     List<Item> result = session.createQuery("from Item").list();
+                    result.sort(comparator);
                     return result;
                 }
         );
@@ -95,6 +103,23 @@ public class CarsRepository implements Closeable {
     public Serializable createItem(Item item) {
         return this.tx(
                 session -> session.save(item)
+        );
+    }
+
+    /**
+     * Set status of item.
+     * @param id of item.
+     * @param status new status.
+     */
+    public boolean setStatus(String id, boolean status) {
+        return this.tx(
+                session -> {
+                    Item item = findItemById(id).get();
+                    item.setId(Integer.valueOf(id));
+                    item.setSold(status);
+                    session.update(item);
+                    return true;
+                }
         );
     }
 

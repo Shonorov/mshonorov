@@ -15,9 +15,24 @@ body {
 }
 
 .createdate {
-    align: right;
+    font-size: 10px;
 }
 
-tr, td {
-    border: 1px solid black;
+.param {
+    width: 25%;
 }
+
+.avail {
+    background-color: green;
+}
+
+.sold {
+    background-color: red;
+}
+
+.price {
+    font-size: 25px;
+}
+/*tr, td {*/
+    /*border: 1px solid black;*/
+/*}*/

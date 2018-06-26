@@ -21,6 +21,10 @@ public class Item {
     public Item() {
     }
 
+    public Item(Integer id) {
+        this.id = id;
+    }
+
     public Item(String header, String text) {
         this.header = header;
         this.text = text;

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import ru.job4j.cars.CarsRepository;
 import ru.job4j.cars.model.Item;
 
@@ -40,6 +41,7 @@ public class ItemsListServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        CarsRepository.getInstance().setStatus(req.getParameter("id"), Boolean.valueOf(req.getParameter("status")));
+        req.getRequestDispatcher("/WEB-INF/views/item_list.html").forward(req, resp);
     }
 }
