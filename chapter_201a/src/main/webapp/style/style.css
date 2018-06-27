@@ -7,7 +7,6 @@ body {
     background-color: lightgrey;
     margin: 5px;
     width: 1000px;
-
 }
 
 .header {
@@ -33,6 +32,17 @@ body {
 .price {
     font-size: 25px;
 }
-/*tr, td {*/
-    /*border: 1px solid black;*/
-/*}*/
+
+#head {
+    background-color: deepskyblue;
+    height: 30px;
+    width: 1000px;
+}
+
+.proprow {
+    width: 30%;
+}
+
+.propvaluerow {
+    width: 70%;
+}

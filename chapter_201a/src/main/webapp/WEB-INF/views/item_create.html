@@ -3,8 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <title>Car Shop</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="./scripts/scripts.js"></script>
+    <link rel="stylesheet" type="text/css" href="./style/style.css"><meta charset="UTF-8">
 </head>
 <body>
+<div id="head">
+    <table width="1000px">
+        <tr>
+            <td width="70%">
+                Item create
+            </td>
+            <td width="10%">
+                User:
+            </td>
+            <td width="10%" align="right">
+                <form id="create" action="item_create.html"><input type="submit" value="Create"></form>
+            </td>
+            <td width="10%" align="right">
+                <form id="signin"><input type="submit" value="Sign in"></form>
+            </td>
+        </tr>
+    </table>
+</div>
 
+<div id="itemcreate">
+    <form name="createform">
+        <table width="1000px">
+            <tr class="propline">
+                <td class="proprow">Item name: </td>
+                <td class="propvaluerow"><input type="text" name="header" class="propinput"></td>
+            </tr>
+            <tr class="propline">
+                <td class="proprow">Item text: </td>
+                <td class="propvaluerow"><input type="text" name="text" class="propinput"></td>
+            </tr>
+            <tr class="propline">
+                <td class="proprow">Price: </td>
+                <td class="propvaluerow"><input type="text" name="price" class="propinput"> руб.</td>
+            </tr>
+            <tr class="propline">
+                <td class="proprow">Drive type: </td>
+                <td class="propvaluerow"><input type="text" name="drive" class="propinput"> руб.</td>
+            </tr>
+            <tr class="propline">
+                <td class="proprow">Manufacturer: </td>
+                <td class="propvaluerow"><input type="date" name="manufacturer" class="propinput"> руб.</td>
+            </tr>
+            <tr class="propline">
+                <td class="proprow">Country: </td>
+                <td class="propvaluerow"><input type="date" name="country" class="propinput"> руб.</td>
+            </tr>
+            <tr class="propline">
+                <td class="proprow">Model: </td>
+                <td class="propvaluerow"><input type="date" name="model" class="propinput"> руб.</td>
+            </tr>
+            <tr class="propline">
+                <td class="proprow">Release date: </td>
+                <td class="propvaluerow"><input type="date" name="releasedate" class="propinput"> руб.</td>
+            </tr>
+            <tr class="propline">
+                <td class="proprow">Manufactured: </td>
+                <td class="propvaluerow"><input type="date" name="manufactured" class="propinput"> руб.</td>
+            </tr>
+            <tr class="propline">
+                <td class="proprow">Photo: </td>
+                <td class="propvaluerow"><input type="date" name="photo" class="propinput"> руб.</td>
+            </tr>
+        </table>
+    </form>
+</div>
 </body>
 </html>

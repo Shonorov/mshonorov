@@ -21,6 +21,16 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>ItemCreateServlet</servlet-name>
+        <servlet-class>ru.job4j.cars.controller.ItemCreateServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ItemCreateServlet</servlet-name>
+        <url-pattern>/create</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>SignInServlet</servlet-name>
         <servlet-class>ru.job4j.cars.controller.SignInServlet</servlet-class>
         <load-on-startup>1</load-on-startup>

@@ -5,7 +5,9 @@ $(document).ready(function () {
 function setstatus(itemid) {
     console.log(itemid);
     //TODO wrong id
-    var newstatus = revertstatus($("#sold").val());
+    var select = "sold" + itemid;
+    // var newstatus = revertstatus($("#select").val());
+    var newstatus = revertstatus(document.getElementById(select).value);
     console.log(newstatus);
     $.ajax({
         type: "POST",
@@ -87,7 +89,7 @@ function printitems() {
                     "<td class='price'>" + data[i].car.price + " руб.</td>" +
                     "<td class='status' colspan='3' align='right'>" +
                     "<form name='status'>Status: " +
-                    "<select id='sold' onchange='setstatus(" + data[i].id + ")' " + color(data[i].sold) + ">" +
+                    "<select id='sold" + data[i].id + "' onchange='setstatus(" + data[i].id + ")' " + color(data[i].sold) + ">" +
                     "<option value='" + status(data[i].sold) + "'>" + status(data[i].sold) + "</option>" +
                     "<option value='" + status(!data[i].sold) + "'>" + status(!data[i].sold) + "</option>" +
                     "</select>" +
