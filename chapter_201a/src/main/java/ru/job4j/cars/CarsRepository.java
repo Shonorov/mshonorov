@@ -215,4 +215,19 @@ public class CarsRepository implements Closeable {
         );
     }
 
+    /**
+     * Find user by its id.
+     * @param id to find.
+     * @return optional of user.
+     */
+    public Optional<User> findUserByID(String id) {
+        return this.tx(
+                session -> {
+                    Query query = session.createQuery("from User where id=:userid");
+                    query.setParameter("userid", Integer.valueOf(id));
+                    return Optional.of((User) query.getSingleResult());
+                }
+        );
+    }
+
 }
