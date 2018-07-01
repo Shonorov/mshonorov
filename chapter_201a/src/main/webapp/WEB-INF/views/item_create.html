@@ -30,49 +30,132 @@
 </div>
 
 <div id="itemcreate">
-    <form name="createform">
+    <form name="createform" action="create" method="POST" enctype=multipart/form-data»>
         <table width="1000px">
             <tr class="propline">
                 <td class="proprow">Item name: </td>
-                <td class="propvaluerow"><input type="text" name="header" class="propinput"></td>
+                <td class="propvaluerow"><input type="text" name='header' class="propinput"></td>
             </tr>
             <tr class="propline">
                 <td class="proprow">Item text: </td>
                 <td class="propvaluerow"><input type="text" name="text" class="propinput"></td>
             </tr>
             <tr class="propline">
-                <td class="proprow">Price: </td>
+                <td class="proprow">Car price: </td>
                 <td class="propvaluerow"><input type="text" name="price" class="propinput"> руб.</td>
             </tr>
             <tr class="propline">
-                <td class="proprow">Drive type: </td>
-                <td class="propvaluerow"><input type="text" name="drive" class="propinput"> руб.</td>
+                <td class="proprow">Car drive type: </td>
+                <td class="propvaluerow">
+                    <select name="drive" class="propinput">
+                        <option value="FWD">FWD</option>
+                        <option value="RWD">RWD</option>
+                        <option value="4WD">4WD</option>
+                    </select>
+                </td>
             </tr>
+            <!--<tr class="propline">-->
+                <!--<td class="proprow">Car manufacture date: </td>-->
+                <!--<td class="propvaluerow"><input type="date" name="manufactured" class="propinput"></td>-->
+            <!--</tr>-->
+            <!--<tr class="propline">-->
+                <!--<td class="proprow">Car photo: </td>-->
+                <!--<td class="propvaluerow"><input type="file" name="photo" class="propinput"></td>-->
+            <!--</tr>-->
             <tr class="propline">
                 <td class="proprow">Manufacturer: </td>
-                <td class="propvaluerow"><input type="date" name="manufacturer" class="propinput"> руб.</td>
+                <td class="propvaluerow"><input type="text" name="manufacturer" class="propinput"></td>
             </tr>
             <tr class="propline">
-                <td class="proprow">Country: </td>
-                <td class="propvaluerow"><input type="date" name="country" class="propinput"> руб.</td>
+                <td class="proprow">Manufacturer country: </td>
+                <td class="propvaluerow"><input type="text" name="country" class="propinput"></td>
             </tr>
             <tr class="propline">
-                <td class="proprow">Model: </td>
-                <td class="propvaluerow"><input type="date" name="model" class="propinput"> руб.</td>
+                <td class="proprow">Car model name: </td>
+                <td class="propvaluerow"><input type="text" name="model" class="propinput"></td>
+            </tr>
+            <!--<tr class="propline">-->
+                <!--<td class="proprow">Car model release date: </td>-->
+                <!--<td class="propvaluerow"><input type="date" name="releasedate" class="propinput"></td>-->
+            <!--</tr>-->
+            <tr class="propline">
+                <td class="proprow">Is car model manufacturing: </td>
+                <td class="propvaluerow">
+                    <select name="manufacturing" class="propinput">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr class="propline">
+                <td class="proprow">Engine type: </td>
+                <td class="propvaluerow">
+                    <select name="enginetype" class="propinput">
+                        <option value="Petrol">Petrol</option>
+                        <option value="Diesel">Diesel</option>
+                        <option value="Electric">Electric</option>
+                        <option value="Hybrid">Hybrid</option>
+                    </select>
+                </td>
             </tr>
             <tr class="propline">
-                <td class="proprow">Release date: </td>
-                <td class="propvaluerow"><input type="date" name="releasedate" class="propinput"> руб.</td>
+                <td class="proprow">Engine volume: </td>
+                <td class="propvaluerow"><input type="text" name="enginevolume" class="propinput"></td>
             </tr>
             <tr class="propline">
-                <td class="proprow">Manufactured: </td>
-                <td class="propvaluerow"><input type="date" name="manufactured" class="propinput"> руб.</td>
+                <td class="proprow">Engine power: </td>
+                <td class="propvaluerow"><input type="text" name="enginepower" class="propinput"></td>
             </tr>
             <tr class="propline">
-                <td class="proprow">Photo: </td>
-                <td class="propvaluerow"><input type="date" name="photo" class="propinput"> руб.</td>
+                <td class="proprow">Engine milage: </td>
+                <td class="propvaluerow"><input type="text" name="enginemilage" class="propinput"></td>
+            </tr>
+            <tr class="propline">
+                <td class="proprow">Body type: </td>
+                <td class="propvaluerow">
+                    <select name="bodytype" class="propinput">
+                        <option value="Coupe">Coupe</option>
+                        <option value="Sedan">Sedan</option>
+                        <option value="Convertible">Convertible</option>
+                        <option value="Crossover">Crossover</option>
+                        <option value="VAN">VAN</option>
+                        <option value="Wagon">Wagon</option>
+                        <option value="Truck">Truck</option>
+                    </select>
+                </td>
+            </tr>
+            <tr class="propline">
+                <td class="proprow">Body color: </td>
+                <td class="propvaluerow"><input type="text" name="bodycolor" class="propinput"></td>
+            </tr>
+            <tr class="propline">
+                <td class="proprow">Wheel side: </td>
+                <td class="propvaluerow">
+                    <select name="wheelside" class="propinput">
+                        <option value="Left">Left</option>
+                        <option value="Right">Right</option>
+                    </select>
+                </td>
+            </tr>
+            <tr class="propline">
+                <td class="proprow">Gearbox type: </td>
+                <td class="propvaluerow">
+                    <select name="gearboxtype" class="propinput">
+                        <option value="Automatic">Automatic</option>
+                        <option value="Semi automatic">Semi automatic</option>
+                        <option value="Manual">Manual</option>
+                        <option value="CVT">CVT</option>
+                        <option value="DSG">DSG</option>
+                    </select>
+                </td>
+            </tr>
+            <tr class="propline">
+                <td class="proprow">Gear count: </td>
+                <td class="propvaluerow"><input type="text" name="gearcount" class="propinput"></td>
             </tr>
         </table>
+        <input type="submit" value="Create item">
     </form>
 </div>
 </body>
