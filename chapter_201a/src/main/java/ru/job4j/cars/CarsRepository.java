@@ -150,6 +150,26 @@ public class CarsRepository implements Closeable {
     }
 
     /**
+     * Update car photo.
+     * @param carid id of the car.
+     * @param photo new photo.
+     * @return true if success.
+     */
+    public boolean setCarPhoto(String carid, byte[] photo) {
+        return this.tx(
+                session -> {
+                    if (findCarById(carid).isPresent()) {
+                        Car car = findCarById(carid).get();
+                        car.setPhoto(photo);
+                        session.update(car);
+                        return true;
+                    }
+                    return false;
+                }
+        );
+    }
+
+    /**
      * Save Body object to database.
      * @param body object to save.
      * @return generated id.

@@ -25,6 +25,10 @@ public class Car {
     public Car() {
     }
 
+    public Car(Integer id) {
+        this.id = id;
+    }
+
     public Car(LocalDateTime manufactured, String drive, Integer price) {
         this.manufactured = manufactured;
         this.drive = drive;

@@ -3,12 +3,8 @@ $(document).ready(function () {
 });
 
 function setstatus(itemid) {
-    console.log(itemid);
-    //TODO wrong id
     var select = "sold" + itemid;
-    // var newstatus = revertstatus($("#select").val());
     var newstatus = revertstatus(document.getElementById(select).value);
-    console.log(newstatus);
     $.ajax({
         type: "POST",
         url: "./list",
@@ -66,6 +62,11 @@ function revertstatus(data) {
     return tag;
 }
 
+$("input[type='image']").click(function() {
+    console.log("Hit");
+    $("input[id='my_file']").click();
+});
+
 function printitems() {
     $("#items").empty();
     $.ajax({
@@ -78,7 +79,9 @@ function printitems() {
                 $("#items").append("<div class='itemelement'>" +
                     "<table>" +
                     "<tr>" +
-                    "<td><img src='./style/car.jpg' alt='Car' height='240' width='240'></td>" +
+                    // "<td><img src='./style/car.jpg' alt='Car' height='240' width='240'>" +
+                    "<td><input type='image' src='./style/car.jpg' height='240' width='240px'/>" +
+                    "<input type='file' id='my_file' style='display: none;'/></td>" +
                     "<td><table style='border: 1px solid black; height: 240px; width: 750px'>" +
                     "<tr style='height: 30px'>" +
                     "<td class='header' colspan='4'><b>" + data[i].header + "</b></td>" +
