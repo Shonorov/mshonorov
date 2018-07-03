@@ -62,12 +62,14 @@ function revertstatus(data) {
     return tag;
 }
 
-function getimage(blob) {
-
-    var objurl = window.URL.createObjectURL(new Blob([blob]));
-    var img = new Image();
-    img.src = objurl;
-    return img;
+function arrayBufferToBase64( buffer ) {
+    var binary = '';
+    var bytes = new Uint8Array( buffer );
+    var len = bytes.byteLength;
+    for (var i = 0; i < len; i++) {
+        binary += String.fromCharCode( bytes[ i ] );
+    }
+    return window.btoa( binary );
 }
 
 function printitems() {
@@ -83,8 +85,7 @@ function printitems() {
                 $("#items").append("<div class='itemelement'>" +
                     "<table>" +
                     "<tr>" +
-                    "<td><img src='data:image/jpeg;base64," + btoa(data[i].car.photo) + "' alt='./style/car.jpg' height='240' width='240'></td>" +
-                    // "<td><img src='./style/car.jpg' alt='Car' height='240' width='240'></td>" +
+                    "<td><img src='data:image/jpeg;base64," + arrayBufferToBase64(data[i].car.photo) + "' alt='No image' height='240' width='240' onerror=\"this.src='./style/nophoto.jpg';\"></td>" +
                     "<td><table style='border: 1px solid black; height: 240px; width: 750px'>" +
                     "<tr style='height: 30px'>" +
                     "<td class='header' colspan='4'><b>" + data[i].header + "</b></td>" +
