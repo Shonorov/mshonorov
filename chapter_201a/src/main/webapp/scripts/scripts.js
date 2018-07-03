@@ -62,10 +62,13 @@ function revertstatus(data) {
     return tag;
 }
 
-$("input[type='image']").click(function() {
-    console.log("Hit");
-    $("input[id='my_file']").click();
-});
+function getimage(blob) {
+
+    var objurl = window.URL.createObjectURL(new Blob([blob]));
+    var img = new Image();
+    img.src = objurl;
+    return img;
+}
 
 function printitems() {
     $("#items").empty();
@@ -76,12 +79,12 @@ function printitems() {
         success: function (response) {
             var data = response["items"];
             for (var i in data) {
+                console.log(data[i].car.photo);
                 $("#items").append("<div class='itemelement'>" +
                     "<table>" +
                     "<tr>" +
-                    // "<td><img src='./style/car.jpg' alt='Car' height='240' width='240'>" +
-                    "<td><input type='image' src='./style/car.jpg' height='240' width='240px'/>" +
-                    "<input type='file' id='my_file' style='display: none;'/></td>" +
+                    "<td><img src='data:image/jpeg;base64," + btoa(data[i].car.photo) + "' alt='./style/car.jpg' height='240' width='240'></td>" +
+                    // "<td><img src='./style/car.jpg' alt='Car' height='240' width='240'></td>" +
                     "<td><table style='border: 1px solid black; height: 240px; width: 750px'>" +
                     "<tr style='height: 30px'>" +
                     "<td class='header' colspan='4'><b>" + data[i].header + "</b></td>" +

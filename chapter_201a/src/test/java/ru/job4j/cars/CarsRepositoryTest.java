@@ -3,6 +3,10 @@ package ru.job4j.cars;
 import org.junit.Test;
 import ru.job4j.cars.model.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -62,5 +66,15 @@ public class CarsRepositoryTest {
         models.add(model);
         manufacturer.setModels(models);
         repository.createManufacturer(manufacturer);
+    }
+
+    @Test
+    public void whenPhotoRedAndSaved() throws IOException {
+        CarsRepository repository = new CarsRepository();
+        Car car = repository.findCarById("7").get();
+        File file = new File("C:\\test\\7.jpg");
+        FileOutputStream stream = new FileOutputStream(file);
+        stream.write(car.getPhoto());
+        stream.close();
     }
 }

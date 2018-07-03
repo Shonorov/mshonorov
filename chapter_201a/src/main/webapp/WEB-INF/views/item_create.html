@@ -30,7 +30,7 @@
 </div>
 
 <div id="itemcreate">
-    <form name="createform" action="create" method="POST">
+    <form name="createform" action="create" method="POST" enctype="multipart/form-data">
         <table width="1000px">
             <tr class="propline">
                 <td class="proprow">Item name: </td>
@@ -58,10 +58,10 @@
                 <td class="proprow">Car manufacture date: </td>
                 <td class="propvaluerow"><input type="date" name="manufactured" class="propinput"></td>
             </tr>
-            <!--<tr class="propline">-->
-                <!--<td class="proprow">Car photo: </td>-->
-                <!--<td class="propvaluerow"><input type="file" name="photo" class="propinput"></td>-->
-            <!--</tr>-->
+            <tr class="propline">
+                <td class="proprow">Car photo: </td>
+                <td class="propvaluerow"><input type="file" name="photo" class="propinput"></td>
+            </tr>
             <tr class="propline">
                 <td class="proprow">Manufacturer: </td>
                 <td class="propvaluerow"><input type="text" name="manufacturer" class="propinput"></td>

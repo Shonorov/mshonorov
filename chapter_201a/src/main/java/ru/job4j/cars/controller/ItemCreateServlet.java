@@ -1,6 +1,8 @@
 package ru.job4j.cars.controller;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import ru.job4j.cars.CarsRepository;
@@ -11,14 +13,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
+
 import java.io.IOException;
-import java.io.PrintWriter;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Item list management servlet.
@@ -35,42 +36,41 @@ public class ItemCreateServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        System.out.println("Hit!");
-        System.out.println(req.getParameter("header"));
-        System.out.println(req.getParameter("text"));
-        System.out.println(req.getParameter("price"));
-        System.out.println(req.getParameter("drive"));
-        System.out.println(req.getParameter("manufactured"));
-        System.out.println(req.getParameter("photo"));
-        System.out.println(req.getParameter("manufacturer"));
-        System.out.println(req.getParameter("country"));
-        System.out.println(req.getParameter("model"));
-        System.out.println(req.getParameter("releasedate"));
-        System.out.println(req.getParameter("manufacturing"));
-        System.out.println(req.getParameter("enginetype"));
-        System.out.println(req.getParameter("enginevolume"));
-        System.out.println(req.getParameter("enginepower"));
-        System.out.println(req.getParameter("enginemilage"));
-        System.out.println(req.getParameter("bodytype"));
-        System.out.println(req.getParameter("bodycolor"));
-        System.out.println(req.getParameter("wheelside"));
-        System.out.println(req.getParameter("gearboxtype"));
-        System.out.println(req.getParameter("gearcount"));
-        System.out.println(req.getParameter("headertst"));
+
+        Map<String, String> param = new HashMap<>();
+        FileItemFactory factory = new DiskFileItemFactory();
+        ServletFileUpload upload = new ServletFileUpload(factory);
+        upload.setHeaderEncoding("UTF-8");
+        Iterator<FileItem> iterator = null;
+        try {
+            iterator = upload.parseRequest(req).iterator();
+        } catch (FileUploadException e) {
+            e.printStackTrace();
+        }
+        byte[] photo = new byte[0];
+        while (iterator.hasNext()) {
+            FileItem item = iterator.next();
+            if (!item.isFormField()) {
+                photo = item.get();
+            }
+            else {
+                param.put(item.getFieldName(), item.getString());
+            }
+        }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        Car car = new Car(LocalDateTime.from(LocalDate.parse(req.getParameter("manufactured"), formatter).atStartOfDay()), req.getParameter("drive"), Integer.valueOf(req.getParameter("price")));
-        Body body = new Body(req.getParameter("bodytype"), req.getParameter("bodycolor"), req.getParameter("wheelside"));
-        Engine engine = new Engine(req.getParameter("enginetype"), Double.valueOf(req.getParameter("enginevolume")), Integer.valueOf(req.getParameter("enginepower")), Integer.valueOf(req.getParameter("enginemilage")));
-        GearBox gearBox = new GearBox(req.getParameter("gearboxtype"), Integer.valueOf(req.getParameter("gearcount")));
-        Manufacturer manufacturer = new Manufacturer(req.getParameter("manufacturer"), req.getParameter("country"));
+        Car car = new Car(LocalDateTime.from(LocalDate.parse(param.get("manufactured"), formatter).atStartOfDay()), param.get("drive"), Integer.valueOf(param.get("price")));
+        Body body = new Body(param.get("bodytype"), param.get("bodycolor"), param.get("wheelside"));
+        Engine engine = new Engine(param.get("enginetype"), Double.valueOf(param.get("enginevolume")), Integer.valueOf(param.get("enginepower")), Integer.valueOf(param.get("enginemilage")));
+        GearBox gearBox = new GearBox(param.get("gearboxtype"), Integer.valueOf(param.get("gearcount")));
+        Manufacturer manufacturer = new Manufacturer(param.get("manufacturer"), param.get("country"));
 
         List<Model> models = new ArrayList<>();
-        Model model = new Model(req.getParameter("model"), LocalDateTime.from(LocalDate.parse(req.getParameter("releasedate"), formatter).atStartOfDay()), Boolean.valueOf(req.getParameter("manufacturing")));
+        Model model = new Model(param.get("model"), LocalDateTime.from(LocalDate.parse(param.get("releasedate"), formatter).atStartOfDay()), Boolean.valueOf(param.get("manufacturing")));
         models.add(model);
         manufacturer.setModels(models);
 
-//        car.setPhoto(photoUpload(req, resp));
+        car.setPhoto(photo);
         car.setModel(model);
         car.setEngine(engine);
         car.setGearbox(gearBox);
@@ -79,7 +79,7 @@ public class ItemCreateServlet extends HttpServlet {
         HttpSession session = req.getSession();
         User user = CarsRepository.getInstance().findUserByID("1").get();
 //        User user = CarsRepository.getInstance().findUserByID(session.getAttribute("id").toString()).get();
-        Item item = new Item(req.getParameter("header"), req.getParameter("text"));
+        Item item = new Item(param.get("header"), param.get("text"));
         item.setAuthor(user);
         item.setCar(car);
         System.out.println(item);
@@ -87,6 +87,7 @@ public class ItemCreateServlet extends HttpServlet {
 
         req.getRequestDispatcher("/WEB-INF/views/item_list.html").forward(req, resp);
     }
+
 
 
 }
