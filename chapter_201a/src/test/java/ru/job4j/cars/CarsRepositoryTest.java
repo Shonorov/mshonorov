@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
@@ -76,5 +78,21 @@ public class CarsRepositoryTest {
         FileOutputStream stream = new FileOutputStream(file);
         stream.write(car.getPhoto());
         stream.close();
+    }
+
+    @Test
+    public void whenCreateUserThenAuthenticate() {
+        CarsRepository repository = new CarsRepository();
+//        User user = new User("user", "user", "user");
+//        Integer expect = (Integer) repository.createUser(user);
+//        Optional<User> user1 = repository.findUserByID("1");
+//        Optional<User> user5 = repository.findUserByID("5");
+//        System.out.println(user1.equals(user5));
+        Optional<User> result = repository.authenticate("user", "user");
+//        Optional<User> result = repository.findUserByID("7");
+        if (result.isPresent()) {
+            System.out.println(result.get());
+//            assertThat(result.get().getId(), is(expect));
+        }
     }
 }

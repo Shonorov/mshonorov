@@ -1,10 +1,15 @@
 package ru.job4j.cars.controller;
 
+import ru.job4j.cars.CarsRepository;
+import ru.job4j.cars.model.User;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * User sign in servlet.
@@ -21,6 +26,17 @@ public class SignInServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        String login = req.getParameter("login");
+        String password = req.getParameter("password");
+        Optional<User> current = CarsRepository.getInstance().authenticate(login, password);
+        if (current.isPresent()) {
+            HttpSession session = req.getSession();
+            session.setAttribute("login", login);
+            session.setAttribute("id", current.get().getId());
+            resp.sendRedirect(String.format("%s/shop", req.getContextPath()));
+        } else {
+            req.setAttribute("error", "Invalid credentials!");
+            req.getRequestDispatcher("/WEB-INF/views/signin.html").forward(req, resp);
+        }
     }
 }

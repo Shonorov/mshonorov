@@ -250,4 +250,21 @@ public class CarsRepository implements Closeable {
         );
     }
 
+    /**
+     * Get user by login and password.
+     * @param login user login.
+     * @param password user password.
+     * @return optional of user.
+     */
+    public Optional<User> authenticate(String login, String password) {
+        return this.tx(
+                session -> {
+                    Query query = session.createQuery("from User where login = :userlogin and password = :userpassword");
+                    query.setParameter("userlogin", login);
+                    query.setParameter("userpassword", password);
+                    return Optional.of((User) query.getSingleResult());
+                }
+        );
+    }
+
 }
