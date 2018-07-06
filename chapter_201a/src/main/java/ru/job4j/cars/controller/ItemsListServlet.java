@@ -30,10 +30,6 @@ public class ItemsListServlet extends HttpServlet {
         resp.setContentType("text/json");
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
         List<Item> items = CarsRepository.getInstance().getAllItems();
-//        for (Item item : items) {
-//            byte[] current = item.getCar().getPhoto();
-//            item.getCar().setPhoto(Base64.encodeBytes(current));
-//        }
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
         Gson gson = builder.create();

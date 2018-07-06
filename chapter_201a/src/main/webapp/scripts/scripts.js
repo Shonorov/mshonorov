@@ -81,7 +81,6 @@ function printitems() {
         success: function (response) {
             var data = response["items"];
             for (var i in data) {
-                console.log(data[i].car.photo);
                 $("#items").append("<div class='itemelement'>" +
                     "<table>" +
                     "<tr>" +
@@ -134,4 +133,10 @@ function printitems() {
             }
         }
     })
+}
+
+function getuser() {
+    // var session = '<%= session.getAttribute("login")%>';
+    // var pONumb = ${sessionScope.pONumb};
+    return "HaHaHa";
 }

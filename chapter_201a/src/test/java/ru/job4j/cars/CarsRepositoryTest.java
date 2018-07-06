@@ -83,12 +83,12 @@ public class CarsRepositoryTest {
     @Test
     public void whenCreateUserThenAuthenticate() {
         CarsRepository repository = new CarsRepository();
-//        User user = new User("user", "user", "user");
+//        User user = new User("user1", "user1", "user1");
 //        Integer expect = (Integer) repository.createUser(user);
 //        Optional<User> user1 = repository.findUserByID("1");
 //        Optional<User> user5 = repository.findUserByID("5");
 //        System.out.println(user1.equals(user5));
-        Optional<User> result = repository.authenticate("user", "user");
+        Optional<User> result = repository.authenticate("user1", "user1");
 //        Optional<User> result = repository.findUserByID("7");
         if (result.isPresent()) {
             System.out.println(result.get());
