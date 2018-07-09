@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 import ru.job4j.cars.model.*;
 
 import java.io.Closeable;
@@ -56,12 +57,17 @@ public class CarsRepository implements Closeable {
         final Session session = factory.openSession();
         final Transaction tx = session.beginTransaction();
         try {
+            System.out.println("try");
             return command.apply(session);
         } catch (final Exception e) {
+            System.out.println("back");
             session.getTransaction().rollback();
             throw e;
         } finally {
-            tx.commit();
+            if (!tx.getStatus().equals(TransactionStatus.ROLLED_BACK)) {
+                System.out.println("commit");
+                tx.commit();
+            }
             session.close();
         }
     }

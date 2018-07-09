@@ -33,7 +33,7 @@ public class CarsRepositoryTest {
         car.setBody(body);
         car.setManufacturer(manufacturer);
 
-        User user = new User("Test user", "test_user", "user");
+        User user = new User("test", "test", "test");
         Item item = new Item("Kalina, 2010", "Want to sell test car");
         item.setAuthor(user);
         item.setCar(car);
@@ -41,6 +41,14 @@ public class CarsRepositoryTest {
         String id = repository.createItem(item).toString();
         assertThat(repository.findItemById(id).get(), is(item));
     }
+
+    @Test
+    public void whenUserCreateThenFind() {
+        CarsRepository repository = new CarsRepository();
+        User user = new User("user", "user", "user");
+        repository.createUser(user);
+    }
+
 
     @Test
     public void whenSelectAllThenFind() {

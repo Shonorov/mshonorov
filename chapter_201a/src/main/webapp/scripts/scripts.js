@@ -159,7 +159,7 @@ function validatecreate() {
         text += "Field 'text' must be filled out!\n";
     }
     var price = document.forms["createform"]["price"].value;
-    if (price == "" || !Number.isInteger(price)) {
+    if (price == "" && !Number.isInteger(price)) {
         text += "Field 'price' must be filled out and numeric!!\n";
     }
     var drive = document.forms["createform"]["drive"].value;
@@ -199,15 +199,15 @@ function validatecreate() {
         text += "Field 'enginetype' must be filled out!\n";
     }
     var enginevolume = document.forms["createform"]["enginevolume"].value;
-    if (enginevolume == "" || !Number.isInteger(enginevolume)) {
+    if (enginevolume == "" && !Number.isInteger(enginevolume)) {
         text += "Field 'enginevolume' must be filled out and numeric!!\n";
     }
     var enginepower = document.forms["createform"]["enginepower"].value;
-    if (enginepower == "" || !Number.isInteger(enginepower)) {
+    if (enginepower == "" && !Number.isInteger(enginepower)) {
         text += "Field 'enginepower' must be filled out and numeric!!\n";
     }
     var enginemilage = document.forms["createform"]["enginemilage"].value;
-    if (enginemilage == "" || !Number.isInteger(enginemilage)) {
+    if (enginemilage == "" && !Number.isInteger(enginemilage)) {
         text += "Field 'enginemilage' must be filled out and numeric!!\n";
     }
     var bodytype = document.forms["createform"]["bodytype"].value;
@@ -227,8 +227,8 @@ function validatecreate() {
         text += "Field 'gearboxtype' must be filled out!\n";
     }
     var gearcount = document.forms["createform"]["gearcount"].value;
-    if (gearcount == "" || !Number.isInteger(gearcount)) {
-        text += "Field 'enginemilage' must be filled out and numeric!\n";
+    if (gearcount == "" && !Number.isInteger(gearcount)) {
+        text += "Field 'gearcount' must be filled out and numeric!\n";
     }
 
     if (text != "") {

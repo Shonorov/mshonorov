@@ -1,14 +1,27 @@
 package ru.job4j.cars.model;
+
+import javax.persistence.*;
+
 /**
  * Gearbox model for car shop web application.
  * @author MShonorov (shonorov@gmail.com)
  * @version $Id$
  * @since 0.1
  */
+
+@Entity
+@Table (name = "gearbox")
 public class GearBox {
 
+    @Id
+    @GeneratedValue (strategy = GenerationType.SEQUENCE)
+    @Column (name = "id")
     private Integer id;
+
+    @Column (name = "type")
     private String type;
+
+    @Column (name = "gearcount")
     private Integer gearCount;
 
     public GearBox() {

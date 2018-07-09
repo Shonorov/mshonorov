@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import org.postgresql.util.Base64;
 import ru.job4j.cars.CarsRepository;
 import ru.job4j.cars.model.Item;
 

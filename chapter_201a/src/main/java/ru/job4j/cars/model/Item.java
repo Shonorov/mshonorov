@@ -1,6 +1,7 @@
 package ru.job4j.cars.model;
 
 import java.time.LocalDateTime;
+import javax.persistence.*;
 
 /**
  * Trade item model for car shop web application.
@@ -8,14 +9,34 @@ import java.time.LocalDateTime;
  * @version $Id$
  * @since 0.1
  */
+
+@Entity
+@Table (name = "items")
 public class Item {
 
+    @Id
+    @GeneratedValue (strategy = GenerationType.SEQUENCE)
+    @Column (name = "id")
     private Integer id;
+
+    @Column (name = "header")
     private String header;
+
+    @Column (name = "text")
     private String text;
+
+    @ManyToOne (cascade = CascadeType.ALL)
+    @JoinColumn (name = "author_id", foreignKey = @ForeignKey(name = "User_id_FK"))
     private User author;
+
+    @Column (name = "created")
     private LocalDateTime created;
+
+    @Column (name = "sold")
     private boolean sold;
+
+    @ManyToOne (cascade = CascadeType.ALL)
+    @JoinColumn (name = "car_id", foreignKey = @ForeignKey(name = "Car_id_FK"))
     private Car car;
 
     public Item() {
