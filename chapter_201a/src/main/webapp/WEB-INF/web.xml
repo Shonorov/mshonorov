@@ -58,6 +58,16 @@
         <url-pattern>/signin</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>SignOutServlet</servlet-name>
+        <servlet-class>ru.job4j.cars.controller.SignOutServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SignOutServlet</servlet-name>
+        <url-pattern>/signout</url-pattern>
+    </servlet-mapping>
+
 
     <!--<servlet-mapping>-->
         <!--<servlet-name>default</servlet-name>-->

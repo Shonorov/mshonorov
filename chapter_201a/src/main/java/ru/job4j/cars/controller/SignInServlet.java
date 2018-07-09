@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Optional;
 
 /**
@@ -28,15 +29,24 @@ public class SignInServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-        Optional<User> current = CarsRepository.getInstance().authenticate(login, password);
-        if (current.isPresent()) {
-            HttpSession session = req.getSession();
-            session.setAttribute("login", login);
-            session.setAttribute("id", current.get().getId());
-            resp.sendRedirect(String.format("%s/shop", req.getContextPath()));
+        if (login != null && password != null) {
+            Optional<User> current = CarsRepository.getInstance().authenticate(login, password);
+            if (current.isPresent()) {
+                HttpSession session = req.getSession();
+                session.setAttribute("login", login);
+                session.setAttribute("id", current.get().getId());
+                resp.sendRedirect(String.format("%s/shop", req.getContextPath()));
+            } else {
+                req.setAttribute("error", "Invalid credentials!");
+                req.getRequestDispatcher("/WEB-INF/views/signin.html").forward(req, resp);
+            }
         } else {
-            req.setAttribute("error", "Invalid credentials!");
-            req.getRequestDispatcher("/WEB-INF/views/signin.html").forward(req, resp);
+            HttpSession session = req.getSession();
+            resp.setContentType("text/html");
+            PrintWriter out = resp.getWriter();
+            String user = "Current user : " + session.getAttribute("login");
+            out.write(user);
         }
+
     }
 }

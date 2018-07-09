@@ -28,8 +28,8 @@ public class UserFilter implements Filter {
         if (req.getRequestURI().contains("/signin") || req.getRequestURI().contains("/signout")) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            String id = (String) req.getSession().getAttribute("id");
-            if (req.getRequestURI().contains("/list") && req.getMethod().equals("POST") && !req.getParameter("id").equals(id)) {
+            String id = String.valueOf(req.getSession().getAttribute("id"));
+            if (req.getRequestURI().contains("/list") && req.getMethod().equals("POST") && !req.getParameter("author").equals(id)) {
                 session.setAttribute("error", "Access denied!");
                 resp.sendRedirect(String.format("%s/shop", req.getContextPath()));
                 return;

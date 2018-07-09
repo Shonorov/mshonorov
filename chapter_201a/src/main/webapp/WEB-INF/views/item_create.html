@@ -13,24 +13,22 @@
 <div id="head">
     <table width="1000px">
         <tr>
-            <td width="70%">
+            <td width="60%">
                 Item create
             </td>
-            <td width="10%">
-                <label id="currentuser"></label>
-            </td>
+            <td width="20%" id="currentuser">
             <td width="10%" align="right">
                 <form id="shop" action="shop"><input type="submit" value="To shop"></form>
             </td>
             <td width="10%" align="right">
-                <form id="signin"><input type="submit" value="Sign in"></form>
+                <form id="signout" action="./signout" method="post"><input type="submit" value="Sign out"></form>
             </td>
         </tr>
     </table>
 </div>
 
 <div id="itemcreate">
-    <form name="createform" action="create" method="POST" enctype="multipart/form-data">
+    <form name="createform" action="create" method="POST" enctype="multipart/form-data" onsubmit="return validatecreate()">
         <table width="1000px">
             <tr class="propline">
                 <td class="proprow">Item name: </td>

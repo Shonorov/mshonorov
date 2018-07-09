@@ -77,12 +77,10 @@ public class ItemCreateServlet extends HttpServlet {
         car.setBody(body);
         car.setManufacturer(manufacturer);
         HttpSession session = req.getSession();
-        User user = CarsRepository.getInstance().findUserByID("1").get();
-//        User user = CarsRepository.getInstance().findUserByID(session.getAttribute("id").toString()).get();
+        User user = CarsRepository.getInstance().findUserByID(session.getAttribute("id").toString()).get();
         Item item = new Item(param.get("header"), param.get("text"));
         item.setAuthor(user);
         item.setCar(car);
-        System.out.println(item);
         CarsRepository.getInstance().createItem(item);
 
         req.getRequestDispatcher("/WEB-INF/views/item_list.html").forward(req, resp);

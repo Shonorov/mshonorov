@@ -2,14 +2,14 @@ $(document).ready(function () {
     printitems();
 });
 
-function setstatus(itemid) {
+function setstatus(itemid, authorid) {
     var select = "sold" + itemid;
     var newstatus = revertstatus(document.getElementById(select).value);
     $.ajax({
         type: "POST",
         url: "./list",
         datatype: "JSON",
-        data: {id : itemid, status: newstatus},
+        data: {id : itemid, status: newstatus, author: authorid},
         success: function () {
             printitems();
         }
@@ -95,7 +95,7 @@ function printitems() {
                     "<td class='price'>" + data[i].car.price + " руб.</td>" +
                     "<td class='status' colspan='3' align='right'>" +
                     "<form name='status'>Status: " +
-                    "<select id='sold" + data[i].id + "' onchange='setstatus(" + data[i].id + ")' " + color(data[i].sold) + ">" +
+                    "<select id='sold" + data[i].id + "' onchange='setstatus(" + data[i].id + "," + data[i].author.id + ")' " + color(data[i].sold) + ">" +
                     "<option value='" + status(data[i].sold) + "'>" + status(data[i].sold) + "</option>" +
                     "<option value='" + status(!data[i].sold) + "'>" + status(!data[i].sold) + "</option>" +
                     "</select>" +
@@ -136,7 +136,103 @@ function printitems() {
 }
 
 function getuser() {
-    // var session = '<%= session.getAttribute("login")%>';
-    // var pONumb = ${sessionScope.pONumb};
-    return "HaHaHa";
+    $("#currentuser").empty();
+    $.ajax({
+        type: "POST",
+        url: "./signin",
+        success: function (response) {
+            $("#currentuser").append(response);
+        }
+    })
+}
+
+$("#currentuser").onload = getuser();
+
+function validatecreate() {
+    var text = "";
+    var header = document.forms["createform"]["header"].value;
+    if (header == "") {
+        text += "Field 'header' must be filled out!\n";
+    }
+    var itemtext = document.forms["createform"]["text"].value;
+    if (itemtext == "") {
+        text += "Field 'text' must be filled out!\n";
+    }
+    var price = document.forms["createform"]["price"].value;
+    if (price == "" || !Number.isInteger(price)) {
+        text += "Field 'price' must be filled out and numeric!!\n";
+    }
+    var drive = document.forms["createform"]["drive"].value;
+    if (drive == "") {
+        text += "Field 'drive' must be filled out!\n";
+    }
+    var manufactured = document.forms["createform"]["manufactured"].value;
+    if (manufactured == "") {
+        text += "Field 'manufactured' must be filled out!\n";
+    }
+    var manufactured = document.forms["createform"]["manufactured"].value;
+    if (manufactured == "") {
+        text += "Field 'manufactured' must be filled out!\n";
+    }
+    var manufacturer = document.forms["createform"]["manufacturer"].value;
+    if (manufacturer == "") {
+        text += "Field 'manufacturer' must be filled out!\n";
+    }
+    var country = document.forms["createform"]["country"].value;
+    if (country == "") {
+        text += "Field 'country' must be filled out!\n";
+    }
+    var model = document.forms["createform"]["model"].value;
+    if (model == "") {
+        text += "Field 'model' must be filled out!\n";
+    }
+    var releasedate = document.forms["createform"]["releasedate"].value;
+    if (releasedate == "") {
+        text += "Field 'releasedate' must be filled out!\n";
+    }
+    var manufacturing = document.forms["createform"]["manufacturing"].value;
+    if (manufacturing == "") {
+        text += "Field 'manufacturing' must be filled out!\n";
+    }
+    var enginetype = document.forms["createform"]["enginetype"].value;
+    if (enginetype == "") {
+        text += "Field 'enginetype' must be filled out!\n";
+    }
+    var enginevolume = document.forms["createform"]["enginevolume"].value;
+    if (enginevolume == "" || !Number.isInteger(enginevolume)) {
+        text += "Field 'enginevolume' must be filled out and numeric!!\n";
+    }
+    var enginepower = document.forms["createform"]["enginepower"].value;
+    if (enginepower == "" || !Number.isInteger(enginepower)) {
+        text += "Field 'enginepower' must be filled out and numeric!!\n";
+    }
+    var enginemilage = document.forms["createform"]["enginemilage"].value;
+    if (enginemilage == "" || !Number.isInteger(enginemilage)) {
+        text += "Field 'enginemilage' must be filled out and numeric!!\n";
+    }
+    var bodytype = document.forms["createform"]["bodytype"].value;
+    if (bodytype == "") {
+        text += "Field 'bodytype' must be filled out!\n";
+    }
+    var bodycolor = document.forms["createform"]["bodycolor"].value;
+    if (bodycolor == "") {
+        text += "Field 'bodycolor' must be filled out!\n";
+    }
+    var wheelside = document.forms["createform"]["wheelside"].value;
+    if (wheelside == "") {
+        text += "Field 'wheelside' must be filled out!\n";
+    }
+    var gearboxtype = document.forms["createform"]["gearboxtype"].value;
+    if (gearboxtype == "") {
+        text += "Field 'gearboxtype' must be filled out!\n";
+    }
+    var gearcount = document.forms["createform"]["gearcount"].value;
+    if (gearcount == "" || !Number.isInteger(gearcount)) {
+        text += "Field 'enginemilage' must be filled out and numeric!\n";
+    }
+
+    if (text != "") {
+        alert(text);
+        return false;
+    }
 }
