@@ -52,8 +52,7 @@ public class ItemCreateServlet extends HttpServlet {
             FileItem item = iterator.next();
             if (!item.isFormField()) {
                 photo = item.get();
-            }
-            else {
+            } else {
                 param.put(item.getFieldName(), item.getString());
             }
         }
