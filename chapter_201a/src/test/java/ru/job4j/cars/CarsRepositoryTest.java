@@ -46,7 +46,8 @@ public class CarsRepositoryTest {
     public void whenUserCreateThenFind() {
         CarsRepository repository = new CarsRepository();
         User user = new User("user", "user", "user");
-        repository.createUser(user);
+        Integer id = (Integer) repository.createUser(user);
+        assertThat(repository.findUserByID(id.toString()).get(), is(user));
     }
 
 
@@ -54,7 +55,7 @@ public class CarsRepositoryTest {
     public void whenSelectAllThenFind() {
         CarsRepository repository = new CarsRepository();
         List<Item> items = repository.getAllItems();
-        assertNotNull(items.size());
+        assertNotEquals(items.size(), 0);
     }
 
     @Test
@@ -67,7 +68,7 @@ public class CarsRepositoryTest {
         Model model = new Model("Kalina", LocalDateTime.parse(str, formatter), true);
         models.add(model);
         manufacturer.setModels(models);
-        repository.createManufacturer(manufacturer);
+        Integer id = (Integer) repository.createManufacturer(manufacturer);
     }
 
 }
