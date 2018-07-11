@@ -37,7 +37,10 @@ public class SignInServlet extends HttpServlet {
                 session.setAttribute("id", current.get().getId());
                 resp.sendRedirect(String.format("%s/shop", req.getContextPath()));
             } else {
-                req.setAttribute("error", "Invalid credentials!");
+                resp.setContentType("text/html");
+                PrintWriter out = resp.getWriter();
+                String user = "Wrong credentials!";
+                out.write(user);
                 req.getRequestDispatcher("/WEB-INF/views/signin.html").forward(req, resp);
             }
         } else {
