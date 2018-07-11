@@ -64,10 +64,7 @@ public class ItemCreateServlet extends HttpServlet {
         GearBox gearBox = new GearBox(param.get("gearboxtype"), Integer.valueOf(param.get("gearcount")));
         Manufacturer manufacturer = new Manufacturer(param.get("manufacturer"), param.get("country"));
 
-        List<Model> models = new ArrayList<>();
         Model model = new Model(param.get("model"), LocalDateTime.from(LocalDate.parse(param.get("releasedate"), formatter).atStartOfDay()), Boolean.valueOf(param.get("manufacturing")));
-        models.add(model);
-        manufacturer.setModels(models);
 
         car.setPhoto(photo);
         car.setModel(model);
