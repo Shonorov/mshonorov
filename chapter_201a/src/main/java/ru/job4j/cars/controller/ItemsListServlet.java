@@ -35,6 +35,8 @@ public class ItemsListServlet extends HttpServlet {
             items = CarsRepository.getInstance().getAllItemsLastDay(1L);
         } else if (filter.equals("photoonly")) {
             items = CarsRepository.getInstance().getAllItemsByPhoto(true);
+        } else if (filter.contains("manufacturer")) {
+            items = CarsRepository.getInstance().getItemsByManufacturer(filter.substring(14, filter.length()));
         } else {
             items = CarsRepository.getInstance().getAllItems();
         }

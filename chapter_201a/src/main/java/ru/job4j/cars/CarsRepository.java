@@ -125,6 +125,23 @@ public class CarsRepository implements Closeable {
     }
 
     /**
+     * Get all items for one manufacturer.
+     * @param manufacturer manufacturer name.
+     * @return list of items.
+     */
+    public List<Item> getItemsByManufacturer(String manufacturer) {
+        return this.tx(
+                session -> {
+                    Query query = session.createQuery("from Item i where i.car.manufacturer.name = :manufacturer");
+                    query.setParameter("manufacturer", manufacturer);
+                    List<Item> result = query.list();
+                    result.sort(comparator);
+                    return result;
+                }
+        );
+    }
+
+    /**
      * Find Item by id.
      * @param id id to find.
      * @return optional of Item.
@@ -317,7 +334,7 @@ public class CarsRepository implements Closeable {
                     query.setParameter("userlogin", login);
                     query.setParameter("userpassword", password);
                     Optional<User> result;
-                    if (query.getSingleResult() == null) {
+                    if (query.getResultList().isEmpty()) {
                         result = Optional.empty();
                     } else {
                         result = Optional.of((User) query.getSingleResult());

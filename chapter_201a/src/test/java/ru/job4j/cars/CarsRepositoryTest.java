@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
@@ -62,10 +64,14 @@ public class CarsRepositoryTest {
     public void whenSelectLastDayThenFind() {
         CarsRepository repository = new CarsRepository();
         List<Item> items = repository.getAllItemsByPhoto(false);
-        for (Item item : items) {
-            System.out.println(item);
-        }
-//        assertNotEquals(items.size(), 0);
+        assertNotEquals(items.size(), 0);
+    }
+
+    @Test
+    public void whenSelectLadaThenFind() {
+        CarsRepository repository = new CarsRepository();
+        List<Item> items = repository.getItemsByManufacturer("Lada");
+        assertNotEquals(items.size(), 0);
     }
 
     @Test
@@ -79,6 +85,13 @@ public class CarsRepositoryTest {
         models.add(model);
         manufacturer.setModels(models);
         Integer id = (Integer) repository.createManufacturer(manufacturer);
+    }
+
+    @Test
+    public void whenWrongCredentialsThenEmptyOptional() {
+        CarsRepository repository = new CarsRepository();
+        Optional<User> result = repository.authenticate("1user", "1user");
+        assertThat(result.isPresent(), is(false));
     }
 
 }

@@ -1,6 +1,25 @@
 $(document).ready(function () {
     printitems("all");
+    appendfilter();
 });
+
+function appendfilter() {
+    $.ajax({
+        type: "POST",
+        url: "./manufacturers",
+        datatype: "JSON",
+        success: function (response) {
+            var data = response["manufacturers"];
+            var unique = new Set();
+            for (var i in data) {
+                if (!unique.has(data[i].name)) {
+                    unique.add(data[i].name);
+                    $("#filter").append("<option value='" + data[i].name + "' onclick='printitems(\"manufacturer: " + data[i].name + "\");'>manufacturer: " + data[i].name + "</option>")
+                }
+            }
+        }
+    })
+}
 
 function setstatus(itemid, authorid) {
     var select = "sold" + itemid;
@@ -11,7 +30,7 @@ function setstatus(itemid, authorid) {
         datatype: "JSON",
         data: {id : itemid, status: newstatus, author: authorid},
         success: function () {
-            printitems();
+            printitems("all");
         }
     })
 }
@@ -73,7 +92,6 @@ function arrayBufferToBase64( buffer ) {
 }
 
 function printitems(filter) {
-    console.log(filter);
     $("#items").empty();
     $.ajax({
         type: "GET",
