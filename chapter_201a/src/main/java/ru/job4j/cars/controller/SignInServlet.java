@@ -2,7 +2,6 @@ package ru.job4j.cars.controller;
 
 import ru.job4j.cars.CarsRepository;
 import ru.job4j.cars.model.User;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +36,10 @@ public class SignInServlet extends HttpServlet {
                 session.setAttribute("id", current.get().getId());
                 resp.sendRedirect(String.format("%s/shop", req.getContextPath()));
             } else {
-                req.setAttribute("error", "Invalid credentials!");
+                resp.setContentType("text/html");
+                PrintWriter out = resp.getWriter();
+                String user = "Wrong credentials!";
+                out.write(user);
                 req.getRequestDispatcher("/WEB-INF/views/signin.html").forward(req, resp);
             }
         } else {
@@ -49,4 +51,5 @@ public class SignInServlet extends HttpServlet {
         }
 
     }
+
 }

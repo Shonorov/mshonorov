@@ -29,6 +29,16 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>ManufacturerListServlet</servlet-name>
+        <servlet-class>ru.job4j.cars.controller.ManufacturerListServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ManufacturerListServlet</servlet-name>
+        <url-pattern>/manufacturers</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>CarShopServlet</servlet-name>
         <servlet-class>ru.job4j.cars.controller.CarShopServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
@@ -67,13 +77,5 @@
         <servlet-name>SignOutServlet</servlet-name>
         <url-pattern>/signout</url-pattern>
     </servlet-mapping>
-
-
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>default</servlet-name>-->
-        <!--<url-pattern>*.css</url-pattern>-->
-        <!--<url-pattern>*.js</url-pattern>-->
-        <!--<url-pattern>*.jpg</url-pattern>-->
-    <!--</servlet-mapping>-->
 
 </web-app>

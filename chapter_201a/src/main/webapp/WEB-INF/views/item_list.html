@@ -28,7 +28,12 @@
         </tr>
     </table>
 </div>
-
+<label for="filter">Filter : </label>
+<select id="filter">
+    <option label="All" onclick="printitems('all');">All</option>
+    <option label="Last day" onclick="printitems('lastday');">Last day</option>
+    <option label="With photo" onclick="printitems('photoonly');">With photo</option>
+</select>
 <table id="items">
 </table>
 

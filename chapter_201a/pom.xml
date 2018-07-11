@@ -46,12 +46,19 @@
             <version>1.3.3</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.jasypt/jasypt -->
-        <dependency>
-            <groupId>org.jasypt</groupId>
-            <artifactId>jasypt</artifactId>
-            <version>1.9.2</version>
-        </dependency>
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.jasypt/jasypt &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.jasypt</groupId>-->
+            <!--<artifactId>jasypt</artifactId>-->
+            <!--<version>1.9.2</version>-->
+        <!--</dependency>-->
+
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.jasypt/jasypt-hibernate4 &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.jasypt</groupId>-->
+            <!--<artifactId>jasypt-hibernate4</artifactId>-->
+            <!--<version>1.9.2</version>-->
+        <!--</dependency>-->
 
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>

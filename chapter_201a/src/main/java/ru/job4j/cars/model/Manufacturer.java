@@ -14,10 +14,8 @@ import javax.persistence.*;
 
 @Entity
 @Table (name = "manufacturer")
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
-@ToString
-@Getter @Setter
 public class Manufacturer {
 
     @Id
@@ -31,11 +29,6 @@ public class Manufacturer {
 
     @Column (name = "country")
     private String country;
-
-    @Column (name = "models")
-    @OneToMany (cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
-    private List<Model> models;
 
     public Manufacturer(String name, String country) {
         this.name = name;

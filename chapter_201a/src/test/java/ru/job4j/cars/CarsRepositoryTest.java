@@ -5,8 +5,9 @@ import ru.job4j.cars.model.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
@@ -22,11 +23,7 @@ public class CarsRepositoryTest {
         Engine engine = new Engine("disel", 3.0, 200, 100);
         GearBox gearBox = new GearBox("robot", 6);
         Manufacturer manufacturer = new Manufacturer("Lada", "Russia");
-        List<Model> models = new ArrayList<>();
         Model model = new Model("Kalina", LocalDateTime.parse(str, formatter), true);
-        models.add(model);
-        manufacturer.setModels(models);
-
         car.setModel(model);
         car.setEngine(engine);
         car.setGearbox(gearBox);
@@ -59,16 +56,34 @@ public class CarsRepositoryTest {
     }
 
     @Test
+    public void whenSelectLastDayThenFind() {
+        CarsRepository repository = new CarsRepository();
+        List<Item> items = repository.getAllItemsByPhoto(false);
+        assertNotEquals(items.size(), 0);
+    }
+
+    @Test
+    public void whenSelectLadaThenFind() {
+        CarsRepository repository = new CarsRepository();
+        List<Item> items = repository.getItemsByManufacturer("Lada");
+        assertNotEquals(items.size(), 0);
+    }
+
+    @Test
     public void whenCreateManufacturerThenModelSaved() {
         String str = "01-01-2010 00:00";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         CarsRepository repository = new CarsRepository();
         Manufacturer manufacturer = new Manufacturer("Lada", "Russia");
-        List<Model> models = new ArrayList<>();
         Model model = new Model("Kalina", LocalDateTime.parse(str, formatter), true);
-        models.add(model);
-        manufacturer.setModels(models);
         Integer id = (Integer) repository.createManufacturer(manufacturer);
+    }
+
+    @Test
+    public void whenWrongCredentialsThenEmptyOptional() {
+        CarsRepository repository = new CarsRepository();
+        Optional<User> result = repository.authenticate("1user", "1user");
+        assertThat(result.isPresent(), is(false));
     }
 
 }

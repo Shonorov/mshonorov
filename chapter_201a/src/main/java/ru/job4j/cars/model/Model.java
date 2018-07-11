@@ -12,10 +12,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table (name = "model")
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
-@ToString
-@Getter @Setter
 public class Model {
 
     @Id

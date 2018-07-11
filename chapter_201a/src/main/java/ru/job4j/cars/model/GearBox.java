@@ -13,10 +13,8 @@ import javax.persistence.*;
 
 @Entity
 @Table (name = "gearbox")
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
-@ToString
-@Getter @Setter
 public class GearBox {
 
     @Id

@@ -14,10 +14,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table (name = "cars")
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
-@ToString
-@Getter @Setter
 public class Car {
 
     @Id

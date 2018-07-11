@@ -12,9 +12,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table (name = "body")
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
-@Getter @Setter
 public class Body {
 
     @Id
