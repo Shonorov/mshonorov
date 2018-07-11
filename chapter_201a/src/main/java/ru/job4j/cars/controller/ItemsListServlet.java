@@ -27,7 +27,17 @@ public class ItemsListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/json");
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        List<Item> items = CarsRepository.getInstance().getAllItems();
+        String filter = req.getParameter("filter");
+        List<Item> items;
+        if (filter.equals("all")) {
+            items = CarsRepository.getInstance().getAllItems();
+        } else if (filter.equals("lastday")) {
+            items = CarsRepository.getInstance().getAllItemsLastDay(1L);
+        } else if (filter.equals("photoonly")) {
+            items = CarsRepository.getInstance().getAllItemsByPhoto(true);
+        } else {
+            items = CarsRepository.getInstance().getAllItems();
+        }
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
         Gson gson = builder.create();

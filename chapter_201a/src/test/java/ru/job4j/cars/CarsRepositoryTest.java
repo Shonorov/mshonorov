@@ -59,6 +59,16 @@ public class CarsRepositoryTest {
     }
 
     @Test
+    public void whenSelectLastDayThenFind() {
+        CarsRepository repository = new CarsRepository();
+        List<Item> items = repository.getAllItemsByPhoto(false);
+        for (Item item : items) {
+            System.out.println(item);
+        }
+//        assertNotEquals(items.size(), 0);
+    }
+
+    @Test
     public void whenCreateManufacturerThenModelSaved() {
         String str = "01-01-2010 00:00";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
