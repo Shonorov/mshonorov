@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    printitems();
+    printitems("all");
 });
 
 function setstatus(itemid, authorid) {
@@ -72,12 +72,14 @@ function arrayBufferToBase64( buffer ) {
     return window.btoa( binary );
 }
 
-function printitems() {
+function printitems(filter) {
+    console.log(filter);
     $("#items").empty();
     $.ajax({
         type: "GET",
         url: "./list",
         datatype: "JSON",
+        data: {filter : filter},
         success: function (response) {
             var data = response["items"];
             for (var i in data) {

@@ -1,5 +1,6 @@
 package ru.job4j.cars;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -11,6 +12,8 @@ import ru.job4j.cars.model.*;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -77,6 +80,44 @@ public class CarsRepository implements Closeable {
         return this.tx(
                 session -> {
                     List<Item> result = session.createQuery("from Item").list();
+                    result.sort(comparator);
+                    return result;
+                }
+        );
+    }
+
+    /**
+     * Find all items in database for last days.
+     * @param days last days search.
+     * @return list of items.
+     */
+    public List<Item> getAllItemsLastDay(Long days) {
+        return this.tx(
+                session -> {
+                    LocalDateTime searchTime = LocalDateTime.now().minusDays(days);
+                    Query query = session.createQuery("from Item i where i.created >= :searchdate");
+                    query.setParameter("searchdate", searchTime);
+                    List<Item> result = query.list();
+                    result.sort(comparator);
+                    return result;
+                }
+        );
+    }
+
+    /**
+     * Find all items in database by photo.
+     * @param withPhoto true if find with photo.
+     * @return list of items.
+     */
+    public List<Item> getAllItemsByPhoto(Boolean withPhoto) {
+        return this.tx(
+                session -> {
+                    List<Item> result;
+                    if (withPhoto == true) {
+                        result = session.createQuery("from Item i where i.car.photo != null").list();
+                    } else {
+                        result = session.createQuery("from Item i where i.car.photo = null").list();
+                    }
                     result.sort(comparator);
                     return result;
                 }
@@ -228,6 +269,16 @@ public class CarsRepository implements Closeable {
     }
 
     /**
+     * Get list of all manufacturers.
+     * @return list of manufacturers.
+     */
+    public List<Manufacturer> getAllManufacturers() {
+        return this.tx(
+                session -> session.createQuery("from Manufacturer").list()
+        );
+    }
+
+    /**
      * Save User object to database.
      * @param user object to save.
      * @return generated id.
@@ -265,7 +316,13 @@ public class CarsRepository implements Closeable {
                     Query query = session.createQuery("from User where login = :userlogin and password = :userpassword");
                     query.setParameter("userlogin", login);
                     query.setParameter("userpassword", password);
-                    return Optional.of((User) query.getSingleResult());
+                    Optional<User> result;
+                    if (query.getSingleResult() == null) {
+                        result = Optional.empty();
+                    } else {
+                        result = Optional.of((User) query.getSingleResult());
+                    }
+                    return result;
                 }
         );
     }
