@@ -33,7 +33,7 @@ public class Manufacturer {
     private String country;
 
     @Column (name = "models")
-    @OneToMany
+    @OneToMany (cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     private List<Model> models;
 

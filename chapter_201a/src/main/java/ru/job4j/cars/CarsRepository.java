@@ -57,15 +57,12 @@ public class CarsRepository implements Closeable {
         final Session session = factory.openSession();
         final Transaction tx = session.beginTransaction();
         try {
-            System.out.println("try");
             return command.apply(session);
         } catch (final Exception e) {
-            System.out.println("back");
             session.getTransaction().rollback();
             throw e;
         } finally {
             if (!tx.getStatus().equals(TransactionStatus.ROLLED_BACK)) {
-                System.out.println("commit");
                 tx.commit();
             }
             session.close();
