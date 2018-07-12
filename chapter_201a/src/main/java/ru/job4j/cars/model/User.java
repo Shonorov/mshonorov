@@ -1,7 +1,6 @@
 package ru.job4j.cars.model;
 
 import lombok.*;
-
 import javax.persistence.*;
 /**
  * Model for car shop user web application.
@@ -9,12 +8,11 @@ import javax.persistence.*;
  * @version $Id$
  * @since 0.1
  */
+
 @Entity
 @Table (name = "users")
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
-@ToString
-@Getter @Setter
 public class User {
 
     @Id
