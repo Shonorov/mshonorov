@@ -12,10 +12,8 @@ import javax.persistence.*;
 
 @Entity
 @Table (name = "engine")
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
-@ToString
-@Getter @Setter
 public class Engine {
 
     @Id

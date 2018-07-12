@@ -2,7 +2,6 @@ package ru.job4j.cars.controller;
 
 import ru.job4j.cars.CarsRepository;
 import ru.job4j.cars.model.User;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -52,4 +51,5 @@ public class SignInServlet extends HttpServlet {
         }
 
     }
+
 }
