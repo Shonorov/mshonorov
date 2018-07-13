@@ -2,12 +2,9 @@ package ru.job4j.cars;
 
 import org.junit.Test;
 import ru.job4j.cars.model.*;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Optional;
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
@@ -36,7 +33,12 @@ public class CarsRepositoryTest {
         item.setCar(car);
 
         String id = repository.createItem(item).toString();
-        assertThat(repository.findItemById(id).get(), is(item));
+        Item result = repository.findItemById(id).get();
+
+        assertThat(result, is(item));
+        assertNotEquals(repository.getAllItems().size(), 0);
+        assertNotEquals(repository.getAllItemsByPhoto(false).size(), 0);
+        assertNotEquals(repository.getItemsByManufacturer("Lada").size(), 0);
     }
 
     @Test
@@ -45,38 +47,6 @@ public class CarsRepositoryTest {
         User user = new User("user", "user", "user");
         Integer id = (Integer) repository.createUser(user);
         assertThat(repository.findUserByID(id.toString()).get(), is(user));
-    }
-
-
-    @Test
-    public void whenSelectAllThenFind() {
-        CarsRepository repository = new CarsRepository();
-        List<Item> items = repository.getAllItems();
-        assertNotEquals(items.size(), 0);
-    }
-
-    @Test
-    public void whenSelectLastDayThenFind() {
-        CarsRepository repository = new CarsRepository();
-        List<Item> items = repository.getAllItemsByPhoto(false);
-        assertNotEquals(items.size(), 0);
-    }
-
-    @Test
-    public void whenSelectLadaThenFind() {
-        CarsRepository repository = new CarsRepository();
-        List<Item> items = repository.getItemsByManufacturer("Lada");
-        assertNotEquals(items.size(), 0);
-    }
-
-    @Test
-    public void whenCreateManufacturerThenModelSaved() {
-        String str = "01-01-2010 00:00";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        CarsRepository repository = new CarsRepository();
-        Manufacturer manufacturer = new Manufacturer("Lada", "Russia");
-        Model model = new Model("Kalina", LocalDateTime.parse(str, formatter), true);
-        Integer id = (Integer) repository.createManufacturer(manufacturer);
     }
 
     @Test

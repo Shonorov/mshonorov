@@ -13,7 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Item list management servlet.
@@ -28,18 +31,16 @@ public class ItemsListServlet extends HttpServlet {
         resp.setContentType("text/json");
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
         String filter = req.getParameter("filter");
-        List<Item> items;
-        if (filter.equals("all")) {
-            items = CarsRepository.getInstance().getAllItems();
-        } else if (filter.equals("lastday")) {
-            items = CarsRepository.getInstance().getAllItemsLastDay(1L);
-        } else if (filter.equals("photoonly")) {
-            items = CarsRepository.getInstance().getAllItemsByPhoto(true);
-        } else if (filter.contains("manufacturer")) {
-            items = CarsRepository.getInstance().getItemsByManufacturer(filter.substring(14, filter.length()));
-        } else {
-            items = CarsRepository.getInstance().getAllItems();
-        }
+        String key = filter.contains("manufacturer") ? "manufacturer" : filter;
+        Map<String, Supplier<List<Item>>> filterMap = new HashMap<String, Supplier<List<Item>>>() {
+            {
+                put("all", () -> CarsRepository.getInstance().getAllItems());
+                put("lastday", () -> CarsRepository.getInstance().getAllItemsLastDay(1L));
+                put("photoonly", () -> CarsRepository.getInstance().getAllItemsByPhoto(true));
+                put("manufacturer", () -> CarsRepository.getInstance().getItemsByManufacturer(filter.substring(14, filter.length())));
+            }
+        };
+        List<Item> items = filterMap.get(key).get();
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
         Gson gson = builder.create();

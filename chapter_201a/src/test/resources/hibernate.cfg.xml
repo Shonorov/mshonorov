@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-configuration >
+    <session-factory>
+        <property name="connection.driver_class">org.hsqldb.jdbcDriver</property>
+        <property name="connection.url">jdbc:hsqldb:mem:carshop;sql.enforce_size=false</property>
+        <property name="connection.username">SA</property>
+        <property name="connection.password"></property>
+        <property name="dialect">org.hibernate.dialect.HSQLDialect</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
+
+        <mapping class="ru.job4j.cars.model.Body"/>
+        <mapping class="ru.job4j.cars.model.Car"/>
+        <mapping class="ru.job4j.cars.model.Engine"/>
+        <mapping class="ru.job4j.cars.model.GearBox"/>
+        <mapping class="ru.job4j.cars.model.Manufacturer"/>
+        <mapping class="ru.job4j.cars.model.Model"/>
+        <mapping class="ru.job4j.cars.model.Item"/>
+        <mapping class="ru.job4j.cars.model.User"/>
+
+    </session-factory>
+</hibernate-configuration>
