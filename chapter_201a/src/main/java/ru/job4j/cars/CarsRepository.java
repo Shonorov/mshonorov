@@ -1,6 +1,5 @@
 package ru.job4j.cars;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -12,7 +11,6 @@ import ru.job4j.cars.model.*;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -113,7 +111,7 @@ public class CarsRepository implements Closeable {
         return this.tx(
                 session -> {
                     List<Item> result;
-                    if (withPhoto == true) {
+                    if (withPhoto) {
                         result = session.createQuery("from Item i where i.car.photo != null").list();
                     } else {
                         result = session.createQuery("from Item i where i.car.photo = null").list();
@@ -181,107 +179,6 @@ public class CarsRepository implements Closeable {
                     session.update(item);
                     return true;
                 }
-        );
-    }
-
-    /**
-     * Save Car object to database.
-     * @param car object to save.
-     * @return generated id.
-     */
-    public Serializable createCar(Car car) {
-        return this.tx(
-                session -> session.save(car)
-        );
-    }
-
-    /**
-     * Find car by id.
-     * @param id id to find.
-     * @return optional of car.
-     */
-    public Optional<Car> findCarById(String id) {
-        return this.tx(
-                session -> {
-                    Query query = session.createQuery("from Car where id=:carid");
-                    query.setParameter("carid", Integer.valueOf(id));
-                    return Optional.of((Car) query.getSingleResult());
-                }
-        );
-    }
-
-    /**
-     * Update car photo.
-     * @param carid id of the car.
-     * @param photo new photo.
-     * @return true if success.
-     */
-    public boolean setCarPhoto(String carid, byte[] photo) {
-        return this.tx(
-                session -> {
-                    if (findCarById(carid).isPresent()) {
-                        Car car = findCarById(carid).get();
-                        car.setPhoto(photo);
-                        session.update(car);
-                        return true;
-                    }
-                    return false;
-                }
-        );
-    }
-
-    /**
-     * Save Body object to database.
-     * @param body object to save.
-     * @return generated id.
-     */
-    public Serializable createBody(Body body) {
-        return this.tx(
-                session -> session.save(body)
-        );
-    }
-
-    /**
-     * Save Engine object to database.
-     * @param engine object to save.
-     * @return generated id.
-     */
-    public Serializable createEngine(Engine engine) {
-        return this.tx(
-                session -> session.save(engine)
-        );
-    }
-
-    /**
-     * Save GearBox object to database.
-     * @param gearbox object to save.
-     * @return generated id.
-     */
-    public Serializable createGearBox(GearBox gearbox) {
-        return this.tx(
-                session -> session.save(gearbox)
-        );
-    }
-
-    /**
-     * Save Model object to database.
-     * @param model object to save.
-     * @return generated id.
-     */
-    public Serializable createModel(Model model) {
-        return this.tx(
-                session -> session.save(model)
-        );
-    }
-
-    /**
-     * Save Manufacturer object to database.
-     * @param manufacturer object to save.
-     * @return generated id.
-     */
-    public Serializable createManufacturer(Manufacturer manufacturer) {
-        return this.tx(
-                session -> session.save(manufacturer)
         );
     }
 
