@@ -30,11 +30,6 @@ public class Manufacturer {
     @Column (name = "country")
     private String country;
 
-    @Column (name = "models")
-    @OneToMany (cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
-    private List<Model> models;
-
     public Manufacturer(String name, String country) {
         this.name = name;
         this.country = country;
