@@ -24,6 +24,7 @@
         <module>chapter_104a</module>
         <module>chapter_201</module>
         <module>chapter_201a</module>
+		<module>chapter_202</module>
     </modules>
 
 	<dependencies>
