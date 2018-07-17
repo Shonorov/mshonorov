@@ -21,14 +21,16 @@ public class UserStorageTest {
     }
 
     @Test
-    public void whenLoadContextThenGetBean() {
+    public void whenLoadContextThenGetBeanAndAddUser() {
         ApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
         MemoryStorage memory = context.getBean(MemoryStorage.class);
         memory.add(new User("User1"));
         assertNotNull(memory);
+        assertNotEquals(memory.getAll().size(), 0);
         JdbcStorage database = context.getBean(JdbcStorage.class);
         database.add(new User("User2"));
         assertNotNull(database);
+        assertNotEquals(database.getAll().size(), 0);
         UserStorage storage = context.getBean(UserStorage.class);
         assertNotNull(storage);
     }

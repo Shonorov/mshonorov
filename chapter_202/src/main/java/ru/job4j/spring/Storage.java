@@ -1,4 +1,7 @@
 package ru.job4j.spring;
+
+import java.util.List;
+
 /**
  * Storage model for Spring application.
  * @author MShonorov (shonorov@gmail.com)
@@ -7,5 +10,15 @@ package ru.job4j.spring;
  */
 public interface Storage {
 
+    /**
+     * Add user to storage.
+     * @param user user to add.
+     */
     void add(User user);
+
+    /**
+     * Get all users from storage.
+     * @return list of all users.
+     */
+    List<User> getAll();
 }
