@@ -20,13 +20,14 @@ public class SpringWebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+        registry.addResourceHandler("/style/**").addResourceLocations("/style/");
+        registry.addResourceHandler("/scripts/**").addResourceLocations("/scripts/");
     }
 
     @Bean
     public InternalResourceViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setViewClass(JstlView.class);
+//        viewResolver.setViewClass(JstlView.class);
         viewResolver.setPrefix("/WEB-INF/views/");
         viewResolver.setSuffix(".html");
         return viewResolver;
