@@ -1,6 +1,8 @@
 package ru.job4j.cars;
 
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.job4j.cars.model.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -54,6 +56,15 @@ public class CarsRepositoryTest {
         CarsRepository repository = new CarsRepository();
         Optional<User> result = repository.authenticate("1user", "1user");
         assertThat(result.isPresent(), is(false));
+    }
+
+    @Test
+    public void whenCreateBeanThenFindAll() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
+        CarsRepository repository = context.getBean(CarsRepository.class);
+        for (Item item : repository.getAllItems()) {
+            System.out.println(item);
+        }
     }
 
 }

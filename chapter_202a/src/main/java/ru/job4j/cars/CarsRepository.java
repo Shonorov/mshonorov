@@ -6,6 +6,8 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.job4j.cars.model.*;
 
 import java.io.Closeable;
@@ -23,9 +25,10 @@ import java.util.function.Function;
  * @version $Id$
  * @since 0.1
  */
+@Component
 public class CarsRepository implements Closeable {
 
-    private static final CarsRepository INSTANCE = new CarsRepository();
+//    private static final CarsRepository INSTANCE = new CarsRepository();
     private final SessionFactory factory = new Configuration().configure().buildSessionFactory();
     private Comparator<Item> comparator = new Comparator<Item>() {
         @Override
@@ -34,12 +37,13 @@ public class CarsRepository implements Closeable {
         }
     };
 
+    @Autowired
     public CarsRepository() {
     }
-
-    public static CarsRepository getInstance() {
-        return INSTANCE;
-    }
+//
+//    public static CarsRepository getInstance() {
+//        return INSTANCE;
+//    }
 
     @Override
     public void close() throws IOException {

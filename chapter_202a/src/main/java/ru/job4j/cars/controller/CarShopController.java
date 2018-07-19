@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * Item list management spring controller.
+ * Car shop spring controller.
  * @author MShonorov (shonorov@gmail.com)
  * @version $Id$
  * @since 0.1
@@ -16,6 +16,7 @@ public class CarShopController {
     @RequestMapping (value = "/shop", method = RequestMethod.GET)
     public String showItems(ModelMap model) {
         System.out.println("there!");
+        model.addAttribute("list", "qwerty");
         return "item_list";
     }
 }

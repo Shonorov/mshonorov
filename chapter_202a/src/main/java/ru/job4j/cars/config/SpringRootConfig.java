@@ -10,6 +10,6 @@ import org.springframework.context.annotation.Configuration;
  * @since 0.1
  */
 @Configuration
-@ComponentScan("ru.job4j")
+@ComponentScan("ru.job4j.cars")
 public class SpringRootConfig {
 }

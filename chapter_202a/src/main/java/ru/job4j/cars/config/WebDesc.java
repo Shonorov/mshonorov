@@ -20,9 +20,7 @@ public class WebDesc extends AbstractAnnotationConfigDispatcherServletInitialize
 
     @Override
     protected String[] getServletMappings() {
-        return new String[] {
-                "*.do"
-        };
+        return new String[] {"/"};
     }
 
     //TODO Add filter for UTF8 encoding.
