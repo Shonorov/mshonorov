@@ -9,7 +9,7 @@ function appendfilter() {
         url: "./manufacturers",
         datatype: "JSON",
         success: function (response) {
-            var data = response["manufacturers"];
+            var data = response;
             var unique = new Set();
             for (var i in data) {
                 if (!unique.has(data[i].name)) {
@@ -21,14 +21,14 @@ function appendfilter() {
     })
 }
 
-function setstatus(itemid, authorid) {
+function setstatus(itemid) {
     var select = "sold" + itemid;
     var newstatus = revertstatus(document.getElementById(select).value);
     $.ajax({
         type: "POST",
         url: "./list",
         datatype: "JSON",
-        data: {id : itemid, status: newstatus, author: authorid},
+        data: {id : itemid, status: newstatus},
         success: function () {
             printitems("all");
         }
@@ -99,7 +99,7 @@ function printitems(filter) {
         datatype: "JSON",
         data: {filter : filter},
         success: function (response) {
-            var data = response["items"];
+            var data = response;
             for (var i in data) {
                 $("#items").append("<div class='itemelement'>" +
                     "<table>" +
@@ -115,7 +115,7 @@ function printitems(filter) {
                     "<td class='price'>" + data[i].car.price + " руб.</td>" +
                     "<td class='status' colspan='3' align='right'>" +
                     "<form name='status'>Status: " +
-                    "<select id='sold" + data[i].id + "' onchange='setstatus(" + data[i].id + "," + data[i].author.id + ")' " + color(data[i].sold) + ">" +
+                    "<select id='sold" + data[i].id + "' onchange='setstatus(" + data[i].id + ")' " + color(data[i].sold) + ">" +
                     "<option value='" + status(data[i].sold) + "'>" + status(data[i].sold) + "</option>" +
                     "<option value='" + status(!data[i].sold) + "'>" + status(!data[i].sold) + "</option>" +
                     "</select>" +

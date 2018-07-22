@@ -1,8 +1,9 @@
 package ru.job4j.cars;
 
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ru.job4j.cars.config.HibernateConfig;
+import ru.job4j.cars.dao.CarsRepository;
 import ru.job4j.cars.model.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -16,7 +17,8 @@ public class CarsRepositoryTest {
     public void whenCreateAllEntitiesThenFind() {
         String str = "01-01-2010 00:00";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        CarsRepository repository = new CarsRepository();
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfig.class);
+        CarsRepository repository = context.getBean(CarsRepository.class);
         Car car = new Car(LocalDateTime.parse(str, formatter), "4WD", 10000);
         Body body = new Body("sedan", "white", "left");
         Engine engine = new Engine("disel", 3.0, 200, 100);
@@ -45,7 +47,8 @@ public class CarsRepositoryTest {
 
     @Test
     public void whenUserCreateThenFind() {
-        CarsRepository repository = new CarsRepository();
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfig.class);
+        CarsRepository repository = context.getBean(CarsRepository.class);
         User user = new User("user", "user", "user");
         Integer id = (Integer) repository.createUser(user);
         assertThat(repository.findUserByID(id.toString()).get(), is(user));
@@ -53,18 +56,10 @@ public class CarsRepositoryTest {
 
     @Test
     public void whenWrongCredentialsThenEmptyOptional() {
-        CarsRepository repository = new CarsRepository();
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfig.class);
+        CarsRepository repository = context.getBean(CarsRepository.class);
         Optional<User> result = repository.authenticate("1user", "1user");
         assertThat(result.isPresent(), is(false));
-    }
-
-    @Test
-    public void whenCreateBeanThenFindAll() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
-        CarsRepository repository = context.getBean(CarsRepository.class);
-        for (Item item : repository.getAllItems()) {
-            System.out.println(item);
-        }
     }
 
 }

@@ -1,6 +1,9 @@
 package ru.job4j.cars.config;
 
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+import javax.servlet.Filter;
 
 public class WebDesc extends AbstractAnnotationConfigDispatcherServletInitializer {
 
@@ -23,5 +26,12 @@ public class WebDesc extends AbstractAnnotationConfigDispatcherServletInitialize
         return new String[] {"/"};
     }
 
-    //TODO Add filter for UTF8 encoding.
+    @Override
+    protected Filter[] getServletFilters() {
+        CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
+        encodingFilter.setForceEncoding(true);
+        encodingFilter.setEncoding("UTF-8");
+        return new Filter[]{encodingFilter
+        };
+    }
 }

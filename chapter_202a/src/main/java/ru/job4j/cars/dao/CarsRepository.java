@@ -1,13 +1,11 @@
-package ru.job4j.cars;
+package ru.job4j.cars.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.*;
 
@@ -28,11 +26,7 @@ import java.util.function.Function;
  */
 @Repository
 public class CarsRepository implements Closeable {
-//public class CarsRepository  {
 
-//    private static final CarsRepository INSTANCE = new CarsRepository();
-
-//    private final SessionFactory factory = new Configuration().configure().buildSessionFactory();
     @Autowired
     private SessionFactory factory;
 
@@ -43,17 +37,9 @@ public class CarsRepository implements Closeable {
         }
     };
 
-
-//
-//    public static CarsRepository getInstance() {
-//        return INSTANCE;
-//    }
-
     @Override
     public void close() throws IOException {
-        System.out.println("close");
         if (!factory.isClosed()) {
-//            System.out.println("close");
             factory.close();
         }
     }
