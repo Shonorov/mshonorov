@@ -3,10 +3,13 @@ package ru.job4j.cars;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ru.job4j.cars.config.HibernateConfig;
+import ru.job4j.cars.config.SpringDataConfig;
 import ru.job4j.cars.dao.CarsRepository;
+import ru.job4j.cars.dao.ItemDataRepository;
 import ru.job4j.cars.model.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
@@ -62,4 +65,21 @@ public class CarsRepositoryTest {
         assertThat(result.isPresent(), is(false));
     }
 
+    @Test
+    public void whenSpringDataThenFindAll() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringDataConfig.class);
+        ItemDataRepository itemRepository = context.getBean(ItemDataRepository.class);
+
+//        Optional<User> result = repository.authenticate("1user", "1user");
+//        for (Object o : repository.findByCarPhotoNotNull()) {
+//            System.out.println(o);
+//        }
+        List<Item> result = (List<Item>) itemRepository.findAll();
+        System.out.println(result.size());
+        System.out.println(itemRepository.findByCarPhotoNotNull().size());
+        System.out.println(itemRepository.findByCarManufacturerName("Lada").size());
+        System.out.println(itemRepository.findByCreatedGreaterThanEqual(LocalDateTime.now().minusDays(1L)).size());
+
+//        assertThat(result.isPresent(), is(false));
+    }
 }

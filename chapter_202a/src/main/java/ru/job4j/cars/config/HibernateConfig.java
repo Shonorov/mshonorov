@@ -16,10 +16,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-@Configuration
-@EnableTransactionManagement
-@PropertySource(value = { "classpath:hibernate.properties" })
-@ComponentScan("ru.job4j.cars.dao")
+//@Configuration
+//@EnableTransactionManagement
+//@PropertySource(value = { "classpath:hibernate.properties" })
+//@ComponentScan("ru.job4j.cars.dao")
 public class HibernateConfig {
 
     @Autowired

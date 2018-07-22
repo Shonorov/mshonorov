@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ru.job4j.cars.config.HibernateConfig;
+import ru.job4j.cars.config.SpringDataConfig;
 import ru.job4j.cars.dao.CarsRepository;
+import ru.job4j.cars.dao.ItemDataRepository;
+import ru.job4j.cars.dao.UserDataRepository;
 import ru.job4j.cars.model.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,8 +37,13 @@ import java.util.Map;
 @Controller
 public class ItemCreateController {
 
-    private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfig.class);
-    private CarsRepository repository = context.getBean(CarsRepository.class);
+//    private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfig.class);
+//    private CarsRepository repository = context.getBean(CarsRepository.class);
+
+    private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringDataConfig.class);
+    private ItemDataRepository itemRepository = context.getBean(ItemDataRepository.class);
+    private UserDataRepository userRepository = context.getBean(UserDataRepository.class);
+
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String showCreate() {
@@ -65,8 +73,6 @@ public class ItemCreateController {
             }
         }
 
-        System.out.println(param);
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Car car = new Car(LocalDateTime.from(LocalDate.parse(param.get("manufactured"), formatter).atStartOfDay()), param.get("drive"), Integer.valueOf(param.get("price")));
         Body body = new Body(param.get("bodytype"), param.get("bodycolor"), param.get("wheelside"));
@@ -83,15 +89,14 @@ public class ItemCreateController {
         car.setBody(body);
         car.setManufacturer(manufacturer);
         HttpSession session = request.getSession();
-        User user = repository.findUserByID(session.getAttribute("id").toString()).get();
+//        User user = repository.findUserByID(session.getAttribute("id").toString()).get();
+        User user = userRepository.findById((Integer) session.getAttribute("id")).get();
         Item item = new Item(param.get("header"), param.get("text"));
         item.setAuthor(user);
         item.setCar(car);
 
-        System.out.println(item);
-
-        repository.createItem(item);
-
+//        repository.createItem(item);
+        itemRepository.save(item);
         return "item_list";
     }
 
