@@ -33,13 +33,6 @@
             <version>5.3.3.Final</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/javassist/javassist -->
-        <!--<dependency>-->
-            <!--<groupId>javassist</groupId>-->
-            <!--<artifactId>javassist</artifactId>-->
-            <!--<version>3.12.1.GA</version>-->
-        <!--</dependency>-->
-
         <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-dbcp -->
         <dependency>
             <groupId>org.apache.tomcat</groupId>
@@ -98,8 +91,6 @@
             <scope>test</scope>
         </dependency>
 
-
-
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -114,9 +105,6 @@
             <artifactId>lombok-maven-plugin</artifactId>
             <version>1.18.0.0</version>
         </dependency>
-
-
-
 
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
         <dependency>

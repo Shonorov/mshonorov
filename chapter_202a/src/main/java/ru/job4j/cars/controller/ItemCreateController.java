@@ -5,16 +5,12 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ru.job4j.cars.config.HibernateConfig;
 import ru.job4j.cars.config.SpringDataConfig;
-import ru.job4j.cars.dao.CarsRepository;
 import ru.job4j.cars.dao.ItemDataRepository;
 import ru.job4j.cars.dao.UserDataRepository;
 import ru.job4j.cars.model.*;
@@ -37,13 +33,10 @@ import java.util.Map;
 @Controller
 public class ItemCreateController {
 
-//    private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfig.class);
-//    private CarsRepository repository = context.getBean(CarsRepository.class);
-
-    private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringDataConfig.class);
-    private ItemDataRepository itemRepository = context.getBean(ItemDataRepository.class);
-    private UserDataRepository userRepository = context.getBean(UserDataRepository.class);
-
+    @Autowired
+    private ItemDataRepository itemRepository;
+    @Autowired
+    private UserDataRepository userRepository;
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String showCreate() {

@@ -1,15 +1,13 @@
 package ru.job4j.cars.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import ru.job4j.cars.config.HibernateConfig;
 import ru.job4j.cars.config.SpringDataConfig;
-import ru.job4j.cars.dao.CarsRepository;
-import ru.job4j.cars.dao.ManufacturerDataRepository;
 import ru.job4j.cars.dao.UserDataRepository;
 import ru.job4j.cars.model.User;
 
@@ -29,12 +27,8 @@ import java.util.Optional;
 @Controller
 public class SigninController {
 
-//    private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfig.class);
-//    private CarsRepository repository = context.getBean(CarsRepository.class);
-
-
-    private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringDataConfig.class);
-    private UserDataRepository repository = context.getBean(UserDataRepository.class);
+    @Autowired
+    private UserDataRepository repository;
 
     @RequestMapping(value = "/signin", method = RequestMethod.GET)
     public String showSignIn() {
@@ -50,7 +44,6 @@ public class SigninController {
 
     @RequestMapping(value = "/signin", method = RequestMethod.POST, params = {"login", "password"})
     public String authenticate(@RequestParam("login") String login, @RequestParam("password") String password, HttpServletRequest request, HttpServletResponse response) {
-//        Optional<User> current = repository.authenticate(login, password);
         Optional<User> current = repository.findByLoginAndPassword(login, password);
         if (current.isPresent()) {
             HttpSession session = request.getSession();

@@ -30,7 +30,7 @@ public class Item {
     @Column (name = "text")
     private String text;
 
-    @ManyToOne (cascade={CascadeType.MERGE,CascadeType.REFRESH} )
+    @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn (name = "author_id", foreignKey = @ForeignKey(name = "User_id_FK"))
     private User author;
 
@@ -41,7 +41,7 @@ public class Item {
     @EqualsAndHashCode.Exclude
     private boolean sold;
 
-    @ManyToOne (cascade = CascadeType.ALL )
+    @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn (name = "car_id", foreignKey = @ForeignKey(name = "Car_id_FK"))
     private Car car;
 
