@@ -24,10 +24,10 @@ import java.util.function.Function;
  * @version $Id$
  * @since 0.1
  */
-@Repository
+//@Repository
 public class CarsRepository implements Closeable {
 
-    @Autowired
+//    @Autowired
     private SessionFactory factory;
 
     private Comparator<Item> comparator = new Comparator<Item>() {

@@ -31,10 +31,6 @@ public class Model {
     @Column (name = "manufacturing")
     private Boolean manufacturing;
 
-    public Model(Integer id) {
-        this.id = id;
-    }
-
     public Model(String name, LocalDateTime releaseDate, Boolean manufacturing) {
         this.name = name;
         this.releaseDate = releaseDate;
