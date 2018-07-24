@@ -28,24 +28,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
-                .withDefaultSchema();
+                .usersByUsernameQuery("select id, login, name, password from users where login=?");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .exceptionHandling()
-//                .authenticationEntryPoint(restAuthenticationEntryPoint)
-                .and()
-                .authorizeRequests()
-                .antMatchers("/api/foos").authenticated()
-                .and()
-                .formLogin()
-//                .successHandler(authenticationSuccessHandler)
-                .failureHandler(new SimpleUrlAuthenticationFailureHandler())
-                .and()
-                .logout();
+        http.authorizeRequests()
+                .anyRequest().authenticated().and().formLogin().and().logout()
+                .permitAll();
     }
 
 }
