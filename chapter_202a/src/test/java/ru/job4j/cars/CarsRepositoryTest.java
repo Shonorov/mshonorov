@@ -41,7 +41,7 @@ public class CarsRepositoryTest {
 
         assertThat(result, is(item));
         assertNotEquals(((List<Item>) itemRepository.findAll()).size(), 0);
-        assertNotEquals((itemRepository.findByCarPhotoNotNull()).size(), 0);
+        assertEquals((itemRepository.findByCarPhotoNotNull()).size(), 0);
         assertNotEquals((itemRepository.findByCarManufacturerName("Lada")).size(), 0);
         assertNotEquals((itemRepository.findByCreatedGreaterThanEqual(LocalDateTime.now().minusDays(1L))).size(), 0);
     }
