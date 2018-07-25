@@ -35,19 +35,19 @@ public class SigninController {
         return "signin";
     }
 
-    @RequestMapping(value = "/signin", method = RequestMethod.POST, params = {"!login", "!password"})
+    @RequestMapping(value = "/signin", method = RequestMethod.POST, params = {"!username", "!password"})
     @ResponseBody
     public String getCurrentUser(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        return "Current user : " + session.getAttribute("login");
+        return "Current user : " + session.getAttribute("username");
     }
 
-    @RequestMapping(value = "/signin", method = RequestMethod.POST, params = {"login", "password"})
-    public String authenticate(@RequestParam("login") String login, @RequestParam("password") String password, HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/signin", method = RequestMethod.POST, params = {"username", "password"})
+    public String authenticate(@RequestParam("username") String login, @RequestParam("password") String password, HttpServletRequest request, HttpServletResponse response) {
         Optional<User> current = repository.findByLoginAndPassword(login, password);
         if (current.isPresent()) {
             HttpSession session = request.getSession();
-            session.setAttribute("login", login);
+            session.setAttribute("username", login);
             session.setAttribute("id", current.get().getId());
             return "item_list";
         } else {

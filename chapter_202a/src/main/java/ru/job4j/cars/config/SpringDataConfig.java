@@ -66,7 +66,7 @@ public class SpringDataConfig {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL94Dialect");
-        properties.getProperty("hibernate.show_sql", "true");
+        properties.getProperty("hibernate.show_sql", "false");
         return properties;
     }
 }

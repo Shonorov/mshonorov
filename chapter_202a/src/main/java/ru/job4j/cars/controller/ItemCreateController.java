@@ -82,13 +82,11 @@ public class ItemCreateController {
         car.setBody(body);
         car.setManufacturer(manufacturer);
         HttpSession session = request.getSession();
-//        User user = repository.findUserByID(session.getAttribute("id").toString()).get();
         User user = userRepository.findById((Integer) session.getAttribute("id")).get();
         Item item = new Item(param.get("header"), param.get("text"));
         item.setAuthor(user);
         item.setCar(car);
 
-//        repository.createItem(item);
         itemRepository.save(item);
         return "item_list";
     }

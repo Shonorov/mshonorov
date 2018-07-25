@@ -6,7 +6,7 @@
     <script>
         function validate() {
             var text = "";
-            var login = document.forms["input"]["login"].value;
+            var login = document.forms["input"]["username"].value;
             if (login == "") {
                 text += "Field 'login' must be filled out!\n";
             }
@@ -44,12 +44,12 @@
     <form name="input" action="signin" method="POST" onsubmit="return validate();">
         <tr>
             <td>
-                Login : <input style="float: right; width: 150px" type="text" placeholder="Enter login" name="login"><br/>
+                Login : <input id="username" style="float: right; width: 150px" type="text" placeholder="Enter login" name="username"><br/>
             </td>
         </tr>
         <tr>
             <td>
-                Password : <input style="width: 150px" type="password" placeholder="Enter password" name="password"><br/>
+                Password : <input id="password" style="width: 150px" type="password" placeholder="Enter password" name="password"><br/>
             </td>
         </tr>
         <tr>
