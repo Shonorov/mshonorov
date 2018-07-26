@@ -1,13 +1,11 @@
 package ru.job4j.cars.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import ru.job4j.cars.config.SpringDataConfig;
 import ru.job4j.cars.dao.UserDataRepository;
 import ru.job4j.cars.model.User;
 
@@ -24,7 +22,7 @@ import java.util.Optional;
  * @version $Id$
  * @since 0.1
  */
-@Controller
+//@Controller
 public class SigninController {
 
     @Autowired

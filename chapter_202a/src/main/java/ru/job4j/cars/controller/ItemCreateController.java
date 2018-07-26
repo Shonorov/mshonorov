@@ -6,17 +6,16 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ru.job4j.cars.config.SpringDataConfig;
 import ru.job4j.cars.dao.ItemDataRepository;
 import ru.job4j.cars.dao.UserDataRepository;
 import ru.job4j.cars.model.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -81,8 +80,12 @@ public class ItemCreateController {
         car.setGearbox(gearBox);
         car.setBody(body);
         car.setManufacturer(manufacturer);
-        HttpSession session = request.getSession();
-        User user = userRepository.findById((Integer) session.getAttribute("id")).get();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String currentUserId = "";
+        if (principal instanceof UserDetails) {
+            currentUserId = ((UserDetails) principal).getAuthorities().toArray()[0].toString();
+        }
+        User user = userRepository.findById(Integer.valueOf(currentUserId)).get();
         Item item = new Item(param.get("header"), param.get("text"));
         item.setAuthor(user);
         item.setCar(car);

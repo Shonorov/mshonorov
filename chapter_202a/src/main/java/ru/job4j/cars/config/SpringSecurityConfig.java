@@ -1,13 +1,11 @@
 package ru.job4j.cars.config;
 
-import com.sun.org.apache.bcel.internal.generic.GETFIELD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
 import javax.sql.DataSource;
@@ -31,18 +29,16 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.jdbcAuthentication()
                 .dataSource(dataSource).passwordEncoder(NoOpPasswordEncoder.getInstance())
                 .usersByUsernameQuery("select users.login as username, users.password as password, TRUE from users where users.login=?")
-                .authoritiesByUsernameQuery("select users.login as username, users.name as authority from users where users.login=?");
+                .authoritiesByUsernameQuery("select users.login as username, users.id as authority from users where users.login=?");
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/signin", "/scripts/**", "/style/**").permitAll()
+                .antMatchers("/scripts/**", "/style/**").permitAll()
                 .anyRequest().authenticated()
-                .and()
-                .formLogin().defaultSuccessUrl("/signin")//.loginPage("/signin").permitAll()//.defaultSuccessUrl("/shop")
+                .and().formLogin().defaultSuccessUrl("/shop")
                 .and().httpBasic()
-                .and()
-                .csrf().disable();
+                .and().csrf().disable();
     }
 
 }

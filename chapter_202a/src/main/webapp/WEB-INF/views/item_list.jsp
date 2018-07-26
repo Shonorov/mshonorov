@@ -23,7 +23,7 @@
                 <form id="create" action="./create" method="get"><input type="submit" value="Create"></form>
             </td>
             <td width="10%" align="right">
-                <form id="signout" action="./signout" method="post"><input type="submit" value="Sign out"></form>
+                <form id="signout" action="./logout" method="post"><input type="submit" value="Sign out"></form>
             </td>
         </tr>
     </table>

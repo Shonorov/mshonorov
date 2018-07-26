@@ -1,17 +1,16 @@
 package ru.job4j.cars.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import ru.job4j.cars.config.SpringDataConfig;
 import ru.job4j.cars.dao.ItemDataRepository;
 import ru.job4j.cars.model.Item;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -49,8 +48,11 @@ public class ItemListController {
     @RequestMapping (value = "/list", method = RequestMethod.POST)
     public String changeStatus(@RequestParam("id") String id, @RequestParam("status") String status, HttpServletRequest request) {
         Optional<Item> result = repository.findById(Integer.valueOf(id));
-        HttpSession session = request.getSession();
-        String currentUserId = session.getAttribute("id").toString();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String currentUserId = "";
+        if (principal instanceof UserDetails) {
+            currentUserId = ((UserDetails) principal).getAuthorities().toArray()[0].toString();
+        }
         if (result.isPresent() && String.valueOf(result.get().getAuthor().getId()).equals(currentUserId)) {
             Item update = repository.findById(Integer.valueOf(id)).get();
             update.setSold(Boolean.valueOf(status));
