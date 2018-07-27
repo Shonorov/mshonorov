@@ -26,6 +26,7 @@
         <module>chapter_201a</module>
 		<module>chapter_202</module>
         <module>chapter_202a</module>
+		<module>chapter_202b</module>
     </modules>
 
 	<dependencies>
