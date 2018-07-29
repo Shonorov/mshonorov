@@ -30,7 +30,8 @@ public class Item {
     @Column (name = "text")
     private String text;
 
-    @ManyToOne (cascade = CascadeType.MERGE)
+//    @ManyToOne (cascade = CascadeType.MERGE)
+    @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn (name = "author_id", foreignKey = @ForeignKey(name = "User_id_FK"))
     private User author;
 
