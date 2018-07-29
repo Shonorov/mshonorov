@@ -1,0 +1,48 @@
+body {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.itemelement {
+    background-color: lightgrey;
+    margin: 5px;
+    width: 1000px;
+}
+
+.header {
+    font-size: 30px;
+}
+
+.createdate {
+    font-size: 10px;
+}
+
+.param {
+    width: 25%;
+}
+
+.avail {
+    background-color: green;
+}
+
+.sold {
+    background-color: red;
+}
+
+.price {
+    font-size: 25px;
+}
+
+#head {
+    background-color: deepskyblue;
+    height: 30px;
+    width: 1000px;
+}
+
+.proprow {
+    width: 30%;
+}
+
+.propvaluerow {
+    width: 70%;
+}
