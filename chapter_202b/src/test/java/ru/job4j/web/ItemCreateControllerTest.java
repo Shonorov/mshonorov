@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.repository.ItemDataRepository;
 import ru.job4j.repository.UserDataRepository;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -48,7 +49,8 @@ public class ItemCreateControllerTest {
 
         MockMultipartFile file = new MockMultipartFile("photo", "carphoto.jpg", null, "".getBytes());
         this.mvc.perform(
-                post("/create").param("photo", "empty_value")
+                post("/create")//.with(csrf())
+                        .param("photo", "empty_value")
 //                multipart("/create").file(file)
         ).andExpect(
                 status().isOk()
