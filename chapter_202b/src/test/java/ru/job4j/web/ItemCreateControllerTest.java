@@ -46,10 +46,10 @@ public class ItemCreateControllerTest {
     @WithMockUser(username = "user", password = "user", authorities = "17")
     public void whenPostThenCreateUser() throws Exception {
 
-
+        //TODO photo error
         MockMultipartFile file = new MockMultipartFile("photo", "carphoto.jpg", null, "".getBytes());
         this.mvc.perform(
-                post("/create")//.with(csrf())
+                multipart("/create").file(file).with(csrf())
                         .param("photo", "empty_value")
 //                multipart("/create").file(file)
         ).andExpect(
