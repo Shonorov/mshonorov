@@ -1,5 +1,6 @@
 package ru.job4j.web;
 
+import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,14 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.multipart.MultipartFile;
+import ru.job4j.domain.Item;
+import ru.job4j.domain.Manufacturer;
 import ru.job4j.repository.ItemDataRepository;
 import ru.job4j.repository.UserDataRepository;
 
+import java.util.ArrayList;
+
+import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -48,10 +54,10 @@ public class ItemCreateControllerTest {
 
         //TODO photo error
         MockMultipartFile file = new MockMultipartFile("photo", "carphoto.jpg", null, "".getBytes());
+
         this.mvc.perform(
                 multipart("/create").file(file).with(csrf())
-                        .param("photo", "empty_value")
-//                multipart("/create").file(file)
+                        .param("photo", "empty_photo")
         ).andExpect(
                 status().isOk()
         ).andExpect(

@@ -13,10 +13,7 @@ import ru.job4j.repository.ItemDataRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Supplier;
 
 /**
@@ -43,7 +40,7 @@ public class ItemListController {
                 put("manufacturer", () -> repository.findByCarManufacturerName(filter.substring(14, filter.length())));
             }
         };
-        return filterMap.get(key).get();
+        return filterMap.keySet().contains(filter) ? filterMap.get(key).get() : new ArrayList<Item>();
     }
 
     @RequestMapping (value = "/list", method = RequestMethod.POST)
