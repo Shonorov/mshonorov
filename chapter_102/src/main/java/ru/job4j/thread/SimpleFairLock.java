@@ -37,7 +37,7 @@ public class SimpleFairLock {
         from.lock.lock();
         from.minus();
         try {
-            if(to.lock.tryLock(500, TimeUnit.MILLISECONDS)) {
+            if (to.lock.tryLock(500, TimeUnit.MILLISECONDS)) {
                 to.plus();
                 to.lock.unlock();
             } else {
