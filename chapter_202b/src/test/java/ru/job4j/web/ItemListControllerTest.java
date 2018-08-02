@@ -18,9 +18,12 @@ import ru.job4j.repository.ItemDataRepository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -56,7 +59,9 @@ public class ItemListControllerTest {
         car.setBody(body);
         car.setManufacturer(manufacturer);
         User user = new User("test", "test", "test");
+        user.setId(1);
         Item item = new Item("Kalina, 2010", "Want to sell test car");
+        item.setId(1);
         item.setAuthor(user);
         item.setCar(car);
         this.item = item;
@@ -176,18 +181,46 @@ public class ItemListControllerTest {
 
     @Test
     @WithMockUser(username = "user", password = "user", authorities = "1")
-    public void whenPostThenCreateUser() throws Exception {
+    public void whenPostThenChangeStatus() throws Exception {
 
-        //TODO Test?
+        given(
+            this.repository.findById(1)
+        ).willReturn(
+            Optional.of(item)
+        );
 
         this.mvc.perform(
             multipart("/list").with(csrf())
                 .param("id", "1")
-                .param("status", "true")
+                .param("status", "false")
         ).andExpect(
             status().isOk()
         ).andExpect(
             view().name("item_list")
         );
     }
+
+    @Test
+    @WithMockUser(username = "user", password = "user", authorities = "1")
+    public void whenPostThenChangeStatusError() throws Exception {
+
+        given(
+            this.repository.findById(1)
+        ).willReturn(
+            Optional.of(item)
+        );
+
+        this.mvc.perform(
+            multipart("/list").with(csrf())
+                .param("id", "2")
+                .param("status", "false")
+        ).andExpect(
+            status().isOk()
+        ).andExpect(
+            view().name("item_list")
+        ).andExpect(
+            request().sessionAttribute("error", "Status change error!")
+        );
+    }
+
 }

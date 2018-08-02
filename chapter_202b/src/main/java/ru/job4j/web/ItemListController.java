@@ -40,7 +40,7 @@ public class ItemListController {
                 put("manufacturer", () -> repository.findByCarManufacturerName(filter.substring(14, filter.length())));
             }
         };
-        return filterMap.keySet().contains(filter) ? filterMap.get(key).get() : new ArrayList<Item>();
+        return filterMap.keySet().contains(key) ? filterMap.get(key).get() : new ArrayList<Item>();
     }
 
     @RequestMapping (value = "/list", method = RequestMethod.POST)
@@ -55,6 +55,8 @@ public class ItemListController {
             Item update = repository.findById(Integer.valueOf(id)).get();
             update.setSold(Boolean.valueOf(status));
             repository.save(update);
+        } else {
+            request.getSession().setAttribute("error", "Status change error!");
         }
         return "item_list";
     }

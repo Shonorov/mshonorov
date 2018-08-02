@@ -39,42 +39,48 @@ public class ItemCreateController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String createItem(@RequestParam("photo") MultipartFile file, HttpServletRequest request) {
 
-        byte[] photo = new byte[0];
-        try {
-            photo = file.getBytes();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (request.getParameterMap().size() == 20) {
+
+            byte[] photo = new byte[0];
+            try {
+                photo = file.getBytes();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            Car car = new Car(LocalDateTime.from(LocalDate.parse(request.getParameter("manufactured"), formatter).atStartOfDay()), request.getParameter("drive"), Integer.valueOf(request.getParameter("price")));
+            Body body = new Body(request.getParameter("bodytype"), request.getParameter("bodycolor"), request.getParameter("wheelside"));
+            Engine engine = new Engine(request.getParameter("enginetype"), Double.valueOf(request.getParameter("enginevolume")), Integer.valueOf(request.getParameter("enginepower")), Integer.valueOf(request.getParameter("enginemilage")));
+            GearBox gearBox = new GearBox(request.getParameter("gearboxtype"), Integer.valueOf(request.getParameter("gearcount")));
+            Manufacturer manufacturer = new Manufacturer(request.getParameter("manufacturer"), request.getParameter("country"));
+
+            Model model = new Model(request.getParameter("model"), LocalDateTime.from(LocalDate.parse(request.getParameter("releasedate"), formatter).atStartOfDay()), Boolean.valueOf(request.getParameter("manufacturing")));
+
+            if (photo.length > 0) {
+                car.setPhoto(photo);
+            }
+            car.setModel(model);
+            car.setEngine(engine);
+            car.setGearbox(gearBox);
+            car.setBody(body);
+            car.setManufacturer(manufacturer);
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String currentUserId = "";
+            if (principal instanceof UserDetails) {
+                currentUserId = ((UserDetails) principal).getAuthorities().toArray()[0].toString();
+            }
+            User user = userRepository.findById(Integer.valueOf(currentUserId)).get();
+            Item item = new Item(request.getParameter("header"), request.getParameter("text"));
+            item.setAuthor(user);
+            item.setCar(car);
+
+            itemRepository.save(item);
+        } else {
+            request.getSession().setAttribute("error", "Item create error!");
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        Car car = new Car(LocalDateTime.from(LocalDate.parse(request.getParameter("manufactured"), formatter).atStartOfDay()), request.getParameter("drive"), Integer.valueOf(request.getParameter("price")));
-        Body body = new Body(request.getParameter("bodytype"), request.getParameter("bodycolor"), request.getParameter("wheelside"));
-        Engine engine = new Engine(request.getParameter("enginetype"), Double.valueOf(request.getParameter("enginevolume")), Integer.valueOf(request.getParameter("enginepower")), Integer.valueOf(request.getParameter("enginemilage")));
-        GearBox gearBox = new GearBox(request.getParameter("gearboxtype"), Integer.valueOf(request.getParameter("gearcount")));
-        Manufacturer manufacturer = new Manufacturer(request.getParameter("manufacturer"), request.getParameter("country"));
-
-        Model model = new Model(request.getParameter("model"), LocalDateTime.from(LocalDate.parse(request.getParameter("releasedate"), formatter).atStartOfDay()), Boolean.valueOf(request.getParameter("manufacturing")));
-
-        if (photo.length > 0) {
-            car.setPhoto(photo);
-        }
-        car.setModel(model);
-        car.setEngine(engine);
-        car.setGearbox(gearBox);
-        car.setBody(body);
-        car.setManufacturer(manufacturer);
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String currentUserId = "";
-        if (principal instanceof UserDetails) {
-            currentUserId = ((UserDetails) principal).getAuthorities().toArray()[0].toString();
-        }
-        User user = userRepository.findById(Integer.valueOf(currentUserId)).get();
-        Item item = new Item(request.getParameter("header"), request.getParameter("text"));
-        item.setAuthor(user);
-        item.setCar(car);
-
-        itemRepository.save(item);
         return "item_list";
     }
 
