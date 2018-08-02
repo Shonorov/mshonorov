@@ -85,7 +85,7 @@
                     <execution>
                         <phase>process-resources</phase>
                         <goals>
-                            <goal>update</goal>
+                            <!--<goal>update</goal>-->
                         </goals>
                     </execution>
                 </executions>
