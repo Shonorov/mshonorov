@@ -112,7 +112,7 @@ public class SimpleParser {
         SimpleDateFormat formatter = new SimpleDateFormat("DD MMM YY, HH:mm");
         for (Element element : elements) {
             try {
-                if (element.text().contains(year.substring(year.length() - 2,year.length()))) {
+                if (element.text().contains(year.substring(year.length() - 2, year.length()))) {
                     String current = formatter.parse(element.text()).toString();
                     if (current.contains(year)) {
                         result = true;
