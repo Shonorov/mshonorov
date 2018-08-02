@@ -36,7 +36,7 @@ public class UsersEditServletTest {
         List<String> roles = ValidateService.getInstance().findRoles();
         User user = ValidateService.getInstance().findByIdView("1").get();
         List<Country> countries = ValidateService.getInstance().getCountries();
-        List<City> cities = ValidateService.getInstance().getCities();
+        List<City> cities = ValidateService.getInstance().getCitiesByCountryName("Russia");
         servlet.doGet(request, response);
         verify(dispatcher).forward(request, response);
         verify(request, atLeast(1)).setAttribute("roles", roles);
