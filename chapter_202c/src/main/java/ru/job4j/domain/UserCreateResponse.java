@@ -5,7 +5,7 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 
-@Entity
+//@Entity
 @Data
 @AllArgsConstructor
 public class UserCreateResponse {

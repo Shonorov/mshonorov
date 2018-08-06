@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.job4j.domain.NewAccount;
 import ru.job4j.domain.UserCreateResponse;
 import ru.job4j.repository.UserRepository;
+import ru.job4j.util.StringGenerator;
 
 @Controller
 public class UserController {
@@ -18,9 +19,9 @@ public class UserController {
     public UserCreateResponse registerAccount(@RequestBody NewAccount account) {
         UserCreateResponse response;
         if (userRepository.findById(account.getAccountId()).isPresent()) {
-            response = new UserCreateResponse(true, "Your account is opened", "QWEQWE");
-        } else {
             response = new UserCreateResponse(false, "Account with that ID already exists", "");
+        } else {
+            response = new UserCreateResponse(true, "Your account is opened", StringGenerator.generateSting(8, true));
         }
         return response;
     }
