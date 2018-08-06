@@ -1,0 +1,25 @@
+package ru.job4j.domain;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table (name = "url")
+@Data
+@NoArgsConstructor
+public class Url {
+
+    @Id
+    @Column (name = "url")
+    private String url;
+
+    @Column (name = "shorturl")
+    private String shorturl;
+
+    @Column (name = "count")
+    private Integer count;
+}
