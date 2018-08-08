@@ -2,6 +2,8 @@ package ru.job4j.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.domain.NewAccountRequest;
@@ -19,8 +21,9 @@ public class UserController {
 
     @PostMapping (value = "/account", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseBody
-    public UserCreateResponse registerAccount(@RequestBody String json) {
+    public ResponseEntity registerAccount(@RequestBody String json) {
         UserCreateResponse response;
+        ResponseEntity responseEntity;
         NewAccountRequest account = new NewAccountRequest();
         try {
             account = new ObjectMapper().readValue(json, NewAccountRequest.class);
@@ -29,11 +32,13 @@ public class UserController {
         }
         if (userRepository.findById(account.getAccountId()).isPresent()) {
             response = new UserCreateResponse(false, "Account with that ID already exists", "");
+            responseEntity = new ResponseEntity(response, HttpStatus.CONFLICT);
         } else {
             response = new UserCreateResponse(true, "Your account is opened", StringGenerator.generateSting(8, true));
             userRepository.save(new User(account.getAccountId(), response.getPassword()));
+            responseEntity = new ResponseEntity(response, HttpStatus.CREATED);
         }
-        return response;
+        return responseEntity;
     }
 
 

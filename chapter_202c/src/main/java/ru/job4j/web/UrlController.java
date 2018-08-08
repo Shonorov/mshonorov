@@ -3,6 +3,8 @@ package ru.job4j.web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.domain.ShortenedUrl;
@@ -24,7 +26,8 @@ public class UrlController {
 
     @PostMapping (value = "/register", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseBody
-    public ShortenedUrl registerUrl(@RequestBody String json) {
+    public ResponseEntity registerUrl(@RequestBody String json) {
+        ResponseEntity responseEntity;
         ShortenedUrl result;
         UrlRegisterRequest request = new UrlRegisterRequest();
         try {
@@ -34,26 +37,27 @@ public class UrlController {
         }
         if (urlRepository.findById(request.getUrl()).isPresent()) {
             result = new ShortenedUrl(urlRepository.findById(request.getUrl()).get().getShorturl());
+            responseEntity = new ResponseEntity(result, HttpStatus.CONFLICT);
         } else {
             Url newUrl;
             if (request.getRedirectType().equals(301)) {
-                 newUrl = new Url(request.getUrl(), StringGenerator.generateSting(6, false), 301, 0);
+                 newUrl = new Url(request.getUrl(), shortenUrl(request), 301, 0);
             } else {
-                newUrl = new Url(request.getUrl(), StringGenerator.generateSting(6, false), 302, 0);
+                newUrl = new Url(request.getUrl(), shortenUrl(request), 302, 0);
             }
             result = new ShortenedUrl(newUrl.getShorturl());
+            responseEntity = new ResponseEntity(result, HttpStatus.CREATED);
             urlRepository.save(newUrl);
         }
-        return result;
+        return responseEntity;
     }
 
-    //TODO
-    private ShortenedUrl shortenUrl(UrlRegisterRequest request) {
-        ShortenedUrl result = new ShortenedUrl("");
+    private String shortenUrl(UrlRegisterRequest request) {
+        String result = "";
         String[] schemes = {"http"};
         UrlValidator validator = new UrlValidator(schemes);
         if (validator.isValid(request.getUrl())) {
-            result.setShortUrl("http://short.com/" + StringGenerator.generateSting(6, false));
+            result = "http://short.com/" + StringGenerator.generateSting(6, false);
         }
         return result;
     }
