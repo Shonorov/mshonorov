@@ -1,5 +1,6 @@
 package ru.job4j.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import ru.job4j.domain.UrlRegisterRequest;
 import ru.job4j.repository.UrlRepository;
 import ru.job4j.util.StringGenerator;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,8 +24,14 @@ public class UrlController {
 
     @PostMapping (value = "/register", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseBody
-    public ShortenedUrl registerUrl(@RequestBody UrlRegisterRequest request) {
+    public ShortenedUrl registerUrl(@RequestBody String json) {
         ShortenedUrl result;
+        UrlRegisterRequest request = new UrlRegisterRequest();
+        try {
+            request = new ObjectMapper().readValue(json, UrlRegisterRequest.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if (urlRepository.findById(request.getUrl()).isPresent()) {
             result = new ShortenedUrl(urlRepository.findById(request.getUrl()).get().getShorturl());
         } else {
@@ -33,12 +41,13 @@ public class UrlController {
             } else {
                 newUrl = new Url(request.getUrl(), StringGenerator.generateSting(6, false), 302, 0);
             }
-            result = shortenUrl(request);
+            result = new ShortenedUrl(newUrl.getShorturl());
             urlRepository.save(newUrl);
         }
         return result;
     }
 
+    //TODO
     private ShortenedUrl shortenUrl(UrlRegisterRequest request) {
         ShortenedUrl result = new ShortenedUrl("");
         String[] schemes = {"http"};

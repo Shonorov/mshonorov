@@ -11,6 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table (name = "url")
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class Url {
 

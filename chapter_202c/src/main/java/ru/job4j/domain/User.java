@@ -1,5 +1,6 @@
 package ru.job4j.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.Table;
 @Data
 @Table (name ="user")
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id

@@ -29,16 +29,18 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .dataSource(dataSource).passwordEncoder(new BCryptPasswordEncoder())//.passwordEncoder(NoOpPasswordEncoder.getInstance())
-                .usersByUsernameQuery("select user.username as username, user.password as password, TRUE from user where user.username=?")
-                .authoritiesByUsernameQuery("select user.username as username, user.username as authority from user where user.username=?");
+        auth.inMemoryAuthentication().passwordEncoder(NoOpPasswordEncoder.getInstance()).withUser("user").password("user").roles("user");
+//        auth.jdbcAuthentication()
+//                .dataSource(dataSource).passwordEncoder(new BCryptPasswordEncoder())//.passwordEncoder(NoOpPasswordEncoder.getInstance())
+//                .usersByUsernameQuery("select user.username as username, user.password as password, TRUE from user where user.username=?")
+//                .authoritiesByUsernameQuery("select user.username as username, user.username as authority from user where user.username=?");
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .anyRequest().authenticated()
-                .and().formLogin().defaultSuccessUrl("/shop")
+//                .antMatchers("/account").permitAll()
+                .and().formLogin().defaultSuccessUrl("/account")
                 .and().httpBasic()
                 .and().csrf().disable();
     }
