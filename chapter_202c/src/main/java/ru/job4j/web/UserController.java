@@ -22,6 +22,7 @@ public class UserController {
     @PostMapping (value = "/account", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseBody
     public ResponseEntity registerAccount(@RequestBody String json) {
+        System.out.println(json);
         UserCreateResponse response;
         ResponseEntity responseEntity;
         NewAccountRequest account = new NewAccountRequest();
@@ -41,5 +42,9 @@ public class UserController {
         return responseEntity;
     }
 
+    @GetMapping (value = "/account")
+    public String accountFormRedirect() {
+        return "account";
+    }
 
 }

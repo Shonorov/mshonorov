@@ -52,6 +52,11 @@ public class UrlController {
         return responseEntity;
     }
 
+    /**
+     * Convert Url register request to shortened url string.
+     * @param request url request json object.
+     * @return shortened url.
+     */
     private String shortenUrl(UrlRegisterRequest request) {
         String result = "";
         String[] schemes = {"http"};
@@ -62,6 +67,7 @@ public class UrlController {
         return result;
     }
 
+
     @GetMapping (value = "/statistic/{AccountId}", produces = {"application/json"})
     public Map<String, Integer> getUserStatistic(@PathVariable(value = "AccountId") String accountId) {
         Map<String, Integer> result = new HashMap<>();
@@ -69,5 +75,10 @@ public class UrlController {
             result.put(url.getUrl(), url.getCount());
         }
         return result;
+    }
+
+    @GetMapping (value = "/redirect/{url}")
+    public void redirect(@PathVariable(value = "url") String url1) {
+        System.out.println("!!!!" + url1);
     }
 }
