@@ -31,15 +31,15 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication().passwordEncoder(NoOpPasswordEncoder.getInstance()).withUser("user").password("user").roles("user");
 //        auth.jdbcAuthentication()
-//                .dataSource(dataSource).passwordEncoder(new BCryptPasswordEncoder())//.passwordEncoder(NoOpPasswordEncoder.getInstance())
+//                .dataSource(dataSource).passwordEncoder(NoOpPasswordEncoder.getInstance())//.passwordEncoder(new BCryptPasswordEncoder())
 //                .usersByUsernameQuery("select user.username as username, user.password as password, TRUE from user where user.username=?")
 //                .authoritiesByUsernameQuery("select user.username as username, user.username as authority from user where user.username=?");
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers("/account", "*.js").permitAll()
                 .anyRequest().authenticated()
-//                .antMatchers("/account").permitAll()
                 .and().formLogin().defaultSuccessUrl("/account")//.successHandler()
                 .and().httpBasic()
                 .and().csrf().disable();
@@ -47,7 +47,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/account");
+        web.ignoring().antMatchers("/account", "*.js");
     }
 
 }

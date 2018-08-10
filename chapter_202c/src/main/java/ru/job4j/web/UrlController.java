@@ -77,8 +77,8 @@ public class UrlController {
         return result;
     }
 
-    @GetMapping (value = "/redirect/{url}")
-    public void redirect(@PathVariable(value = "url") String url1) {
-        System.out.println("!!!!" + url1);
+    @GetMapping (value = "/redirect")
+    public String redirect(@PathVariable(value = "url") String url1) {
+        return "redirect";
     }
 }
