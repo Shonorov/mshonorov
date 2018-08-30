@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @GetMapping (value = "/account")
-    public String accountFormRedirect() {
+    public String accountFormOpen() {
         return "account";
     }
 

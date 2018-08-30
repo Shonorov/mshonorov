@@ -29,25 +29,24 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().passwordEncoder(NoOpPasswordEncoder.getInstance()).withUser("user").password("user").roles("user");
-//        auth.jdbcAuthentication()
-//                .dataSource(dataSource).passwordEncoder(NoOpPasswordEncoder.getInstance())//.passwordEncoder(new BCryptPasswordEncoder())
-//                .usersByUsernameQuery("select user.username as username, user.password as password, TRUE from user where user.username=?")
-//                .authoritiesByUsernameQuery("select user.username as username, user.username as authority from user where user.username=?");
+//        auth.inMemoryAuthentication().passwordEncoder(NoOpPasswordEncoder.getInstance()).withUser("user").password("user").roles("user");
+        auth.jdbcAuthentication()
+                .dataSource(dataSource).passwordEncoder(NoOpPasswordEncoder.getInstance())//.passwordEncoder(new BCryptPasswordEncoder())
+                .usersByUsernameQuery("select user.username as username, user.password as password, TRUE from user where user.username=?")
+                .authoritiesByUsernameQuery("select user.username as username, user.username as authority from user where user.username=?");
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/account", "*.js").permitAll()
                 .anyRequest().authenticated()
-                .and().formLogin().defaultSuccessUrl("/account")//.successHandler()
+                .and().formLogin().defaultSuccessUrl("/statistic")
                 .and().httpBasic()
                 .and().csrf().disable();
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/account", "*.js");
+        web.ignoring().antMatchers("/account", "/js/**");
     }
 
 }
