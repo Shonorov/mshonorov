@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,19 +6,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-    <script src="/js/scripts.js"></script>
-    <!--<link rel="stylesheet" type="text/css" href="/style.css"><meta charset="UTF-8">-->
+    <script src="./scripts.js"></script>
 </head>
 <body>
 <p>Create new user</p>
-<form name="usercreate">
-    <label>Enter new user name </label>
-    <input id="accountId" name="accountId" type="text">
-    <input type="button" value="Open account" onclick="openaccount()">
+<form name="usercreate" onsubmit="openaccount();return false">
+    <label>Enter new user name</label>
+    <input id="accountId" type="text">
+    <input type="submit" value="create account">
 </form>
-<div id="result"></div>
-<form action="login" method="get">
-    <input type="submit" value="Login">
-</form>
+<label id="result"></label>
+<br>
+<label id="password"></label>
 </body>
 </html>
