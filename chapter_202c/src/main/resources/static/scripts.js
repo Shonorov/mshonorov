@@ -19,3 +19,26 @@ function openaccount() {
         }
     })
 }
+
+function register_url() {
+    var data = {
+        url:$("#reg_url").val(),
+        redirectType:$("#redirect_type").val()
+    };
+    $.ajax({
+        type: "POST",
+        url: "/register",
+        dataType: "JSON",
+        contentType : "application/json",
+        data: JSON.stringify(data),
+        success: function (response) {
+            console.log(response);
+            $("#shortUrl").empty().append(response.shortUrl);
+        },
+        error: function (response) {
+            console.log("error");
+            console.log(response);
+            $("#shortUrl").empty().append("URL already registered!");
+        }
+    })
+}

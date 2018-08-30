@@ -24,23 +24,18 @@ public class UrlController {
     @Autowired
     private UrlRepository urlRepository;
 
-    @PostMapping (value = "/register", consumes = {"application/json"}, produces = {"application/json"})
+    @PostMapping (value = "/register")
     @ResponseBody
-    public ResponseEntity registerUrl(@RequestBody String json) {
+    public ResponseEntity registerUrl(@RequestBody UrlRegisterRequest request) {
+        System.out.println(request);
         ResponseEntity responseEntity;
         ShortenedUrl result;
-        UrlRegisterRequest request = new UrlRegisterRequest();
-        try {
-            request = new ObjectMapper().readValue(json, UrlRegisterRequest.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         if (urlRepository.findById(request.getUrl()).isPresent()) {
             result = new ShortenedUrl(urlRepository.findById(request.getUrl()).get().getShorturl());
             responseEntity = new ResponseEntity(result, HttpStatus.CONFLICT);
         } else {
             Url newUrl;
-            if (request.getRedirectType().equals(301)) {
+            if ((request.getRedirectType() != null) && (request.getRedirectType().equals(301))) {
                  newUrl = new Url(request.getUrl(), shortenUrl(request), 301, 0);
             } else {
                 newUrl = new Url(request.getUrl(), shortenUrl(request), 302, 0);
@@ -49,7 +44,13 @@ public class UrlController {
             responseEntity = new ResponseEntity(result, HttpStatus.CREATED);
             urlRepository.save(newUrl);
         }
+        System.out.println(responseEntity);
         return responseEntity;
+    }
+
+    @GetMapping(value = "/register")
+    public String accountFormRedirect() {
+        return "register";
     }
 
     /**
@@ -59,11 +60,12 @@ public class UrlController {
      */
     private String shortenUrl(UrlRegisterRequest request) {
         String result = "";
-        String[] schemes = {"http"};
+        String[] schemes = {"http", "https"};
         UrlValidator validator = new UrlValidator(schemes);
         if (validator.isValid(request.getUrl())) {
             result = "http://short.com/" + StringGenerator.generateSting(6, false);
         }
+        System.out.println(result);
         return result;
     }
 

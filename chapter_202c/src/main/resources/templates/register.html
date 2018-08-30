@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>URL shortener</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="./scripts.js"></script>
+</head>
+<body>
+<p>Create new user</p>
+<form id="register_url" onsubmit="register_url();return false">
+    <label for="reg_url">Enter url</label>
+    <input id="reg_url" type="text">
+    <br>
+    <label for="redirect_type">Enter redirect type</label>
+    <input id="redirect_type" type="text">
+    <input type="submit" value="register url">
+</form>
+<label id="shortUrl"></label>
+</body>
+</html>
