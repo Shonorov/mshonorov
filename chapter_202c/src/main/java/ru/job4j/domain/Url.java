@@ -26,5 +26,5 @@ public class Url {
     private Integer redirecttype;
 
     @Column (name = "count")
-    private Integer count;
+    private Long count;
 }

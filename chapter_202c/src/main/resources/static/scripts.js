@@ -1,3 +1,8 @@
+$(document).ready(function () {
+    fill_stat_table();
+
+});
+
 function openaccount() {
     var acc = $("#accountId").val();
     var data = {AccountId:acc};
@@ -39,6 +44,25 @@ function register_url() {
             console.log("error");
             console.log(response);
             $("#shortUrl").empty().append("URL already registered!");
+        }
+    })
+}
+
+function fill_stat_table() {
+    $("#table_stat").empty();
+    $.ajax({
+        type: "GET",
+        url: "/statistic",
+        dataType: "JSON",
+        success: function (response) {
+            console.log(response);
+            $.each(response, function(i, item) {
+                var tr = $('<tr>').append(
+                    $('<td>').text(item[0]),
+                    $('<td>').text(item[1])
+                );
+            });
+            $("#table_stat").append(tr);
         }
     })
 }
