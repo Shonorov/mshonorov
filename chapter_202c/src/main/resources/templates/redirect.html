@@ -3,12 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>URL shortener</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script>
+        function redirect() {
+            $("#redirect_result").empty();
+            var data = {
+              url:$("#from_url").val()
+            };
+            console.log(data);
+            $.ajax({
+                type: "GET",
+                url: "/redirect",
+                dataType: "JSON",
+                contentType : "application/json; charset=UTF-8",
+                data: data,
+                success: function (response) {
+                    console.log("!!1");
+                    $("#redirect_result").append("Redirected!");
+                },
+                error: function (response) {
+                    $("#redirect_result").append("URL not registered!");
+                }
+            })
+        }
+    </script>
 </head>
 <body>
-  <form>
+<table>
+    <tr>
+        <td><form action="/account" method="get"><button value="Account">Account</button></form></td>
+        <td><form action="/register" method="get"><button value="Register">Register</button></form></td>
+        <td><form action="/redirect_page" method="get"><button value="Redirect">Redirect</button></form></td>
+        <td><form action="/statistic" method="get"><button value="Statistics">Statistics</button></form></td>
+    </tr>
+</table>
+  <form onsubmit="redirect();return false">
       <label>Insert redirect url</label>
-      <input type="text">
-      <input type="submit" value="Submit">
+      <input id="from_url" type="text">
+      <input type="submit" value="Redirect">
   </form>
+<label id="redirect_result"></label>
 </body>
 </html>

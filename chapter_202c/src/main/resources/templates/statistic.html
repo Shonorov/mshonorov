@@ -4,8 +4,43 @@
 <head>
     <meta charset="UTF-8">
     <title>URL shortener</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            fill_stat_table();
+        });
+
+        function fill_stat_table() {
+            $("#table_stat").empty();
+            $.ajax({
+                type: "GET",
+                url: "/statistic",
+                dataType: "JSON",
+                success: function (response) {
+                    console.log(response);
+                    $.each(response, function(i, item) {
+                        var tr = $('<tr>').append(
+                            $('<td>').text(item[0]),
+                            $('<td>').text(item[1])
+                        );
+                    });
+                    $("#table_stat").append(tr);
+                }
+            })
+        }
+    </script>
 </head>
 <body>
+<table>
+    <tr>
+        <td><form action="/account" method="get"><button value="Account">Account</button></form></td>
+        <td><form action="/register" method="get"><button value="Register">Register</button></form></td>
+        <td><form action="/redirect_page" method="get"><button value="Redirect">Redirect</button></form></td>
+        <td><form action="/statistic" method="get"><button value="Statistics">Statistics</button></form></td>
+    </tr>
+</table>
 <p>Statistics:</p>
 <table>
     <thead>

@@ -6,11 +6,43 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-    <script src="./scripts.js"></script>
+    <!--<script src="./scripts.js"></script>-->
+    <script>
+        function open_account() {
+            var acc = $("#accountId").val();
+            var data = {AccountId:acc};
+            $.ajax({
+                type: "POST",
+                url: "/account",
+                dataType: "JSON",
+                contentType : "application/json",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    console.log(response);
+                    $("#result").empty().append(response.description);
+                    $("#password").empty().append(response.password);
+                },
+                error: function (response) {
+                    console.log(response.responseJSON.description);
+                    $("#result").empty().append(response.responseJSON.description);
+                    $("#password").empty();
+                }
+            })
+        }
+    </script>
 </head>
+
 <body>
+<table>
+    <tr>
+        <td><form action="/account" method="get"><button value="Account">Account</button></form></td>
+        <td><form action="/register" method="get"><button value="Register">Register</button></form></td>
+        <td><form action="/redirect_page" method="get"><button value="Redirect">Redirect</button></form></td>
+        <td><form action="/statistic" method="get"><button value="Statistics">Statistics</button></form></td>
+    </tr>
+</table>
 <p>Create new user</p>
-<form name="usercreate" onsubmit="openaccount();return false">
+<form name="usercreate" onsubmit="open_account();return false">
     <label>Enter new user name</label>
     <input id="accountId" type="text">
     <input type="submit" value="create account">

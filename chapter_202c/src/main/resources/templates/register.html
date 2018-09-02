@@ -7,8 +7,40 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script src="./scripts.js"></script>
+    <script>
+        function register_url() {
+            var data = {
+                url:$("#reg_url").val(),
+                redirectType:$("#redirect_type").val()
+            };
+            $.ajax({
+                type: "POST",
+                url: "/register",
+                dataType: "JSON",
+                contentType : "application/json",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    console.log(response);
+                    $("#shortUrl").empty().append(response.shortUrl);
+                },
+                error: function (response) {
+                    console.log("error");
+                    console.log(response);
+                    $("#shortUrl").empty().append("URL already registered!");
+                }
+            })
+        }
+    </script>
 </head>
 <body>
+<table>
+    <tr>
+        <td><form action="/account" method="get"><button value="Account">Account</button></form></td>
+        <td><form action="/register" method="get"><button value="Register">Register</button></form></td>
+        <td><form action="/redirect_page" method="get"><button value="Redirect">Redirect</button></form></td>
+        <td><form action="/statistic" method="get"><button value="Statistics">Statistics</button></form></td>
+    </tr>
+</table>
 <p>Create new user</p>
 <form id="register_url" onsubmit="register_url();return false">
     <label for="reg_url">Enter url</label>

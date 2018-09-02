@@ -49,7 +49,9 @@ public class UrlController {
             }
             result = new ShortenedUrl(newUrl.getShorturl());
             responseEntity = new ResponseEntity(result, HttpStatus.CREATED);
+            System.out.println(newUrl);
             urlRepository.save(newUrl);
+            System.out.println(urlRepository.findAll());
         }
         System.out.println(responseEntity);
         return responseEntity;
@@ -89,13 +91,15 @@ public class UrlController {
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
-    @GetMapping (value = "/redirect")
+    @GetMapping (value = "/statistic")
     public String redirect() {
-        return "redirect";
+        return "statistic";
     }
 
     @GetMapping (value = "/help")
     public String help() {
         return "help";
     }
+
+
 }

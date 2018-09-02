@@ -137,7 +137,7 @@
                 <version>2.0.3.RELEASE</version>
                 <configuration>
 
-                    <mainClass>ru.job4j.Application</mainClass>
+                    <mainClass>ru.job4j.UrlShortener</mainClass>
                 </configuration>
                 <executions>
                     <execution>
