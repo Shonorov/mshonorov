@@ -29,27 +29,25 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().passwordEncoder(NoOpPasswordEncoder.getInstance()).withUser("user").password("user").roles("user");
-//        auth.jdbcAuthentication()
-//                .dataSource(dataSource).passwordEncoder(NoOpPasswordEncoder.getInstance())//.passwordEncoder(new BCryptPasswordEncoder())
-//                .usersByUsernameQuery("select user.username as username, user.password as password, TRUE from user where user.username=?")
-//                .authoritiesByUsernameQuery("select user.username as username, user.username as authority from user where user.username=?");
+//        auth.inMemoryAuthentication().passwordEncoder(NoOpPasswordEncoder.getInstance()).withUser("user").password("user").roles("user");
+        auth.jdbcAuthentication()
+                .dataSource(dataSource).passwordEncoder(NoOpPasswordEncoder.getInstance())//.passwordEncoder(new BCryptPasswordEncoder())
+                .usersByUsernameQuery("select user.username as username, user.password as password, TRUE from user where user.username=?")
+                .authoritiesByUsernameQuery("select user.username as username, user.username as authority from user where user.username=?");
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeRequests()
-//                .antMatchers("/**").hasRole("USER")
-                .antMatchers("/account", "/scripts.js").permitAll()
+                .antMatchers("/help", "/account").permitAll()
                 .anyRequest().authenticated()
-                .and().formLogin().defaultSuccessUrl("/register")
-                .and().httpBasic();
-//                .and().csrf().disable();
+                .and().formLogin().defaultSuccessUrl("/register");
+//                .and().httpBasic();
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/account", "/scripts.js");
+        web.ignoring().antMatchers("/help", "/account");
     }
 
 }

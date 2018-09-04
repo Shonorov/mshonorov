@@ -1,8 +1,6 @@
 package ru.job4j.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.validator.routines.UrlValidator;
-import org.hsqldb.types.Charset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +13,10 @@ import ru.job4j.repository.UrlRepository;
 import ru.job4j.repository.UserRepository;
 import ru.job4j.util.StringGenerator;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +34,6 @@ public class UrlController {
     @PostMapping (value = "/register")
     @ResponseBody
     public ResponseEntity registerUrl(@RequestBody UrlRegisterRequest request) {
-        System.out.println(request);
         ResponseEntity responseEntity;
         ShortenedUrl result;
         if (urlRepository.findById(request.getUrl()).isPresent()) {
@@ -43,17 +42,14 @@ public class UrlController {
         } else {
             Url newUrl;
             if ((request.getRedirectType() != null) && (request.getRedirectType().equals(301))) {
-                 newUrl = new Url(request.getUrl(), shortenUrl(request), 301, 0L);
+                newUrl = new Url(request.getUrl(), shortenUrl(request), 301, 0L);
             } else {
                 newUrl = new Url(request.getUrl(), shortenUrl(request), 302, 0L);
             }
             result = new ShortenedUrl(newUrl.getShorturl());
             responseEntity = new ResponseEntity(result, HttpStatus.CREATED);
-            System.out.println(newUrl);
             urlRepository.save(newUrl);
-            System.out.println(urlRepository.findAll());
         }
-        System.out.println(responseEntity);
         return responseEntity;
     }
 
@@ -74,16 +70,16 @@ public class UrlController {
         if (validator.isValid(request.getUrl())) {
             result = "http://short.com/" + StringGenerator.generateSting(6, false);
         }
-        System.out.println(result);
         return result;
     }
 
     @GetMapping (value = "/statistic/{AccountId}")
     public @ResponseBody ResponseEntity<Map<String, Long>> showStatistic(@PathVariable(value = "AccountId") String accountId, HttpServletResponse response) {
-        userRepository.findById(accountId);
-        String  auth = accountId + ":" + "password";
-        String encoding = Base64.getEncoder().encodeToString(auth.getBytes());
-        response.setHeader("Authorization", "Basic " + encoding);
+        if (userRepository.findById(accountId).isPresent()) {
+            String  auth = accountId + ":" + userRepository.findById(accountId).get().getPassword();
+            String encoding = Base64.getEncoder().encodeToString(auth.getBytes());
+            response.setHeader("Authorization", "Basic " + encoding);
+        }
         Map<String, Long> result = new HashMap<>();
         for (Url url : urlRepository.findAll()) {
             result.put(url.getUrl(), url.getCount());
@@ -92,7 +88,10 @@ public class UrlController {
     }
 
     @GetMapping (value = "/statistic")
-    public String redirect() {
+    public String redirect(Principal principal, HttpSession session, HttpServletRequest request) {
+        //TODO
+        session.setAttribute("AccountId", principal.getName());
+        request.setAttribute("AccountId", principal.getName());
         return "statistic";
     }
 
@@ -100,6 +99,4 @@ public class UrlController {
     public String help() {
         return "help";
     }
-
-
 }

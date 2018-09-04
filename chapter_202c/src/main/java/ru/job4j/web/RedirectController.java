@@ -6,12 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 import ru.job4j.domain.Url;
 import ru.job4j.repository.UrlRepository;
-
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
@@ -27,17 +23,13 @@ public class RedirectController {
 
 
     @GetMapping(value = "/redirect")
-    public RedirectView proxyRedirect(@RequestParam("url") String url) {
-        System.out.println(url);
-        RedirectView rv = new RedirectView(url);
+    public ResponseEntity proxyRedirect(@RequestParam("url") String url) {
+        Url redirect = new Url();
         if (urlRepository.findById(url).isPresent()) {
-            Url redirect = urlRepository.findById(url).get();
-            System.out.println(redirect);
-            rv = new RedirectView(redirect.getShorturl());
-            rv.setStatusCode(HttpStatus.valueOf(redirect.getRedirecttype()));
+            redirect = urlRepository.findById(url).get();
             redirect.setCount(redirect.getCount() + 1);
             urlRepository.save(redirect);
         }
-        return rv;
+        return new ResponseEntity(redirect, HttpStatus.OK);
     }
 }

@@ -10,7 +10,7 @@
         function redirect() {
             $("#redirect_result").empty();
             var data = {
-              url:$("#from_url").val()
+                url:$("#from_url").val()
             };
             console.log(data);
             $.ajax({
@@ -20,11 +20,12 @@
                 contentType : "application/json; charset=UTF-8",
                 data: data,
                 success: function (response) {
-                    console.log("!!1");
-                    $("#redirect_result").append("Redirected!");
-                },
-                error: function (response) {
-                    $("#redirect_result").append("URL not registered!");
+                    if (response.shorturl == null) {
+                        $("#redirect_result").append("URL not registered!");
+                    } else {
+                        $("#redirect_result").append("Redirected!");
+                    }
+                    // window.location.replace(response.shortUrl);
                 }
             })
         }
@@ -39,11 +40,11 @@
         <td><form action="/statistic" method="get"><button value="Statistics">Statistics</button></form></td>
     </tr>
 </table>
-  <form onsubmit="redirect();return false">
-      <label>Insert redirect url</label>
-      <input id="from_url" type="text">
-      <input type="submit" value="Redirect">
-  </form>
+<form onsubmit="redirect();return false">
+    <label>Insert redirect url</label>
+    <input id="from_url" type="text">
+    <input type="submit" value="Redirect">
+</form>
 <label id="redirect_result"></label>
 </body>
 </html>

@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,20 +12,23 @@
         });
 
         function fill_stat_table() {
+            console.log(login);
+
             $("#table_stat").empty();
             $.ajax({
                 type: "GET",
-                url: "/statistic",
+                url: "/statistic/qwe",
                 dataType: "JSON",
                 success: function (response) {
-                    console.log(response);
-                    $.each(response, function(i, item) {
-                        var tr = $('<tr>').append(
-                            $('<td>').text(item[0]),
-                            $('<td>').text(item[1])
+                    var tr;
+                    for (var i in response) {
+                        console.log(i);
+                        tr = $('<tr>').append(
+                            $('<td>').text(i),
+                            $('<td>').text(response[i])
                         );
-                    });
-                    $("#table_stat").append(tr);
+                        $("#table_stat").append(tr);
+                    }
                 }
             })
         }
@@ -42,13 +44,12 @@
     </tr>
 </table>
 <p>Statistics:</p>
-<table>
+<table style="border: black solid 1px">
     <thead>
     <td>Url</td>
     <td>Count</td>
-    </thead>
+    </thead >
     <tbody id="table_stat">
-
     </tbody>
 </table>
 </body>
