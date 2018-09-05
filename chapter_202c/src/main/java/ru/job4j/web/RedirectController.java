@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.domain.Url;
 import ru.job4j.repository.UrlRepository;
-import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class RedirectController {

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.domain.ShortenedUrl;
 import ru.job4j.domain.Url;
@@ -12,10 +13,7 @@ import ru.job4j.domain.UrlRegisterRequest;
 import ru.job4j.repository.UrlRepository;
 import ru.job4j.repository.UserRepository;
 import ru.job4j.util.StringGenerator;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.Base64;
 import java.util.HashMap;
@@ -88,10 +86,9 @@ public class UrlController {
     }
 
     @GetMapping (value = "/statistic")
-    public String redirect(Principal principal, HttpSession session, HttpServletRequest request) {
-        //TODO
-        session.setAttribute("AccountId", principal.getName());
-        request.setAttribute("AccountId", principal.getName());
+    public String redirect(Principal principal, Model model) {
+        model.addAttribute("AccountId", principal.getName());
+
         return "statistic";
     }
 

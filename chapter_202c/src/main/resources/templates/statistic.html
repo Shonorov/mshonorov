@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8">
     <title>URL shortener</title>
@@ -12,17 +13,18 @@
         });
 
         function fill_stat_table() {
-            console.log(login);
+            var login = $("#user_name").val();
+            var url = "/statistic/" + login;
+            console.log(url);
 
             $("#table_stat").empty();
             $.ajax({
                 type: "GET",
-                url: "/statistic/qwe",
+                url: url,
                 dataType: "JSON",
                 success: function (response) {
                     var tr;
                     for (var i in response) {
-                        console.log(i);
                         tr = $('<tr>').append(
                             $('<td>').text(i),
                             $('<td>').text(response[i])
@@ -44,6 +46,7 @@
     </tr>
 </table>
 <p>Statistics:</p>
+<input id="user_name" type="hidden" th:value="${AccountId}">
 <table style="border: black solid 1px">
     <thead>
     <td>Url</td>

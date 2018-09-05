@@ -42,7 +42,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/help", "/account").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().defaultSuccessUrl("/register");
-//                .and().httpBasic();
     }
 
     @Override
