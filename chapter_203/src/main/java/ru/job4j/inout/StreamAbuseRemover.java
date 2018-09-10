@@ -3,7 +3,7 @@ package ru.job4j.inout;
 import java.io.*;
 
 /**
- * Removes abuse word from stream.
+ * Removes words from stream.
  */
 public class StreamAbuseRemover {
 
@@ -12,19 +12,23 @@ public class StreamAbuseRemover {
             String word = "";
             while(reader.ready()) {
                 char temp = (char)reader.read();
-                if(temp != ' ') {
+                if (!reader.ready()) {
                     word += temp;
-                } else {
+                    out.write(word.getBytes());
+                } else if (temp != ' ') {
+                    word += temp;
+                }
+                else {
                     for (String s : abuse) {
-                        System.out.println(word);
-                        System.out.println(s);
-                        System.out.println("----------");
-                        if(word.equals(s)) {
+                        if (word.equals(s)) {
                             word = "";
+                            break;
                         }
                     }
                     out.write(word.getBytes());
-                    out.write(' ');
+                    if (word.length() != 0) {
+                        out.write(' ');
+                    }
                     word = "";
                 }
             }
