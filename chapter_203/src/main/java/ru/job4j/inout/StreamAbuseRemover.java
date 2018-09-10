@@ -10,15 +10,14 @@ public class StreamAbuseRemover {
     void dropAbuses(InputStream in, OutputStream out, String[] abuse) {
         try (Reader reader = new InputStreamReader(in)) {
             String word = "";
-            while(reader.ready()) {
-                char temp = (char)reader.read();
+            while (reader.ready()) {
+                char temp = (char) reader.read();
                 if (!reader.ready()) {
                     word += temp;
                     out.write(word.getBytes());
                 } else if (temp != ' ') {
                     word += temp;
-                }
-                else {
+                } else {
                     for (String s : abuse) {
                         if (word.equals(s)) {
                             word = "";
