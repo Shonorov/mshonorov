@@ -2,33 +2,46 @@ package ru.job4j.inout;
 
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class BigFileSorter {
 
-    public void sort(File source, File distance) throws IOException {
-        RandomAccessFile sourceFile = new RandomAccessFile(source, "r");
-        RandomAccessFile targetFile = new RandomAccessFile(distance, "rw");
-        Map<Long, Integer> lineMap = new HashMap<>();
-        long length = sourceFile.length();
-        long position = 0;
-        System.out.println("!!!  " + length);
-        while(position < length) {
-            String temp = sourceFile.readLine();
-//            System.out.println(temp);
-            lineMap.put(sourceFile.getFilePointer(), temp.length());
-            position += sourceFile.getFilePointer();
+    public void sort(File source, File distance) {
+        try (
+            RandomAccessFile sourceFile = new RandomAccessFile(source, "r");
+            RandomAccessFile targetFile = new RandomAccessFile(distance, "rw")
+        ) {
+            Map<Long, Integer> lineMap = new HashMap<>();
+            long length = sourceFile.length();
+            long position = 0;
+            int min = Integer.MAX_VALUE;
+            do {
+                String temp = sourceFile.readLine();
+                lineMap.put(position, temp.length());
+                min = temp.length() < min ? temp.length() : min;
+                position = sourceFile.getFilePointer();
+            } while (position < length);
 
-            System.out.println(position);
+            while (lineMap.size() != 0) {
+                if (lineMap.values().contains(min)) {
+                    for (Map.Entry<Long, Integer> entry : lineMap.entrySet()) {
+                        if (entry.getValue() == min) {
+                            sourceFile.seek(entry.getKey());
+                            String line = sourceFile.readLine();
+                            targetFile.writeBytes(line + System.lineSeparator());
+                            lineMap.remove(entry.getKey());
+                            break;
+                        }
+                    }
+                } else {
+                    min++;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        System.out.println(lineMap);
-//        sourceFile.seek(85L);
-//        System.out.println(sourceFile.readLine());
-//        System.out.println(sourceFile.readLine().length());
     }
 }

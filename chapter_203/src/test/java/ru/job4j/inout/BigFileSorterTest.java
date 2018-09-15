@@ -7,30 +7,40 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.nio.charset.Charset;
 import java.util.Random;
 
 import static org.junit.Assert.*;
 
 public class BigFileSorterTest {
 
-    @Test
-    public void whenReadThenSort() throws IOException {
-        BigFileSorter sorter = new BigFileSorter();
-        sorter.sort(new File("C://test//big.txt"), new File("C://test//sorted.txt"));
+    private static final String SRC = "C://windows//temp//big.txt";
+    private static final String DST = "C://windows//temp//sorted.txt";
+    private static final int BIG_LINES = 1000;
+    private static final int BIG_LENGTH = 200;
 
+    @Test
+    public void whenGenerateSourceFileThenExists() {
+        File source = new File(SRC);
+        try (Writer writer = new FileWriter(source)) {
+            Random rnd = new Random();
+            for (int i = 0; i < BIG_LINES; i++) {
+                int length = rnd.nextInt(BIG_LENGTH);
+                String generatedString = RandomStringUtils.randomAlphabetic(length);
+                writer.write(generatedString + System.lineSeparator());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assertTrue(source.exists());
     }
 
-//    @Test
-    public void generateFile() throws IOException {
-        File source = new File("C://test//big.txt");
-        Writer writer = new FileWriter(source);
-        Random rnd = new Random();
-        for (int i = 0; i < 10000; i++) {
-            int length = rnd.nextInt(200);
-            String generatedString = RandomStringUtils.randomAlphabetic(length);
-            writer.write(generatedString + System.lineSeparator());
-        }
+    @Test
+    public void whenReadAndSortThenSameLength() {
+        BigFileSorter sorter = new BigFileSorter();
+        File source = new File(SRC);
+        File target = new File(DST);
+        sorter.sort(source, target);
+        assertEquals(source.length(), target.length());
     }
 
 }
