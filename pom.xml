@@ -29,6 +29,7 @@
 		<module>chapter_202b</module>
         <module>chapter_202c</module>
         <module>chapter_203</module>
+        <module>algorithms</module>
     </modules>
 
 	<dependencies>
