@@ -1,4 +1,4 @@
-package com.javamentor.binarySearch;
+package com.javamentor.binarysearch;
 
 import org.junit.Test;
 
