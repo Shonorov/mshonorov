@@ -1,0 +1,181 @@
+﻿CREATE DATABASE interview
+    WITH 
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'Russian_Russia.1251'
+    LC_CTYPE = 'Russian_Russia.1251'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+
+--------------------------------------------------
+
+CREATE TABLE public.department
+(
+    id bigint NOT NULL,
+    name character varying COLLATE pg_catalog."default",
+    CONSTRAINT department_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.department
+    OWNER to postgres;
+
+
+CREATE TABLE public.employee
+(
+    id bigint NOT NULL,
+    department_id bigint,
+    chief_id bigint,
+    name character varying COLLATE pg_catalog."default",
+    salary bigint,
+    CONSTRAINT pk PRIMARY KEY (id),
+    CONSTRAINT fk1 FOREIGN KEY (department_id)
+        REFERENCES public.department (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT fk2 FOREIGN KEY (chief_id)
+        REFERENCES public.employee (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.employee
+    OWNER to postgres;
+
+--------------------------------------------------
+
+INSERT INTO public.department(id, name) VALUES 
+    (1, 'marketing'),
+	(2, 'development'),
+	(3, 'qa'),
+	(4, 'executives');
+
+
+INSERT INTO public.employee(
+	id, department_id, chief_id, name, salary) VALUES 
+	(1, 4, null, 'Executive Director', 1000000),
+	(2, 4, 1, 'Marketing Director', 500000),
+	(3, 4, 1, 'Development Director', 500000),
+	(4, 4, 1, 'QA Director', 500000),
+	(5, 1, 2, 'Marketing Head', 300000),
+	(6, 1, 5, 'Marketolog 1', 350000),
+	(7, 1, 5, 'Marketolog 2', 150000),
+	(8, 1, 5, 'Marketolog 3', 100000),
+	(9, 2, 3, 'Development Head', 300000),
+	(10, 2, 9, 'Developer 1', 400000),
+	(11, 2, 9, 'Developer 2', 150000),
+	(12, 2, 9, 'Developer 3', 100000),
+	(13, 3, 4, 'QA Head', 300000),
+	(14, 3, 13, 'QA 1', 200000),
+	(15, 3, 13, 'QA 2', 150000),
+	(16, 3, 13, 'QA 3', 100000);
+
+
+------------------Test 1---------------------
+Вывести список сотрудников, получающих заработную плату большую чем у непосредственного руководителя.
+
+SELECT * FROM employee AS e WHERE e.salary > (SELECT chief.salary FROM employee AS chief WHERE chief.id = e.chief_id);
+
+
+select a.*
+from   employee a, employee b
+where  b.id = a.chief_id
+and    a.salary > b.salary
+
+------------------Test 2---------------------
+Вывести список сотрудников, получающих максимальную заработную плату в своем отделе.
+
+SELECT out.* FROM employee out
+JOIN (SELECT e.department_id, MAX(e.salary) max_sal
+FROM employee AS e
+GROUP BY e.department_id) AS int
+ON out.department_id = int.department_id AND out.salary = int.max_sal
+
+
+select a.*
+from   employee a
+where  a.salary = ( select max(salary) from employee b
+                    where  b.department_id = a.department_id )
+
+------------------Test 3---------------------
+Вывести список ID отделов, количество сотрудников в которых не превышает 3 человек.
+
+SELECT e.department_id
+FROM employee AS e
+GROUP BY e.department_id
+HAVING COUNT(e.id) <= 3
+
+select department_id
+from   employee
+group  by department_id
+having count(*) <= 3
+
+------------------Test 4---------------------
+Вывести список сотрудников, не имеющих назначенного руководителя, работающего в том-же отделе.
+
+SELECT e.*
+FROM employee AS e
+WHERE e.chief_id IS NULL 
+OR e.department_id != (SELECT int.department_id FROM employee AS int WHERE int.id = e.chief_id)
+
+select a.*
+from   employee a
+left   join employee b on (b.id = a.chief_id and b.department_id = a.department_id)
+where  b.id is null
+
+------------------Test 5---------------------
+Найти список ID отделов с максимальной суммарной зарплатой сотрудников.
+
+SELECT inn.department_id
+FROM (SELECT e.department_id, SUM(e.salary) AS summa
+FROM employee AS e
+GROUP BY e.department_id) AS inn
+WHERE inn.summa = (SELECT MAX(summa) AS maxsum
+				   FROM (SELECT e1.department_id, SUM(e1.salary) AS summa 
+						 FROM employee AS e1 
+						 GROUP BY e1.department_id) AS inn2
+				   )
+
+with sum_salary as
+  ( select department_id, sum(salary) salary
+    from   employee
+    group  by department_id )
+select department_id
+from   sum_salary a       
+where  a.salary = ( select max(salary) from sum_salary ) 
+
+------------------Test 6---------------------
+Составить SQL-запрос, вычисляющий произведение вещественных значений, содержащихся в некотором столбце таблицы.
+
+Логарифм произведения равен сумме логарифмов, для нашего примера это означает:
+exp(ln(2*3*4*5)) = 2*3*4*5 = exp(ln(2) + ln(3) + ln(4) + ln(5))
+
+
+WITH T AS(SELECT * FROM (VALUES(-2),(-3),(4),(-5), (NULL) ) X(value)),
+    P AS (
+    SELECT SUM(CASE WHEN value<0 THEN 1 ELSE 0 END) neg, -- число отрицательных значений
+    SUM(CASE WHEN value>0 THEN 1 ELSE 0 END) pos, -- число положительных значений
+    COUNT(value) total -- общее число значений
+    FROM T)
+    SELECT CASE WHEN total <> pos+neg /* есть нули */ THEN 0 ELSE 
+    (CASE WHEN neg%2=1 THEN -1 ELSE +1 END) *exp(SUM(log(abs(value))))
+    END
+    product  FROM T,P WHERE value <> 0 GROUP BY neg, pos, total;
+
+
+
+select
+  exp(sum(ln(decode(sign(salary),0,1,-1,-salary,salary))))
+ *decode(mod(sum(decode(sign(salary),-1,1,0)),2),1,-1,1)
+ *sign(min(abs(salary)))
+from employee
+
+
+
