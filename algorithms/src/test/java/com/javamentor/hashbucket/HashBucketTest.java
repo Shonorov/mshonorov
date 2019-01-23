@@ -11,11 +11,12 @@ public class HashBucketTest {
     public void whenHashThenNotMod() {
         HashBucket hashBucket = new HashBucket();
         int size = 16;
-        for (int i = -10; i < 10; i++) {
+        for (int i = -20; i <= 20; i++) {
             int hash = hashBucket.hash(i);
+            System.out.println(i + " (hash " + hash + ")");
             int bucket = hashBucket.bucket(hashBucket.hash(i), size);
             int mod = hash % size;
-            System.out.println("Bucket: " + bucket + " Mod: " + mod);
+            System.out.println("Bucket: " + bucket + "; Mod: " + mod);
 //            assertThat(bucket, is(mod));
         }
     }
