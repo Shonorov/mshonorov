@@ -1,5 +1,5 @@
 /**
-* Package for chapter_202 study project tests.
+* Package for chapter_202 study project ippon.
 *
 * @author Mikhail Shonorov (shonorov@gmail.com)
 * @version $Id$

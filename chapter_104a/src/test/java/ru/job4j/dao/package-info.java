@@ -1,5 +1,5 @@
 /**
-* Package for chapter_104a study project tests.
+* Package for chapter_104a study project ippon.
 *
 * @author Mikhail Shonorov (shonorov@gmail.com)
 * @version $Id$

@@ -1,5 +1,5 @@
 /**
-* Package for study project tests.
+* Package for study project ippon.
 *
 * @author Mikhail Shonorov
 * @version $Id$

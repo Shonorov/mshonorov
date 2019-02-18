@@ -1,5 +1,5 @@
 /**
-* Package for sorting algorithms tests.
+* Package for sorting algorithms ippon.
 *
 * @author Mikhail Shonorov (shonorov@gmail.com)
 * @version $Id$
